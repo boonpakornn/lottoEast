@@ -7,11 +7,13 @@ import { Component } from '@angular/core'
 })
 export class ReportListComponent {
     data = [{
-        id: 1,
-        number: 9999,
+        no: 1,
+        bookNumber: 9999,
+        countNumber: 42,
+        groupNumber: 55,
         sender: 'Moo'
     }]
 
-    displayedColumns: string[] = ['id', 'number', 'sender','delete'];
+    displayedColumns: string[] = ['no', 'bookNumber', 'countNumber', 'groupNumber', 'sender', 'delete'];
     dataSource = this.data;
 }
