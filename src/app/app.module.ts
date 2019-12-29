@@ -14,13 +14,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { appRoutes } from './routes'
 import { RouterModule } from '@angular/router';
 
+
 @NgModule({
   declarations: [
     ReportComponent,
     ReportListComponent,
     NavBarComponent,
     ResultComponent,
-    AddLottoComponent
+    AddLottoComponent,
   ],
   imports: [
     BrowserModule,
