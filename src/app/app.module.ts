@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { ReportComponent } from './report.component';
 import { ReportListComponent } from './report/report-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [ReportComponent]

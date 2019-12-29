@@ -6,5 +6,12 @@ import { Component } from '@angular/core'
     styleUrls: ['./report-list.component.scss']
 })
 export class ReportListComponent {
+    data = [{
+        id: 1,
+        number: 9999,
+        sender: 'Moo'
+    }]
 
+    displayedColumns: string[] = ['id', 'number', 'sender','delete'];
+    dataSource = this.data;
 }
