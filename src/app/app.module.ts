@@ -10,6 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { appRoutes } from './routes'
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     BrowserModule,
     BrowserAnimationsModule,
     MatTableModule,
-    MatToolbarModule
+    MatToolbarModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [ReportComponent]
