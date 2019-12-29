@@ -2,9 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { ReportComponent } from './report.component';
-import { ReportListComponent } from './report/report-list.component';
-import { NavBarComponent } from './nav/navbar.component'
+import { ReportListComponent } from './report-list/report-list.component';
+import { NavBarComponent } from './nav/navbar.component';
+import { ResultComponent } from './result/result.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -12,7 +15,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   declarations: [
     ReportComponent,
     ReportListComponent,
-    NavBarComponent
+    NavBarComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,
