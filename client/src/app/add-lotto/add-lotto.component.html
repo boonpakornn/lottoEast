@@ -1,12 +1,13 @@
 <div class="container">
     <h3>เพิ่มข้อมูลใหม่</h3>
     <hr>
-    <div>
+    <form #lottoForm ="ngForm" (submit)="submitLottoData(lottoForm.value)">
         <div class="form-group">
             <label for="number" class="control-label">หมายเลขสลาก</label>
-            <input type="text" class="form-control" id="number" name="number" placeholder="">
+            <input  ngModel name="lottoNum" type="text" class="form-control" id="number" placeholder="">
+            <small id="inputHelp" class="form-text text-muted">พิมหรือสแกนบาร์โค๊ดเพื่อบันทึกข้อมูลสลาก</small>
         </div>
         <button type="submit" class="btn btn-primary"> เพิ่มข้อมูล</button>
         <button type="button" class="btn btn-default"> ยกเลิก</button>
-    </div>
+    </form>
 </div>

@@ -8,11 +8,13 @@ import { ResultComponent } from './result/result.component';
 import { AddLottoComponent } from './add-lotto/add-lotto.component'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http'
 
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { appRoutes } from './routes'
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,6 +26,8 @@ import { RouterModule } from '@angular/router';
     AddLottoComponent,
   ],
   imports: [
+    FormsModule,
+    HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatTableModule,
