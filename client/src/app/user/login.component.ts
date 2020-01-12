@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core'
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router'
 import { AuthService } from './auth.service'
 
 @Component({
@@ -7,11 +7,17 @@ import { AuthService } from './auth.service'
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent{
-    constructor(private authService: AuthService){
+    constructor(private authService: AuthService,
+                private router: Router){
     }
 
     login(formValues) {
         this.authService.loginUser(formValues.userName, formValues.password)
+        this.router.navigate(['report']);
+    }
+
+    cancel() {
+        this.router.navigate(['report']);
     }
 
 }
