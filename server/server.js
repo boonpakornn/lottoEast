@@ -1,6 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const UserModel = require('./user_schema');
+const LottoModel = require('./lotto_schema');
+
+require('./db');
 
 app.use(bodyParser.json());
 
@@ -13,10 +17,27 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.post('/test', (req,res) => {
-    const lottoNum = req.body.lottoNum;
+app.post('/lotto', (req,res) => {
+    var number = req.body.lottoNum.substring(0,4);
+    var period = req.body.lottoNum.substring(4,6);
+    var set = req.body.lottoNum.substring(6,8);
+    
+    LottoModel.create({number, period, set}, (err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', number : number, period: period, set: set, sender: 'test'})
+    })
+});
 
-    res.json({ result: 'success', lottoNum : lottoNum})
+app.get('/get-lotto', (req,res) => {
+    
+    LottoModel.find((err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
