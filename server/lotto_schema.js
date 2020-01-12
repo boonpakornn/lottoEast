@@ -2,9 +2,9 @@ var mongoose = require('mongoose')
 
 var LottoSchema = mongoose.Schema({
     _id: {type: mongoose.Schema.Types.ObjectId, auto: true},
-    number: {type: String, require: true},
-    period:{type: String, require: true},
-    set: {type: String, require: true},
+    bookNumber: {type: String, require: true},
+    countNumber:{type: String, require: true},
+    groupNumber: {type: String, require: true},
     sender:{type: String, require: true}
 })
 

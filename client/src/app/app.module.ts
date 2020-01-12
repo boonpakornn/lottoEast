@@ -5,7 +5,6 @@ import { ReportComponent } from './report.component';
 import { ReportListComponent } from './report-list/report-list.component';
 import { NavBarComponent } from './nav/navbar.component';
 import { ResultComponent } from './result/result.component';
-import { AddLottoComponent } from './add-lotto/add-lotto.component'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http'
@@ -22,8 +21,8 @@ import { FormsModule } from '@angular/forms';
     ReportComponent,
     ReportListComponent,
     NavBarComponent,
-    ResultComponent,
-    AddLottoComponent,
+    ResultComponent
+
   ],
   imports: [
     FormsModule,

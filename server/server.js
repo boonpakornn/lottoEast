@@ -18,15 +18,16 @@ app.use(function (req, res, next) {
 })
 
 app.post('/lotto', (req,res) => {
-    var number = req.body.lottoNum.substring(0,4);
-    var period = req.body.lottoNum.substring(4,6);
-    var set = req.body.lottoNum.substring(6,8);
+    var book = req.body.lottoNum.substring(0,4);
+    var count = req.body.lottoNum.substring(4,6);
+    var group = req.body.lottoNum.substring(6,8);
+    var sender = 'user1'
     
-    LottoModel.create({number, period, set}, (err, doc) => {
+    LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', number : number, period: period, set: set, sender: 'test'})
+        res.json({result: 'success', number : book, count: count, group: group, sender: sender})
     })
 });
 
