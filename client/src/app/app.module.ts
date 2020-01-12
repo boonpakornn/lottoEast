@@ -14,6 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { appRoutes } from './routes'
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from './user/auth.service';
 
 
 @NgModule({
@@ -33,7 +34,7 @@ import { FormsModule } from '@angular/forms';
     MatToolbarModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [ReportComponent]
 })
 export class AppModule { }

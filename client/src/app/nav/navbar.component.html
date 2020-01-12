@@ -3,5 +3,7 @@
     <div>
         <span><a [routerLink] = "['/report']">หน้าหลัก</a></span>
         <span><a [routerLink] = "['/result']">ผลการชน</a></span>
+        <span><a *ngIf="!auth.isAuthenticated()" [routerLink] = "['user/login']">เข้าสู่ระบบ</a></span>
+        <span><a *ngIf="auth.isAuthenticated()" [routerLink] = "['/user/profile']"> ยินดีต้อนรับ {{auth.currentUser.firstName}}</a></span>
     </div>
     </mat-toolbar>

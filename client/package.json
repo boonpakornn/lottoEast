@@ -26,6 +26,7 @@
     "ngf-bootstrap": "0.0.5",
     "ngx-bootstrap": "^5.2.0",
     "rxjs": "~6.4.0",
+    "toastr": "^2.1.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },

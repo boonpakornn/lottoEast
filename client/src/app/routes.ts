@@ -6,6 +6,7 @@ import { ReportListComponent } from './report-list/report-list.component';
 export const appRoutes:Routes = [
     { path: '', redirectTo: '/report', pathMatch: 'full'},
     { path: 'report', component: ReportListComponent},
-    { path: 'result', component: ResultComponent}
+    { path: 'result', component: ResultComponent},
+    { path: 'user', loadChildren: './user/user.module#UserModule'}
     
 ]
