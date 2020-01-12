@@ -1,0 +1,19 @@
+<div class="container">
+    <h1>แก้ไขข้อมูลส่วนตัว </h1>
+    <hr>
+    <div class="col-md-4">
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile(profileForm.value)" autocomplete="off" novalidate>
+        <div class="form-group">
+          <label for="firstName">ชื่อ:</label>
+          <input formControlName="firstName" id="firstName" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label for="lastName">นามสกุล:</label>
+          <input formControlName="lastName" id="lastName" type="text" class="form-control" />
+        </div>
+  
+        <button type="submit" class="btn btn-primary">บันทึก</button>
+        <button type="button" (click)="cancel()" class="btn btn-default">ยกเลิก</button>
+      </form>
+    </div>
+  </div>
