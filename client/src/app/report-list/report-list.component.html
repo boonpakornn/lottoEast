@@ -41,11 +41,11 @@
       <div class="form-group">
           <label for="number" class="control-label">หมายเลขสลาก</label>
           <small *ngIf="!isValid">กรุณากรอกข้อมูลด้วยตัวเลขจำนวน 8 หรือ 18 หลักเท่านั้น</small>
-          <input pattern="[0-9]+" ngModel name="lottoNum" type="text" class="form-control" id="number" placeholder="">
+          <input pattern="[0-9]+" ngModel name="lottoNum" type="text" class="form-control" id="number" #input>
           <small id="inputHelp" class="form-text text-muted">พิมหรือสแกนบาร์โค๊ดเพื่อบันทึกข้อมูลสลาก</small>
       </div>
-      <button type="submit" class="btn btn-primary"> เพิ่มข้อมูล</button>
-      <button type="button" class="btn btn-default"> ยกเลิก</button>
+      <button type="submit" class="btn btn-primary" (click)="input.value=''"> เพิ่มข้อมูล</button>
+      <button type="button" class="btn btn-default" (click)="input.value=''"> ยกเลิก</button>
   </form>
 </div>
 

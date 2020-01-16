@@ -18,10 +18,12 @@ app.use(function (req, res, next) {
 })
 
 app.post('/lotto', (req,res) => {
+    if(req.body.lottoNum.length === 8){
     var book = req.body.lottoNum.substring(0,4);
     var count = req.body.lottoNum.substring(4,6);
     var group = req.body.lottoNum.substring(6,8);
     var sender = 'user1'
+    }
     
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender}, (err, doc) => {
         if (err){
