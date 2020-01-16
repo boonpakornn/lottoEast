@@ -40,7 +40,8 @@
   <form #lottoForm ="ngForm" (submit)="submitLottoData(lottoForm.value)">
       <div class="form-group">
           <label for="number" class="control-label">หมายเลขสลาก</label>
-          <input  ngModel name="lottoNum" type="text" class="form-control" id="number" placeholder="">
+          <small *ngIf="!isValid">กรุณากรอกข้อมูลด้วยตัวเลขจำนวน 8 หรือ 18 หลักเท่านั้น</small>
+          <input pattern="[0-9]+" ngModel name="lottoNum" type="text" class="form-control" id="number" placeholder="">
           <small id="inputHelp" class="form-text text-muted">พิมหรือสแกนบาร์โค๊ดเพื่อบันทึกข้อมูลสลาก</small>
       </div>
       <button type="submit" class="btn btn-primary"> เพิ่มข้อมูล</button>
@@ -50,38 +51,6 @@
 
 <div class="container lotto-list">
   <h3>สลากของฉัน</h3>
-  <!-- <hr> -->
-  <!-- <table mat-table [dataSource]="lottoData">
-        <ng-container matColumnDef="bookNumber">
-          <th mat-header-cell *matHeaderCellDef> เล่ม </th>
-          <td mat-cell *matCellDef="let element"> {{element.bookNumber}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="countNumber">
-          <th mat-header-cell *matHeaderCellDef> งวด </th>
-          <td mat-cell *matCellDef="let element"> {{element.countNumber}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="groupNumber">
-          <th mat-header-cell *matHeaderCellDef> ชุด </th>
-          <td mat-cell *matCellDef="let element"> {{element.groupNumber}} </td>
-        </ng-container>
-      
-        <ng-container matColumnDef="sender">
-          <th mat-header-cell *matHeaderCellDef> ผู้บันทึก </th>
-          <td mat-cell *matCellDef="let element"> {{element.sender}} </td>
-        </ng-container>
-
-
-        <ng-container matColumnDef="delete">
-          <th mat-header-cell *matHeaderCellDef> ลบจากระบบ </th>
-          <td mat-cell *matCellDef="let element"><button class="btn-primary"> ลบ </button></td> 
-        </ng-container>
-
-      
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table> -->
     <table class="table">
       <thead>
         <tr>

@@ -13,15 +13,28 @@ export class ReportListComponent implements OnInit{
     }
 
     public lottoData:any[] = [];
+    public isValid = true;
 
     ngOnInit(){
         this.loadLottoData();
     }
 
+    isNumeric(value) {
+        return /^\d+$/.test(value);
+    }
+
     submitLottoData(data){
-        this.http.post<any>('http://localhost:3000/lotto', data).subscribe(result => {
-            this.loadLottoData();
-        })
+        
+        if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 18)){
+            this.isValid = true;
+        // this.http.post<any>('http://localhost:3000/lotto', data).subscribe(result => {
+        //     this.loadLottoData();
+        // })
+        }
+        else {
+            this.isValid = false;
+        }
+        
         
     }
 
