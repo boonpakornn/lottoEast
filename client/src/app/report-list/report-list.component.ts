@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, SimpleChange, Input} from '@angular/core'
+import { Component, OnInit, Input} from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -7,7 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     templateUrl: './report-list.component.html',
     styleUrls: ['./report-list.component.scss']
 })
-export class ReportListComponent implements OnInit, OnChanges{
+export class ReportListComponent implements OnInit{
     // lottoForm: FormGroup;
     @Input() lottoForm: FormGroup;
     private lottoNum: FormControl;
@@ -24,13 +24,6 @@ export class ReportListComponent implements OnInit, OnChanges{
           })
         this.loadLottoData();
         this.onValueChanges();
-    }
-
-    ngOnChanges(changes: SimpleChanges){
-        const MyFormChanges: SimpleChange = changes.lottoForm;
-        // To Check current values
-        console.log(MyFormChanges.currentValue)
-    
     }
 
     onValueChanges(): void {
