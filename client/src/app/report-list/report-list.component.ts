@@ -28,8 +28,8 @@ export class ReportListComponent implements OnInit{
 
     onValueChanges(): void {
         this.lottoForm.valueChanges.subscribe(data=>{
-          if(data.lottoNum.length == 18){
-              this.submitLottoData(data);
+          if(data.lottoNum.length === 18){
+            this.submitLottoData(data);
           }
         })
       }
@@ -50,11 +50,14 @@ export class ReportListComponent implements OnInit{
         else {
             this.isValid = false;
         }
+        this.lottoForm.reset({
+            lottoNum: ''
+          });
     }
 
     loadLottoData(){
-    this.http.get<any>('http://localhost:3000/get-lotto').subscribe(result => {
-        this.lottoData = result.data;
+        this.http.get<any>('http://localhost:3000/get-lotto').subscribe(result => {
+            this.lottoData = result.data;
         // this.dataSource = result.data;
     })
     }
