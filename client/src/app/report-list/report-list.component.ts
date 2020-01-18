@@ -1,14 +1,16 @@
-import { Component, OnInit} from '@angular/core'
+import { Component, OnInit, OnChanges, SimpleChanges, SimpleChange, Input} from '@angular/core'
 import { HttpClient } from '@angular/common/http';
-
-declare let toastr;
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'report-list',
     templateUrl: './report-list.component.html',
     styleUrls: ['./report-list.component.scss']
 })
-export class ReportListComponent implements OnInit{
+export class ReportListComponent implements OnInit, OnChanges{
+    // lottoForm: FormGroup;
+    @Input() lottoForm: FormGroup;
+    private lottoNum: FormControl;
     constructor(private http: HttpClient){
     }
 
@@ -16,14 +18,35 @@ export class ReportListComponent implements OnInit{
     public isValid = true;
 
     ngOnInit(){
+        this.lottoNum = new FormControl('', Validators.required)
+        this.lottoForm = new FormGroup({
+            lottoNum: this.lottoNum
+          })
         this.loadLottoData();
+        this.onValueChanges();
     }
+
+    ngOnChanges(changes: SimpleChanges){
+        const MyFormChanges: SimpleChange = changes.lottoForm;
+        // To Check current values
+        console.log(MyFormChanges.currentValue)
+    
+    }
+
+    onValueChanges(): void {
+        this.lottoForm.valueChanges.subscribe(data=>{
+          if(data.lottoNum.length == 18){
+              this.submitLottoData(data);
+          }
+        })
+      }
 
     isNumeric(value) {
         return /^\d+$/.test(value);
     }
 
     submitLottoData(data){
+        console.log('data',data)
         
         if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 18)){
             this.isValid = true;

@@ -13,7 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { appRoutes } from './routes'
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './user/auth.service';
 
 
@@ -27,6 +27,7 @@ import { AuthService } from './user/auth.service';
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
