@@ -15,6 +15,7 @@ import { appRoutes } from './routes'
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './user/auth.service';
+import { AuthGuardService } from './auth/auth-guard.service';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { AuthService } from './user/auth.service';
     MatToolbarModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuardService],
   bootstrap: [ReportComponent]
 })
 export class AppModule { }

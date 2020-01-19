@@ -24,7 +24,7 @@ export class LoginComponent{
                 this.router.navigate(['report']);
             }
         },
-        200);
+        300);
         
 
        
