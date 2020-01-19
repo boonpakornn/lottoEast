@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './user/auth.service';
 import { AuthGuardService } from './auth/auth-guard.service';
+import { LottoListComponent } from './lotto-list/lotto-list.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { AuthGuardService } from './auth/auth-guard.service';
     ReportComponent,
     ReportListComponent,
     NavBarComponent,
-    ResultComponent
+    ResultComponent,
+    LottoListComponent
 
   ],
   imports: [

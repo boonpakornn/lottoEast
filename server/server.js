@@ -25,13 +25,33 @@ app.post('/lotto', (req,res) => {
     var sender = req.body.currentUser
     }
     
-    LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender}, (err, doc) => {
+    LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
         res.json({result: 'success', number : book, count: count, group: group, sender: sender})
     })
 });
+
+app.post('/get-lotto', (req,res) => {
+    LottoModel.find({sender: req.body.currentUser},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
+app.get('/get-all-lotto', (req,res) => {
+    LottoModel.find((err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
+
 
 app.post('/delete-lotto', (req,res) => {
     var book = req.body.bookNumber;
@@ -70,13 +90,6 @@ app.post('/get-user', (req,res) => {
     })
 });
 
-app.post('/get-lotto', (req,res) => {
-    LottoModel.find({sender: req.body.currentUser},(err, doc) => {
-        if (err){
-            res.json({result: 'failed'});
-        }
-        res.json({result: 'success', data: doc})
-    })
-});
+
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
