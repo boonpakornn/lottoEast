@@ -8,7 +8,12 @@ export class AuthService {
     constructor( private http:HttpClient){
 
     }
-    currentUser: IUser;
+    currentUser: IUser = {
+        id: 0,
+        firstName: '',
+        lastName: '',
+        userName: ''
+    };
     isLogin = false;
     loginUser(userName: string, password: string){
         this.http.post<any>('http://localhost:3000/get-user', {userName, password}).subscribe(user => {
@@ -31,8 +36,26 @@ export class AuthService {
         this.currentUser.firstName = firstName;
         this.currentUser.lastName = lastName;
     }
-    
+
     isAuthenticated() {
-        return !!this.currentUser;
+        return this.currentUser.userName !== '' ? true : false;
+    }
+
+    isAdmin() {
+        if(this.currentUser.userName === 'admin') {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    logout(){
+        this.currentUser = {
+            id: 0,
+            firstName: '',
+            lastName: '',
+            userName: ''
+        }
     }
 }

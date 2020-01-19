@@ -12,5 +12,9 @@ export class NavBarComponent {
 
     }
 
+    logOut(){
+        this.auth.logout()
+    }
+
 
 }
