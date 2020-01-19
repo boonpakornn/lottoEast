@@ -22,7 +22,7 @@ app.post('/lotto', (req,res) => {
     var book = req.body.lottoNum.substring(0,4);
     var count = req.body.lottoNum.substring(4,6);
     var group = req.body.lottoNum.substring(6,8);
-    var sender = 'user1'
+    var sender = req.body.currentUser
     }
     
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender}, (err, doc) => {
@@ -46,6 +46,15 @@ app.post('/add-user', (req,res) => {
             res.json({result: 'failed'});
         }
         res.json({result: 'success', userName: userName, password: password, firstName: firstName, lastName: lastName, telNo: telNo, remark: remark})
+    })
+});
+
+app.post('/get-user', (req,res) => {
+    UserModel.find({userName: req.body.userName, password: req.body.password},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
     })
 });
 

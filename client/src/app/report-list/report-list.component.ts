@@ -1,6 +1,7 @@
 import { Component, OnInit, Input} from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../user/auth.service';
 
 @Component({
     selector: 'report-list',
@@ -11,9 +12,10 @@ export class ReportListComponent implements OnInit{
     // lottoForm: FormGroup;
     @Input() lottoForm: FormGroup;
     private lottoNum: FormControl;
-    constructor(private http: HttpClient){
+    constructor(private http: HttpClient,
+                private authService: AuthService){
     }
-
+    public currentUser = this.authService.currentUser.userName;
     public lottoData:any[] = [];
     public isValid = true;
 
@@ -39,8 +41,8 @@ export class ReportListComponent implements OnInit{
     }
 
     submitLottoData(data){
+        data.currentUser = this.currentUser;
         console.log('data',data)
-        
         if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 18)){
             this.isValid = true;
         this.http.post<any>('http://localhost:3000/lotto', data).subscribe(result => {
@@ -58,11 +60,9 @@ export class ReportListComponent implements OnInit{
     loadLottoData(){
         this.http.get<any>('http://localhost:3000/get-lotto').subscribe(result => {
             this.lottoData = result.data;
-        // this.dataSource = result.data;
+            console.log('lottoData', this.lottoData);
     })
     }
     
-    // displayedColumns: string[] = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'delete'];
-    // dataSource = this.lottoData;
     
 }

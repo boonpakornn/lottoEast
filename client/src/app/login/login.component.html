@@ -6,16 +6,16 @@
     <div class="form-group" >
       <label for="userName">ชื่อผู้ใช้ :</label>
       <small *ngIf="loginForm.controls.userName?.invalid && (loginForm.controls.userName?.touched || mouseoverLogin)"> กรุณาใส่ชื่อผู้ใช้</small>
-      <input required (ngModel) ="userName" name="userName" id="userName" type="text" class="form-control" />
+      <input required (ngModel) ="userName" name="userName" id="userName" type="text" class="form-control" #username/>
 
     </div>
     <div class="form-group" >
       <label for="password">รหัสผ่าน :</label>
       <small *ngIf="loginForm.controls.password?.invalid && (loginForm.controls.password?.touched || mouseoverLogin)"> กรุณาใส่รหัสผ่าน</small>
-      <input required (ngModel) ="password" name="password" id="password" type="password" class="form-control"/>
+      <input required (ngModel) ="password" name="password" id="password" type="password" class="form-control" #password/>
     </div>
     <span (mouseenter)="mouseoverLogin = true" (mouseleave)="mouseoverLogin = false">
-    <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">เข้าสู่ระบบ</button>
+    <button type="submit" [disabled]="loginForm.invalid" (click)="username.value=''; password.value=''"  class="btn btn-primary">เข้าสู่ระบบ</button>
     </span>    
     <button type="button" (click)="cancel()" class="btn btn-default">ยกเลิก</button>
   </form>
