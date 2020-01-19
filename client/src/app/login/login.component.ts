@@ -15,19 +15,18 @@ export class LoginComponent{
                 private router: Router){ 
     }
 
+
     login(formValues) {
         this.authService.loginUser(formValues.userName, formValues.password);
         setTimeout(() => 
         {
-            console.log('flag', this.authService.isLogin);
+            console.log('status', this.authService.isLogin);
             if(this.authService.isLogin === true){
                 this.router.navigate(['report']);
             }
         },
         500);
-        
     }
-
 
     cancel() {
         this.router.navigate(['report']);

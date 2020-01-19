@@ -24,7 +24,13 @@ app.post('/lotto', (req,res) => {
     var group = req.body.lottoNum.substring(6,8);
     var sender = req.body.currentUser
     }
-    
+
+    if(req.body.lottoNum.length === 20){
+        var book = req.body.lottoNum.substring(6,10);
+        var count = req.body.lottoNum.substring(2,4);
+        var group = req.body.lottoNum.substring(4,6);
+        var sender = req.body.currentUser
+    }
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
@@ -68,7 +74,14 @@ app.post('/update-lotto', (req,res) => {
     var count = req.body.countNumber;
     var group = req.body.groupNumber;
     var sender = req.body.sender;
-    LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, {status: 'True'},(err, doc) => {
+    var status = req.body.status
+    if(status === 'False'){
+        var newstatus = 'True'
+    }
+    else if(status === 'True'){
+        var newstatus = 'False'
+    }
+    LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: status}, {status: newstatus},(err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }

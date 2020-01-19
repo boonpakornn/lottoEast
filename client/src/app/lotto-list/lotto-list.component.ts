@@ -26,7 +26,11 @@ export class LottoListComponent implements OnInit{
         this.http.post<any>('http://localhost:3000/update-lotto', data).subscribe(result => {
             console.log('update', result)
         })
-        this.loadLottoListData();
+        setTimeout(() => 
+        {
+            this.loadLottoListData();
+        },
+        500);
     }
 
    
