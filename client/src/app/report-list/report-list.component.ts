@@ -15,10 +15,10 @@ export class ReportListComponent implements OnInit{
     constructor(private http: HttpClient,
                 private authService: AuthService){
     }
-    public currentUser = this.authService.currentUser.userName;
+    public loggedinUser = this.authService.currentUser.userName;
     public lottoData:any[] = [];
     public isValid = true;
-
+    public currentUser = { currentUser: this.loggedinUser};
     ngOnInit(){
         this.lottoNum = new FormControl('', Validators.required)
         this.lottoForm = new FormGroup({
@@ -41,7 +41,7 @@ export class ReportListComponent implements OnInit{
     }
 
     submitLottoData(data){
-        data.currentUser = this.currentUser;
+        data.currentUser = this.loggedinUser;
         console.log('data',data)
         if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 18)){
             this.isValid = true;
@@ -58,7 +58,7 @@ export class ReportListComponent implements OnInit{
     }
 
     loadLottoData(){
-        this.http.get<any>('http://localhost:3000/get-lotto').subscribe(result => {
+        this.http.post<any>('http://localhost:3000/get-lotto', this.currentUser).subscribe(result => {
             this.lottoData = result.data;
             console.log('lottoData', this.lottoData);
     })

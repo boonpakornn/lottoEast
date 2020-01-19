@@ -58,9 +58,8 @@ app.post('/get-user', (req,res) => {
     })
 });
 
-app.get('/get-lotto', (req,res) => {
-    
-    LottoModel.find((err, doc) => {
+app.post('/get-lotto', (req,res) => {
+    LottoModel.find({sender: req.body.currentUser},(err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
