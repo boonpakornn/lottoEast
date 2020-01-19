@@ -51,6 +51,19 @@ app.get('/get-all-lotto', (req,res) => {
     })
 });
 
+app.post('/update-lotto', (req,res) => {
+    var book = req.body.bookNumber;
+    var count = req.body.countNumber;
+    var group = req.body.groupNumber;
+    var sender = req.body.sender;
+    LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, {status: 'True'},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 
 
 app.post('/delete-lotto', (req,res) => {

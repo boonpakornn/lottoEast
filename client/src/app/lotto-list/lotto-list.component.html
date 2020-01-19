@@ -9,6 +9,7 @@
             <th scope="col">ชุด</th>
             <th scope="col">ผู้ส่ง</th>
             <th scope="col">สถานะ</th>
+            <th scope="col">เลือกชน</th>
           </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
             <td>{{data.groupNumber}}</td>
             <td>{{data.sender}}</td>
             <td>{{data.status}}</td>
+            <td><button class="btn-primary update-btn" (click)="updateLotto(data)">เลือก</button></td>
           </tr>
         </tbody>
       </table>
