@@ -1,0 +1,39 @@
+<div class="container">
+    <h1>เพิ่มบัญชีผู้ใช้ </h1>
+    <hr>
+    <div class="col-md-4">
+      <form [formGroup]="newUserForm" (ngSubmit)="addProfile(newUserForm.value)" autocomplete="off" novalidate>
+        <div class="form-group" [ngClass] = "{'error': !validateUserName()}">
+            <label for="userName">ชื่อผู้ใช้:</label>
+            <small *ngIf="!validateUserName()"> กรุณาใส่ชื่อผู้ใช้</small>
+            <input formControlName="userName" id="userName" type="text" class="form-control"/>
+          </div>
+          <div class="form-group" [ngClass] = "{'error': !validatePassword()}">
+            <label for="password">รหัสผ่าน:</label>
+            <small *ngIf="!validatePassword()"> กรุณาใส่รหัสผ่าน</small>
+            <input formControlName="password" id="password" type="text" class="form-control"/>
+          </div>
+        <div class="form-group" [ngClass] = "{'error': !validateFirstName()}">
+          <label for="firstName">ชื่อ:</label>
+          <small *ngIf="!validateFirstName()"> กรุณาใส่ชื่อ</small>
+          <input formControlName="firstName" id="firstName" type="text" class="form-control"/>
+        </div>
+        <div class="form-group" [ngClass] = "{'error': !validateLastName()}">
+          <label for="lastName">นามสกุล:</label>
+          <small *ngIf="!validateLastName()"> กรุณาใส่นามสกุล</small>
+          <input formControlName="lastName" id="lastName" type="text" class="form-control" />
+        </div>
+        <div class="form-group" [ngClass] = "{'error': !validateTelNo()}">
+            <label for="telNo">เบอร์โทรศัพท์:</label>
+            <small *ngIf="!validateTelNo()"> กรุณาใส่เบอร์โทรศัพท์</small>
+            <input formControlName="telNo" id="telNo" type="text" class="form-control" />
+          </div>
+        <div class="form-group">
+            <label for="remark">หมายเหตุ:</label>
+            <input formControlName="remark" id="remark" type="text" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">บันทึก</button>
+        <button type="button" (click)="cancel()" class="btn btn-default">ยกเลิก</button>
+      </form>
+    </div>
+  </div>

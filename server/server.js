@@ -33,6 +33,22 @@ app.post('/lotto', (req,res) => {
     })
 });
 
+app.post('/add-user', (req,res) => {
+    var userName = req.body.userName;
+    var password = req.body.password;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var telNo = req.body.telNo;
+    var remark = req.body.remark;
+    
+    UserModel.create({userName: userName, password: password, firstName: firstName, lastName: lastName, telNo: telNo, remark: remark}, (err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', userName: userName, password: password, firstName: firstName, lastName: lastName, telNo: telNo, remark: remark})
+    })
+});
+
 app.get('/get-lotto', (req,res) => {
     
     LottoModel.find((err, doc) => {
