@@ -105,6 +105,19 @@ app.post('/add-user', (req,res) => {
     })
 });
 
+app.post('/update-user', (req,res) => {
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var userName = req.body.userName;
+ 
+    UserModel.updateOne({userName: userName}, {firstName: firstName, lastName: lastName},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 app.post('/get-user', (req,res) => {
     UserModel.find({userName: req.body.userName, password: req.body.password},(err, doc) => {
         if (err){

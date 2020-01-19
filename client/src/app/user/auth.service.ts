@@ -35,6 +35,9 @@ export class AuthService {
     updateCurrentUser(firstName: string, lastName: string){
         this.currentUser.firstName = firstName;
         this.currentUser.lastName = lastName;
+        this.http.post<any>('http://localhost:3000/update-user', this.currentUser).subscribe(user => {
+            console.log('update user completed!');
+        });
     }
 
     isAuthenticated() {
