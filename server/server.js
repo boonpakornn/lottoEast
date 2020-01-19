@@ -33,6 +33,18 @@ app.post('/lotto', (req,res) => {
     })
 });
 
+app.post('/delete-lotto', (req,res) => {
+    var book = req.body.bookNumber;
+    var count = req.body.countNumber;
+    var group = req.body.groupNumber;
+    LottoModel.deleteOne({bookNumber: book, countNumber: count, groupNumber: group}, (err)=> {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success'})
+    })
+})
+
 app.post('/add-user', (req,res) => {
     var userName = req.body.userName;
     var password = req.body.password;

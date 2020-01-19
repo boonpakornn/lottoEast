@@ -57,6 +57,18 @@ export class ReportListComponent implements OnInit{
           });
     }
 
+    deleteLotto(data){
+        console.log('delete', data)
+        this.http.post<any>('http://localhost:3000/delete-lotto', data).subscribe(result => {
+            console.log('result',result);
+        })
+        setTimeout(() => 
+        {
+            this.loadLottoData();
+        },
+        500);
+    }
+
     loadLottoData(){
         this.http.post<any>('http://localhost:3000/get-lotto', this.currentUser).subscribe(result => {
             this.lottoData = result.data;
