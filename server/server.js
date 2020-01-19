@@ -51,6 +51,18 @@ app.get('/get-all-lotto', (req,res) => {
     })
 });
 
+
+app.post('/get-result-lotto', (req,res) => {
+    var currentUser = req.body.currentUser;
+    var status = req.body.status;
+    LottoModel.find({sender: currentUser, status: status} ,(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 app.post('/update-lotto', (req,res) => {
     var book = req.body.bookNumber;
     var count = req.body.countNumber;
@@ -63,7 +75,6 @@ app.post('/update-lotto', (req,res) => {
         res.json({result: 'success', data: doc})
     })
 });
-
 
 
 app.post('/delete-lotto', (req,res) => {
