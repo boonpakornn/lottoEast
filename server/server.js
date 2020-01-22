@@ -102,6 +102,16 @@ app.post('/delete-lotto', (req,res) => {
     })
 })
 
+
+app.post('/deleteall-lotto', (req,res) => {
+    LottoModel.deleteMany({}, (err)=> {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success'})
+    })
+})
+
 app.post('/add-user', (req,res) => {
     var userName = req.body.userName;
     var password = req.body.password;

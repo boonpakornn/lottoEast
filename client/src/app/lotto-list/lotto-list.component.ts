@@ -33,5 +33,16 @@ export class LottoListComponent implements OnInit{
         500);
     }
 
+    deleteAllLotto(){
+        this.http.post<any>('http://localhost:3000/deleteall-lotto', {}).subscribe(result => {
+            console.log('deleteall', result)
+        })
+        setTimeout(() => 
+        {
+            this.loadLottoListData();
+        },
+        500);
+    }
+
    
 }
