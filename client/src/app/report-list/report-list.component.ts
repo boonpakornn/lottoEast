@@ -2,6 +2,7 @@ import { Component, OnInit, Input} from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../user/auth.service';
+import { DialogService } from '../dialog/dialog.service';
 
 @Component({
     selector: 'report-list',
@@ -12,13 +13,16 @@ export class ReportListComponent implements OnInit{
     // lottoForm: FormGroup;
     @Input() lottoForm: FormGroup;
     private lottoNum: FormControl;
+
     constructor(private http: HttpClient,
-                private authService: AuthService){
+                private authService: AuthService,
+                private dialogService: DialogService){
     }
     public loggedinUser = this.authService.currentUser.userName;
     public lottoData:any[] = [];
     public isValid = true;
     public currentUser = { currentUser: this.loggedinUser};
+
     ngOnInit(){
         this.lottoNum = new FormControl('', Validators.required)
         this.lottoForm = new FormGroup({
@@ -57,7 +61,14 @@ export class ReportListComponent implements OnInit{
           });
     }
 
+    openConfirmationDialog(data) {
+        this.dialogService.confirm('ลบสลาก', 'ยืนยันเพื่อลบข้อมูลสลากชุดนี้จากระบบ')
+        .then((confirmed) => confirmed === true ? this.deleteLotto(data): {})
+        .catch(() => console.log('User dismissed the dialog'));
+    }
+
     deleteLotto(data){
+
         console.log('delete', data)
         this.http.post<any>('http://localhost:3000/delete-lotto', data).subscribe(result => {
             console.log('result',result);

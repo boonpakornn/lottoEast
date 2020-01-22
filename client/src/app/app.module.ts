@@ -17,6 +17,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './user/auth.service';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { LottoListComponent } from './lotto-list/lotto-list.component';
+import { DialogService } from './dialog/dialog.service';
+import { DialogComponent } from './dialog/dialog.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -25,8 +28,13 @@ import { LottoListComponent } from './lotto-list/lotto-list.component';
     ReportListComponent,
     NavBarComponent,
     ResultComponent,
-    LottoListComponent
+    LottoListComponent,
+    DialogComponent
 
+  ],
+  entryComponents: [ 
+    DialogComponent, 
+    ReportListComponent
   ],
   imports: [
     FormsModule,
@@ -36,9 +44,12 @@ import { LottoListComponent } from './lotto-list/lotto-list.component';
     BrowserAnimationsModule,
     MatTableModule,
     MatToolbarModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    NgbModalModule
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, 
+              AuthGuardService, 
+              DialogService],
   bootstrap: [ReportComponent]
 })
 export class AppModule { }
