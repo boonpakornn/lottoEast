@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { AuthService } from '../user/auth.service'
-import { Router } from '@angular/router'
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../user/auth.service';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   templateUrl: './add-user.component.html',
     styleUrls: ['./add-user.component.scss']
 })
-export class AddUserComponent{
+export class AddUserComponent implements OnInit {
   newUserForm: FormGroup;
   private userName: FormControl;
   private password: FormControl;
@@ -17,11 +17,11 @@ export class AddUserComponent{
   private telNo: FormControl;
   private remark: FormControl;
 
-  constructor(private http:HttpClient,
-              private router: Router){    
+  constructor(private http: HttpClient,
+              private router: Router) {
   }
 
-       ngOnInit(){
+       ngOnInit() {
          this.userName = new FormControl('', Validators.required);
          this.password = new FormControl('', Validators.required);
          this.firstName = new FormControl('', Validators.required);
@@ -35,39 +35,39 @@ export class AddUserComponent{
            lastName: this.lastName,
            telNo: this.telNo,
            remark: this.remark
-         })
+         });
        }
 
-       addProfile(formValues){
-         if(this.newUserForm.valid){
+       addProfile(formValues) {
+         if (this.newUserForm.valid) {
             this.http.post<any>('http://localhost:3000/add-user', formValues).subscribe(result => {
             console.log('result', result);
-        })
-          this.router.navigate(['report']);
+        });
+            this.router.navigate(['report']);
          }
        }
 
-        validateUserName(){
-            return this.userName.valid || this.userName.untouched 
+        validateUserName() {
+            return this.userName.valid || this.userName.untouched;
         }
 
-        validatePassword(){
-            return this.password.valid || this.password.untouched 
-        }
-    
-        validateFirstName(){
-            return this.firstName.valid || this.firstName.untouched 
+        validatePassword() {
+            return this.password.valid || this.password.untouched;
         }
 
-        validateLastName(){
-            return this.lastName.valid || this.lastName.untouched
+        validateFirstName() {
+            return this.firstName.valid || this.firstName.untouched;
         }
 
-        validateTelNo(){
-            return this.telNo.valid || this.telNo.untouched
+        validateLastName() {
+            return this.lastName.valid || this.lastName.untouched;
         }
-    
-       cancel() { 
+
+        validateTelNo() {
+            return this.telNo.valid || this.telNo.untouched;
+        }
+
+       cancel() {
          this.router.navigate(['report']);
        }
 }

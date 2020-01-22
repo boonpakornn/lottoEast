@@ -7,11 +7,11 @@ import { NavBarComponent } from './nav/navbar.component';
 import { ResultComponent } from './result/result.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { appRoutes } from './routes'
+import { appRoutes } from './routes';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './user/auth.service';
@@ -32,8 +32,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     DialogComponent
 
   ],
-  entryComponents: [ 
-    DialogComponent, 
+  entryComponents: [
+    DialogComponent,
     ReportListComponent
   ],
   imports: [
@@ -47,8 +47,8 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule.forRoot(appRoutes),
     NgbModalModule
   ],
-  providers: [AuthService, 
-              AuthGuardService, 
+  providers: [AuthService,
+              AuthGuardService,
               DialogService],
   bootstrap: [ReportComponent]
 })

@@ -1,11 +1,11 @@
 
 import { Injectable } from '@angular/core';
-import { IUser } from './user.model'
+import { IUser } from './user.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class AuthService {
-    constructor( private http:HttpClient){
+    constructor( private http: HttpClient) {
 
     }
     currentUser: IUser = {
@@ -15,24 +15,23 @@ export class AuthService {
         userName: ''
     };
     isLogin = false;
-    loginUser(userName: string, password: string){
+    loginUser(userName: string, password: string) {
         this.http.post<any>('http://localhost:3000/get-user', {userName, password}).subscribe(user => {
-        if(user.data.length == 0){
+        if (user.data.length === 0) {
             alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
-        }
-        else{
+        } else {
             this.isLogin = true;
             this.currentUser = {
-                id:1,
+                id: 1,
                 firstName: user.data[0].firstName,
                 lastName: user.data[0].lastName,
-                userName: userName
-                }    
+                userName
+                };
             }
-    })
+    });
     }
 
-    updateCurrentUser(firstName: string, lastName: string){
+    updateCurrentUser(firstName: string, lastName: string) {
         this.currentUser.firstName = firstName;
         this.currentUser.lastName = lastName;
         this.http.post<any>('http://localhost:3000/update-user', this.currentUser).subscribe(user => {
@@ -45,20 +44,19 @@ export class AuthService {
     }
 
     isAdmin() {
-        if(this.currentUser.userName === 'admin') {
+        if (this.currentUser.userName === 'admin') {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    logout(){
+    logout() {
         this.currentUser = {
             id: 0,
             firstName: '',
             lastName: '',
             userName: ''
-        }
+        };
     }
 }

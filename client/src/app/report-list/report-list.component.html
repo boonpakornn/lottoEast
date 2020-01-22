@@ -38,7 +38,7 @@
   <h3>เพิ่มข้อมูลใหม่</h3>
   <hr>
 
-  <form [formGroup]="lottoForm" (ngSubmit)="submitLottoData(lottoForm.value)" autocomplete="off" novalidate>
+  <form [formGroup]="lottoForm" (ngSubmit)="findDuplicatedLotto(lottoForm.value)" autocomplete="off" novalidate>
     <div class="form-group">
       <label for="lottoNum">หมายเลขสลาก</label>
       <small *ngIf="!isValid">กรุณากรอกข้อมูลด้วยตัวเลขจำนวน 8 หรือ 20 หลักเท่านั้น</small>

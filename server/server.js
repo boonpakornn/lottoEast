@@ -48,6 +48,27 @@ app.post('/get-lotto', (req,res) => {
     })
 });
 
+app.post('/find-duplicate-lotto', (req,res) => {
+    if(req.body.lottoNum.length === 8){
+        var book = req.body.lottoNum.substring(0,4);
+        var count = req.body.lottoNum.substring(4,6);
+        var group = req.body.lottoNum.substring(6,8);
+    }
+    
+    if(req.body.lottoNum.length === 20){
+        var book = req.body.lottoNum.substring(6,10);
+        var count = req.body.lottoNum.substring(2,4);
+        var group = req.body.lottoNum.substring(4,6);
+    }
+
+    LottoModel.find({bookNumber: book, countNumber: count, groupNumber: group},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 app.get('/get-all-lotto', (req,res) => {
     LottoModel.find((err, doc) => {
         if (err){
