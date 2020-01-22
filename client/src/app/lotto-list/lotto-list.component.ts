@@ -9,12 +9,18 @@ import { DialogService } from '../dialog/dialog.service';
 export class LottoListComponent implements OnInit {
 
     lottoListData: any;
+    timer: any;
     constructor(private http: HttpClient,
                 private dialogService: DialogService) {
     }
 
     ngOnInit() {
         this.loadLottoListData();
+        //this.checkInputTime();
+    }
+
+    checkInputTime() {
+        setInterval((d) => {console.log( new Date().getHours())} , 1000);
     }
 
     loadLottoListData() {

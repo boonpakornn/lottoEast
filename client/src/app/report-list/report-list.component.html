@@ -34,7 +34,11 @@
         </ul>
   </div>
 </div>
-<div class="container">
+<hr>
+<div class="container" *ngIf="!isAvailable">
+  <h4><span style="color:red">ขณะนี้อยู่นอกเวลาการเปิดรับข้อมูลสลาก</span></h4>
+</div>
+<div class="container" *ngIf="isAvailable">
   <h3>เพิ่มข้อมูลใหม่</h3>
   <hr>
 
@@ -48,6 +52,7 @@
     <button type="button" (click)="input.value=''" class="btn btn-default">ยกเลิก</button>
   </form>
 </div>
+<hr>
 
 <div class="container lotto-list">
   <h3>สลากของฉัน</h3>

@@ -12,7 +12,7 @@ export class ReportListComponent implements OnInit {
     // lottoForm: FormGroup;
     @Input() lottoForm: FormGroup;
     private lottoNum: FormControl;
-
+    
     constructor(private http: HttpClient,
                 private authService: AuthService,
                 private dialogService: DialogService) {
@@ -21,6 +21,7 @@ export class ReportListComponent implements OnInit {
     public lottoData: any[] = [];
     public isValid = true;
     public currentUser = { currentUser: this.loggedinUser};
+    public isAvailable = true;
 
     ngOnInit() {
         this.lottoNum = new FormControl('', Validators.required);
