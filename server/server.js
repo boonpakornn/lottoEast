@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const UserModel = require('./user_schema');
 const LottoModel = require('./lotto_schema');
+const TimeModel = require('./time_schema');
 
 require('./db');
 
@@ -17,7 +18,8 @@ app.use(function (req, res, next) {
     next();
 })
 
-app.post('/lotto', (req,res) => {
+// ==========  Lotto  ==========
+app.post('/add-lotto', (req,res) => {
     if(req.body.lottoNum.length === 8){
     var book = req.body.lottoNum.substring(0,4);
     var count = req.body.lottoNum.substring(4,6);
@@ -78,7 +80,6 @@ app.get('/get-all-lotto', (req,res) => {
     })
 });
 
-
 app.post('/get-result-lotto', (req,res) => {
     var currentUser = req.body.currentUser;
     var status = req.body.status;
@@ -110,7 +111,6 @@ app.post('/update-lotto', (req,res) => {
     })
 });
 
-
 app.post('/delete-lotto', (req,res) => {
     var book = req.body.bookNumber;
     var count = req.body.countNumber;
@@ -123,7 +123,6 @@ app.post('/delete-lotto', (req,res) => {
     })
 })
 
-
 app.post('/deleteall-lotto', (req,res) => {
     LottoModel.deleteMany({}, (err)=> {
         if (err){
@@ -132,6 +131,9 @@ app.post('/deleteall-lotto', (req,res) => {
         res.json({result: 'success'})
     })
 })
+
+
+// ==========  User  ==========
 
 app.post('/add-user', (req,res) => {
     var userName = req.body.userName;
@@ -171,6 +173,33 @@ app.post('/get-user', (req,res) => {
     })
 });
 
+// ==========  Time  ==========
 
+app.get('/init-time', (req,res) => {
+    TimeModel.create({startHour: 8, startMinute: 0, endHour: 18, endMinute: 0},(err) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success init time'})
+    })
+});
+
+app.get('/get-time', (req,res) => {
+    TimeModel.find((err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
+app.post('/update-time', (req,res) => {
+    TimeModel.updateMany(req.body, (err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+})
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

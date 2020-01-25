@@ -20,6 +20,7 @@ import { LottoListComponent } from './lotto-list/lotto-list.component';
 import { DialogService } from './dialog/dialog.service';
 import { DialogComponent } from './dialog/dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { TimeService } from './report-list/time-service';
 
 
 @NgModule({
@@ -47,9 +48,12 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule.forRoot(appRoutes),
     NgbModalModule
   ],
-  providers: [AuthService,
-              AuthGuardService,
-              DialogService],
+  providers: [
+    AuthService,
+    AuthGuardService,
+    DialogService,
+    TimeService
+  ],
   bootstrap: [ReportComponent]
 })
 export class AppModule { }

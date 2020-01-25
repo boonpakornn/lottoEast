@@ -1,12 +1,31 @@
 <div class="container timer">
   <h1>ตั้งเวลาเปิดรับสลาก</h1>
-  <div class="row padding">
-    <div class="col-sm-1">ตั้งแต่</div>
-    <div class="col-sm-2"><input class="input"> : <input class="input"> น.</div>
-    <div class="col-sm-1">จนถึง</div>
-    <div class="col-sm-2"><input class="input"> : <input class="input"> น.</div>
-    <div class="col-sm-6"><button class="btn-primary save-button">บันทึกเวลา</button></div>
-  </div>
+    
+    <form class="form-inline" [formGroup]="timeForm" (ngSubmit)="saveTime(timeForm.value)" autocomplete="off" novalidate>
+      <div>ตั้งแต่</div>
+      <div class="col-sm-1 form-group" [ngClass] = "{'error': !validateStartHour()}">
+        <small *ngIf="!validateStartHour()"> จำเป็น</small>
+        <input formControlName="startHour" id="startHour" type="tel" class="form-control" maxlength="2" size="2"/>
+      </div>
+      <div class="colon">:</div>
+      <div class="col-sm-1 form-group" [ngClass] = "{'error': !validateStartMinute()}">
+        <small *ngIf="!validateStartMinute()"> จำเป็น</small>
+        <input formControlName="startMinute" id="startMinute" type="tel" class="form-control" maxlength="2" size="2"/>
+      </div>
+      <div class="col-sm-1">จนถึง</div>
+      <div class="col-sm-1 form-group " [ngClass] = "{'error': !validateEndHour()}">
+        <small *ngIf="!validateEndHour()"> จำเป็น</small>
+        <input formControlName="endHour" id="endHour" type="tel" class="form-control" maxlength="2" size="2"/>
+      </div>
+      <div class="colon">:</div>
+      <div class="col-sm-1 form-group" [ngClass] = "{'error': !validateEndMinute()}">
+        <small *ngIf="!validateEndMinute()"> จำเป็น</small>
+        <input formControlName="endMinute" id="endMinute" type="tel" class="form-control" maxlength="2" size="2"/>
+      </div>
+      <div class="col-sm-4">
+        <button type="submit" class="btn btn-primary">บันทึก</button>
+      </div>
+    </form>
 </div>
 <hr>
 <div class="container lotto-list">
