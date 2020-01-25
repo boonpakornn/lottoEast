@@ -1,7 +1,10 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
 @Injectable()
-export class TimeService{
+export class TimeService {
+    private serverUrl = environment.serverUrl;
     public isAvailable;
     public startHour;
     public startMinute;
@@ -12,7 +15,7 @@ export class TimeService{
 
 
     initTime() {
-        this.http.get<any>('http://localhost:3000/init-time').subscribe(result => {
+        this.http.get<any>(this.serverUrl + '/init-time').subscribe(result => {
             console.log('init time', result);
         });
         setTimeout(() => {
@@ -22,7 +25,7 @@ export class TimeService{
     }
 
     getTime() {
-        this.http.get<any>('http://localhost:3000/get-time').subscribe(result => {
+        this.http.get<any>(this.serverUrl + '/get-time').subscribe(result => {
             if (result.data.length > 0) {
                 this.startHour = result.data[0].startHour;
                 this.startMinute = result.data[0].startMinute;
@@ -43,11 +46,16 @@ export class TimeService{
         const currentHour = new Date().getHours();
         const currentMinute = new Date().getMinutes();
         const currentTime = currentHour + ':' + currentMinute + ':00';
-        if (startTime > currentTime && currentTime < endTime) {
+        console.log('start', startTime);
+        console.log('end', endTime);
+        console.log('current', currentTime);
+        if (startTime < currentTime && currentTime < endTime) {
         this.isAvailable = true;
+        console.log('open');
         }
         else {
         this.isAvailable = false;
+        console.log('close');
         }
     }
 

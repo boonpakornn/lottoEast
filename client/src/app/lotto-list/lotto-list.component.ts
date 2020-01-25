@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { DialogService } from '../dialog/dialog.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TimeService } from '../report-list/time-service';
+import { environment } from '../../environments/environment';
 
 @Component({
     templateUrl: './lotto-list.component.html',
     styleUrls: ['./lotto-list.component.scss']
 })
 export class LottoListComponent implements OnInit {
+    private serverUrl = environment.serverUrl;
     timeForm: FormGroup;
     private startHour: FormControl;
     private startMinute: FormControl;
@@ -44,13 +46,13 @@ export class LottoListComponent implements OnInit {
     }
 
     loadLottoListData() {
-        this.http.get<any>('http://localhost:3000/get-all-lotto').subscribe(result => {
+        this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
             this.lottoListData = result.data;
         });
     }
 
     updateLotto(data) {
-        this.http.post<any>('http://localhost:3000/update-lotto', data).subscribe(result => {
+        this.http.post<any>(this.serverUrl + '/update-lotto', data).subscribe(result => {
             console.log('update', result);
         });
         setTimeout(() => {
@@ -66,7 +68,7 @@ export class LottoListComponent implements OnInit {
     }
 
     deleteAllLotto() {
-        this.http.post<any>('http://localhost:3000/deleteall-lotto', {}).subscribe(result => {
+        this.http.post<any>(this.serverUrl + '/deleteall-lotto', {}).subscribe(result => {
             console.log('deleteall', result);
         });
         setTimeout(() => {
@@ -100,7 +102,7 @@ export class LottoListComponent implements OnInit {
             this.isNumeric(values.startMinute) &&
             this.isNumeric(values.endHour) &&
             this.isNumeric(values.endMinute)) {
-            this.http.post<any>('http://localhost:3000/update-time', values).subscribe(result => {
+            this.http.post<any>(this.serverUrl + '/update-time', values).subscribe(result => {
                 console.log('result', result);
                 this.timeService.getTime();
             });

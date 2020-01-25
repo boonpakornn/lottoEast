@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../user/auth.service';
 import { DialogService } from '../dialog/dialog.service';
 import { TimeService } from './time-service';
+import { environment } from '../../environments/environment';
 
 @Component({
     templateUrl: './report-list.component.html',
@@ -13,7 +14,7 @@ export class ReportListComponent implements OnInit {
     // lottoForm: FormGroup;
     @Input() lottoForm: FormGroup;
     private lottoNum: FormControl;
-    
+    private serverUrl = environment.serverUrl;
     constructor(private http: HttpClient,
                 private authService: AuthService,
                 private dialogService: DialogService,
@@ -62,7 +63,7 @@ export class ReportListComponent implements OnInit {
         if (this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 20)) {
             if (this.timeService.isAvailable) {
             this.isValid = true;
-            this.http.post<any>('http://localhost:3000/find-duplicate-lotto', data).subscribe(result => {
+            this.http.post<any>(this.serverUrl + '/find-duplicate-lotto', data).subscribe(result => {
                 if (result.data.length > 0) {
                     alert('มีข้อมูลสลากหมายเลขนี้อยู่ในระบบแล้ว กรุณาเพิ่มสลากหมายเลขอื่น');
                 } else {
@@ -87,7 +88,7 @@ export class ReportListComponent implements OnInit {
         // console.log('data',data)
         // if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 20)){
         //     this.isValid = true;
-            this.http.post<any>('http://localhost:3000/add-lotto', data).subscribe(result => {
+            this.http.post<any>(this.serverUrl + '/add-lotto', data).subscribe(result => {
                 this.loadLottoData();
             });
         // }
@@ -108,7 +109,7 @@ export class ReportListComponent implements OnInit {
     deleteLotto(data) {
 
         console.log('delete', data);
-        this.http.post<any>('http://localhost:3000/delete-lotto', data).subscribe(result => {
+        this.http.post<any>(this.serverUrl + '/delete-lotto', data).subscribe(result => {
             console.log('result', result);
         });
         setTimeout(() => {
@@ -118,7 +119,7 @@ export class ReportListComponent implements OnInit {
     }
 
     loadLottoData() {
-        this.http.post<any>('http://localhost:3000/get-lotto', this.currentUser).subscribe(result => {
+        this.http.post<any>(this.serverUrl + '/get-lotto', this.currentUser).subscribe(result => {
             this.lottoData = result.data;
             console.log('lottoData', this.lottoData);
     });

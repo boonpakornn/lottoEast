@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../user/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   templateUrl: './add-user.component.html',
@@ -10,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AddUserComponent implements OnInit {
   newUserForm: FormGroup;
+  private serverUrl = environment.serverUrl;
   private userName: FormControl;
   private password: FormControl;
   private firstName: FormControl;
@@ -40,7 +42,7 @@ export class AddUserComponent implements OnInit {
 
        addProfile(formValues) {
          if (this.newUserForm.valid) {
-            this.http.post<any>('http://localhost:3000/add-user', formValues).subscribe(result => {
+            this.http.post<any>(this.serverUrl + '/add-user', formValues).subscribe(result => {
             console.log('result', result);
         });
             this.router.navigate(['report']);

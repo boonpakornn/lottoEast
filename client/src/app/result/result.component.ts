@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { AuthService } from '../user/auth.service';
+import { environment } from '../../environments/environment';
 
 @Component({
     templateUrl: './result.component.html',
     styleUrls: ['./result.component.scss']
 })
 export class ResultComponent implements OnInit {
+    private serverUrl = environment.serverUrl;
 
     constructor(private http: HttpClient,
                 private authService: AuthService) {
@@ -21,7 +22,7 @@ export class ResultComponent implements OnInit {
     }
 
     loadResultList() {
-        this.http.post<any>('http://localhost:3000/get-result-lotto', this.currentUser).subscribe(result => {
+        this.http.post<any>(this.serverUrl + '/get-result-lotto', this.currentUser).subscribe(result => {
             this.resultList = result.data;
         });
     }
