@@ -8,7 +8,7 @@ import { TestBed } from '@angular/core/testing';
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-    username;
+    userName;
     password;
     mouseoverLogin;
     constructor(private authService: AuthService,
