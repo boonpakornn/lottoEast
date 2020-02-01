@@ -45,7 +45,7 @@ import { TimeService } from './report-list/time-service';
     BrowserAnimationsModule,
     MatTableModule,
     MatToolbarModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {useHash: true}),
     NgbModalModule
   ],
   providers: [
