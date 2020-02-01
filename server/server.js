@@ -11,7 +11,6 @@ const TimeModel = require('./time_schema');
 
 require('./db');
 
-
 app.use(bodyParser.json());
 
 app.use(express.static('./dist/lottoEast'));
