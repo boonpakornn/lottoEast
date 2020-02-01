@@ -14,12 +14,12 @@ require('./db');
 
 app.use(bodyParser.json());
 
-app.use(express.static(path.join('./client/dist/lottoEast')));
+app.use(express.static('./dist/lottoEast'));
 
-app.get('*', (req,res) => res.sendFile(path.join(__dirname, '../client/dist/lottoEast')));
-// app.get('/*', (req, res) => {  
-//     res.sendFile(path.join(__dirname, 'dist/lottoEast/index.html'));
-//   });
+// app.get('*', (req,res) => res.sendFile(path.join(__dirname, '../client/dist/lottoEast')));
+app.get('/*', (req, res) => {  
+    res.sendFile(path.join(__dirname, './dist/lottoEast'));
+  });
 
 //Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
