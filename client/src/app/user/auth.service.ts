@@ -19,6 +19,7 @@ export class AuthService {
     };
     isLogin = false;
     loginUser(userName: string, password: string) {
+        console.log('serverURL', this.serverUrl);
         this.http.post<any>(this.serverUrl + '/get-user', {userName, password}).subscribe(user => {
         if (user.data.length === 0) {
             alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
