@@ -32,18 +32,16 @@ app.use(function (req, res, next) {
 
 // ==========  Lotto  ==========
 app.post('/add-lotto', (req,res) => {
+    var sender = req.body.currentUser
     if(req.body.lottoNum.length === 8){
     var book = req.body.lottoNum.substring(0,4);
     var count = req.body.lottoNum.substring(4,6);
     var group = req.body.lottoNum.substring(6,8);
-    var sender = req.body.currentUser
     }
-
     if(req.body.lottoNum.length === 20){
         var book = req.body.lottoNum.substring(6,10);
         var count = req.body.lottoNum.substring(2,4);
         var group = req.body.lottoNum.substring(4,6);
-        var sender = req.body.currentUser
     }
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, (err, doc) => {
         if (err){

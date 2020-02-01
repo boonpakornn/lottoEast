@@ -44,7 +44,7 @@ export class ReportListComponent implements OnInit {
     onValueChanges(): void {
         this.lottoForm.valueChanges.subscribe(data => {
           if (data.lottoNum.length === 20) {
-            this.submitLottoData(data);
+            this.findDuplicatedLotto(data);
           }
         });
       }
