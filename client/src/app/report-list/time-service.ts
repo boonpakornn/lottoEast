@@ -41,11 +41,15 @@ export class TimeService {
     }
 
     compareTime() {
-        const startTime = this.startHour + ':' + this.startMinute + ':00';
-        const endTime =  this.endHour + ':' + this.endMinute + ':00';
+        const startTime = new Date();
+        startTime.setHours(this.startHour, this.startMinute, 0);
+        const endTime = new Date();
+        endTime.setHours(this.endHour, this.endMinute, 0);
         const currentHour = new Date().getHours();
         const currentMinute = new Date().getMinutes();
-        const currentTime = currentHour + ':' + currentMinute + ':00';
+        const currentTime = new Date();
+        currentTime.setHours(currentHour, currentMinute, 0);
+
         console.log('start', startTime);
         console.log('end', endTime);
         console.log('current', currentTime);
