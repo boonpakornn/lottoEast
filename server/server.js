@@ -164,6 +164,22 @@ app.post('/add-user', (req,res) => {
     })
 });
 
+app.get('/add-admin', (req,res) => {
+    var userName = 'admin';
+    var password = 'lottoeast';
+    var firstName = 'Administrator';
+    var lastName = 'lottoEast';
+    var telNo = '';
+    var remark = '';
+    
+    UserModel.create({userName: userName, password: password, firstName: firstName, lastName: lastName, telNo: telNo, remark: remark}, (err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', userName: userName, password: password, firstName: firstName, lastName: lastName, telNo: telNo, remark: remark})
+    })
+});
+
 app.post('/update-user', (req,res) => {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
