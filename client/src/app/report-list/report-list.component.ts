@@ -6,6 +6,8 @@ import { DialogService } from '../dialog/dialog.service';
 import { TimeService } from './time-service';
 import { environment } from '../../environments/environment';
 
+import _ from 'lodash';
+
 @Component({
     templateUrl: './report-list.component.html',
     styleUrls: ['./report-list.component.scss']
@@ -120,7 +122,7 @@ export class ReportListComponent implements OnInit {
 
     loadLottoData() {
         this.http.post<any>(this.serverUrl + '/get-lotto', this.currentUser).subscribe(result => {
-            this.lottoData = result.data;
+            this.lottoData  = _.orderBy(result.data, ['bookNumber', 'groupNumber'], ['asc', 'asc']);
             console.log('lottoData', this.lottoData);
     });
     }

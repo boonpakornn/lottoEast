@@ -7,6 +7,7 @@ const http = require('http')
 const UserModel = require('./user_schema');
 const LottoModel = require('./lotto_schema');
 const TimeModel = require('./time_schema');
+const _ = require('lodash');
 
 
 require('./db');
@@ -15,7 +16,6 @@ app.use(bodyParser.json());
 
 app.use(express.static('./dist/lottoEast'));
 
-// app.get('*', (req,res) => res.sendFile(path.join(__dirname, '../client/dist/lottoEast')));
 app.get('/*', (req, res) => {  
     res.sendFile(path.join(__dirname, './dist/lottoEast'));
   });
@@ -227,5 +227,6 @@ app.post('/update-time', (req,res) => {
         res.json({result: 'success', data: doc})
     })
 })
+
 const server = http.createServer(app);
 server.listen(port, () => console.log('app listening on port', port))

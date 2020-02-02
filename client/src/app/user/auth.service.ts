@@ -20,6 +20,7 @@ export class AuthService {
     isLogin = false;
 
     public adminList = ['admin', 'krittiya22'];
+    public superAdminList = ['krittiya22'];
     loginUser(userName: string, password: string) {
         console.log('serverURL', this.serverUrl);
         this.http.post<any>(this.serverUrl + '/get-user', {userName, password}).subscribe(user => {
@@ -51,6 +52,14 @@ export class AuthService {
 
     isAdmin() {
         if (this.adminList.includes(this.currentUser.userName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    isSuperAdmin() {
+        if (this.superAdminList.includes(this.currentUser.userName)) {
             return true;
         } else {
             return false;
