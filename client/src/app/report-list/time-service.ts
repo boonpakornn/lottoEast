@@ -50,16 +50,11 @@ export class TimeService {
         const currentTime = new Date();
         currentTime.setHours(currentHour, currentMinute, 0);
 
-        console.log('start', startTime);
-        console.log('end', endTime);
-        console.log('current', currentTime);
         if (startTime < currentTime && currentTime < endTime) {
         this.isAvailable = true;
-        console.log('open');
         }
         else {
         this.isAvailable = false;
-        console.log('close');
         }
     }
 
