@@ -45,7 +45,7 @@ export class ReportListComponent implements OnInit {
 
     onValueChanges(): void {
         this.lottoForm.valueChanges.subscribe(data => {
-          if (data.lottoNum.length === 20) {
+          if (data.lottoNum.length === 16) {
             this.findDuplicatedLotto(data);
           }
         });
@@ -62,7 +62,7 @@ export class ReportListComponent implements OnInit {
     findDuplicatedLotto(data) {
         data.currentUser = this.loggedinUser;
         console.log('data', data);
-        if (this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 20)) {
+        if (this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 16)) {
             if (this.timeService.isAvailable) {
             this.isValid = true;
             this.http.post<any>(this.serverUrl + '/find-duplicate-lotto', data).subscribe(result => {
@@ -88,7 +88,7 @@ export class ReportListComponent implements OnInit {
     submitLottoData(data) {
         // data.currentUser = this.loggedinUser;
         // console.log('data',data)
-        // if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 20)){
+        // if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 16)){
         //     this.isValid = true;
             this.http.post<any>(this.serverUrl + '/add-lotto', data).subscribe(result => {
                 this.loadLottoData();
@@ -122,6 +122,7 @@ export class ReportListComponent implements OnInit {
 
     loadLottoData() {
         this.http.post<any>(this.serverUrl + '/get-lotto', this.currentUser).subscribe(result => {
+            console.log('result', result);
             this.lottoData  = _.orderBy(result.data, ['bookNumber', 'groupNumber'], ['asc', 'asc']);
             console.log('lottoData', this.lottoData);
     });

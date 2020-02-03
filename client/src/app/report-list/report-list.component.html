@@ -46,7 +46,7 @@
   <form [formGroup]="lottoForm" (ngSubmit)="findDuplicatedLotto(lottoForm.value)" autocomplete="off" novalidate>
     <div class="form-group">
       <label for="lottoNum">หมายเลขสลาก</label>
-      <small *ngIf="!isValid">กรุณากรอกข้อมูลด้วยตัวเลขจำนวน 8 หรือ 20 หลักเท่านั้น</small>
+      <small *ngIf="!isValid">กรุณากรอกข้อมูลด้วยตัวเลขจำนวน 8 หรือ 16 หลักเท่านั้น</small>
       <input formControlName="lottoNum" id="lottoNum" type="text" class="form-control" #input/>
     </div>
     <button type="submit" class="btn btn-primary">บันทึก</button>

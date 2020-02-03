@@ -33,21 +33,24 @@ app.use(function (req, res, next) {
 // ==========  Lotto  ==========
 app.post('/add-lotto', (req,res) => {
     var sender = req.body.currentUser
+    var book = ''
+    var count = ''
+    var group = ''
     if(req.body.lottoNum.length === 8){
-    var book = req.body.lottoNum.substring(0,4);
-    var count = req.body.lottoNum.substring(4,6);
-    var group = req.body.lottoNum.substring(6,8);
+    book = req.body.lottoNum.substring(0,4);
+    count = req.body.lottoNum.substring(4,6);
+    group = req.body.lottoNum.substring(6,8);
     }
-    if(req.body.lottoNum.length === 20){
-        var book = req.body.lottoNum.substring(6,10);
-        var count = req.body.lottoNum.substring(2,4);
-        var group = req.body.lottoNum.substring(4,6);
+    else if(req.body.lottoNum.length === 16){
+    book = req.body.lottoNum.substring(6,10);
+    count = req.body.lottoNum.substring(2,4);
+    group = req.body.lottoNum.substring(4,6);
     }
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', number : book, count: count, group: group, sender: sender})
+        res.json({result: 'success', bookNumber : book, countNumber: count, groupNumber: group, sender: sender})
     })
 });
 
@@ -61,16 +64,18 @@ app.post('/get-lotto', (req,res) => {
 });
 
 app.post('/find-duplicate-lotto', (req,res) => {
+    var book = ''
+    var count = ''
+    var group = ''
     if(req.body.lottoNum.length === 8){
-        var book = req.body.lottoNum.substring(0,4);
-        var count = req.body.lottoNum.substring(4,6);
-        var group = req.body.lottoNum.substring(6,8);
+        book = req.body.lottoNum.substring(0,4);
+        count = req.body.lottoNum.substring(4,6);
+        group = req.body.lottoNum.substring(6,8);
     }
-    
-    if(req.body.lottoNum.length === 20){
-        var book = req.body.lottoNum.substring(6,10);
-        var count = req.body.lottoNum.substring(2,4);
-        var group = req.body.lottoNum.substring(4,6);
+    else if(req.body.lottoNum.length === 16){
+        book = req.body.lottoNum.substring(6,10);
+        count = req.body.lottoNum.substring(2,4);
+        group = req.body.lottoNum.substring(4,6);
     }
 
     LottoModel.find({bookNumber: book, countNumber: count, groupNumber: group},(err, doc) => {
