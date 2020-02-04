@@ -1,6 +1,6 @@
-<div class="header">
+<div class="header container">
 
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
         <div class="col-sm-6">
         <h2>ขั้นตอนการส่งสลาก</h2>
@@ -27,21 +27,22 @@
         <li>บันทึก "เลขสลาก" "งวดที่" และ "ชุดที่" ตามปกสลาก </li>
         (ใส่ "งวดที่" ด้วย เพื่อป้องกันไม่ให้สลากระบบโควต้าพิมพ์เข้ามาในระบบ)
         <li>เลขสลากชุด 2 ใบที่จะส่งเข้าระบบ ต้องพิมพ์เลขสลากทั้ง 2 เล่ม </li>
-        <!-- <li>ระบบจะเปิดให้ใส่ข้อมูลในเวลา<span class="span-message"> 8.00 น.</span> และ จะปิดรับในเวลา <span class="span-message"> 17.00 น.</span>  ของวันนั้น  กรุณานำสลากที่ชนชุดได้มาส่งที่ร้านไม่เกินเวลา 20.00 น.</li> -->
+        <li>ระบบจะเปิดให้ใส่ข้อมูลในเวลา<span class="span-message"> 8.00 น.</span> และ จะปิดรับในเวลา <span class="span-message"> 17.00 น.</span>  ของวันนั้น  กรุณานำสลากที่ชนชุดได้มาส่งที่ร้านไม่เกินเวลา 20.00 น.</li>
         <li>กรุณานำสลากที่ชนชุดได้มาส่งที่ร้านไม่เกินเวลา 20.00 น.</li>
         <li><p>ขอความกรุณาตรวจเช็คเลขสลากที่นำมาชนชุดให้ถูกต้องกับข้อมูลที่ส่งเข้ามา</p></li>
         <li>ประมวลผลการชน ประมาณ​ 15-30 นาที หลังจากปิดรับเข้าระบบ</li>
         <li>พบปัญหาการใช้งาน ติดต่อ 089-9444203</li>
         </ul>
   </div>
-</div>
+</div> -->
+<!-- <hr> -->
+<h3>เพิ่มข้อมูลใหม่</h3>
 <hr>
+
 <div class="container" *ngIf="!isAvailable">
   <h4><span class="span-message">ขณะนี้อยู่นอกเวลาการเปิดรับข้อมูลสลาก</span></h4>
 </div>
 <div class="container" *ngIf="isAvailable">
-  <h3>เพิ่มข้อมูลใหม่</h3>
-  <hr>
 
   <form [formGroup]="lottoForm" (ngSubmit)="findDuplicatedLotto(lottoForm.value)" autocomplete="off" novalidate>
     <div class="form-group">

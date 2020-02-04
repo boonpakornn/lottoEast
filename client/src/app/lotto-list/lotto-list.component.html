@@ -1,5 +1,5 @@
 <div class="container timer">
-  <h1>ตั้งเวลาเปิดรับสลาก</h1>
+  <h3>ตั้งเวลาเปิดรับสลาก</h3>
     
     <form class="form-inline" [formGroup]="timeForm" (ngSubmit)="saveTime(timeForm.value)" autocomplete="off" novalidate>
       <div>ตั้งแต่</div>
@@ -30,7 +30,7 @@
 <hr>
 <div class="container lotto-list">
   <div class="row">
-    <div class="col-sm-6"><h1>สลากทั้งหมด</h1></div>
+    <div class="col-sm-6"><h3>สลากทั้งหมด</h3></div>
     <div class="col-sm-6"><button class="btn-primary btn-deleteall" (click)="openConfirmationDialog()"><h6>ลบสลากทั้งหมด</h6></button></div>
   </div>
     <br>
