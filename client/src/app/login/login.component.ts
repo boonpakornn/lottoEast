@@ -27,6 +27,15 @@ export class LoginComponent {
         700);
     }
 
+    showPassword() {
+        const passwordField = document.getElementById('password');
+        if (passwordField[0].tagName === "password") {
+            passwordField[0].tagName = "text";
+        } else {
+            passwordField[0].tagName = "password";
+        }
+      }
+    
     cancel() {
         this.router.navigate(['report']);
     }

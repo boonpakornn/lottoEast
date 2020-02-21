@@ -15,7 +15,9 @@ export class AuthService {
         id: 0,
         firstName: '',
         lastName: '',
-        userName: ''
+        userName: '',
+        password: '',
+        telNo: ''
     };
     isLogin = false;
 
@@ -32,7 +34,9 @@ export class AuthService {
                 id: 1,
                 firstName: user.data[0].firstName,
                 lastName: user.data[0].lastName,
-                userName
+                userName,
+                password,
+                telNo: user.data[0].telNo
                 };
             }
     });
@@ -71,7 +75,9 @@ export class AuthService {
             id: 0,
             firstName: '',
             lastName: '',
-            userName: ''
+            userName: '',
+            password: '',
+            telNo: ''
         };
     }
 }

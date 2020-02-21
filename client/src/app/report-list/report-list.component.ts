@@ -52,7 +52,7 @@ export class ReportListComponent implements OnInit {
       }
 
     checkTime() {
-        setInterval((d) => {this.timeService.compareTime(); } , 10000);
+        setInterval((d) => {this.timeService.compareTime(); } , 60000);
     }
 
     isNumeric(value) {

@@ -9,19 +9,28 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
+  private userName: FormControl;
   private firstName: FormControl;
   private lastName: FormControl;
+  private password: FormControl;
+  private telNo: FormControl;
 
   constructor(private authService: AuthService,
               private router: Router) {
   }
 
        ngOnInit() {
+         this.userName = new FormControl({value: this.authService.currentUser.userName, disabled: true}, Validators.required);
          this.firstName = new FormControl(this.authService.currentUser.firstName, Validators.required);
          this.lastName = new FormControl(this.authService.currentUser.lastName, Validators.required);
+         this.password = new FormControl(this.authService.currentUser.password, Validators.required);
+         this.telNo = new FormControl(this.authService.currentUser.telNo, Validators.required);
          this.profileForm = new FormGroup({
+           userName: this.userName,
            firstName: this.firstName,
-           lastName: this.lastName
+           lastName: this.lastName,
+           password: this.password,
+           telNo: this.telNo
          });
        }
 
@@ -39,6 +48,13 @@ export class ProfileComponent implements OnInit {
        validateLastName() {
        return this.lastName.valid || this.lastName.untouched;
        }
+
+       validatePassword() {
+        return this.password.valid || this.password.untouched;
+      }
+       validateTelNo() {
+        return this.telNo.valid || this.telNo.untouched;
+      }
 
        cancel() {
          this.router.navigate(['report']);
