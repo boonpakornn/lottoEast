@@ -17,13 +17,6 @@
           <small *ngIf="!validateLastName()"> กรุณาใส่นามสกุล</small>
           <input formControlName="lastName" id="lastName" type="text" class="form-control" />
         </div>
-
-        <div class="form-group" [ngClass] = "{'error': !validatePassword()}">
-          <label for="password">รหัสผ่าน:</label>
-          <small *ngIf="!validatePassword()"> กรุณาใส่รหัสผ่าน</small>
-          <input formControlName="password" id="password" type="password" class="form-control" />
-        </div>
-
         <div class="form-group" [ngClass] = "{'error': !validateTelNo()}">
           <label for="telNo">โทรศัพท์:</label>
           <small *ngIf="!validateTelNo()"> กรุณาใส่เบอร์โทรศัพท์</small>
