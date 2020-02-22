@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit {
 
        saveProfile(formValues) {
          if (this.profileForm.valid) {
-          this.authService.updateCurrentUser(formValues.firstName, formValues.lastName);
+          this.authService.updateCurrentUser(formValues.firstName, formValues.lastName, formValues.telNo);
           this.router.navigate(['report']);
          }
        }

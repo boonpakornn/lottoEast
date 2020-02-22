@@ -12,11 +12,9 @@ export class AuthService {
 
     }
     currentUser: IUser = {
-        id: 0,
         firstName: '',
         lastName: '',
         userName: '',
-        password: '',
         telNo: ''
     };
     isLogin = false;
@@ -31,20 +29,19 @@ export class AuthService {
         } else {
             this.isLogin = true;
             this.currentUser = {
-                id: 1,
                 firstName: user.data[0].firstName,
                 lastName: user.data[0].lastName,
                 userName,
-                password,
                 telNo: user.data[0].telNo
                 };
             }
     });
     }
 
-    updateCurrentUser(firstName: string, lastName: string) {
+    updateCurrentUser(firstName: string, lastName: string, telNo: string) {
         this.currentUser.firstName = firstName;
         this.currentUser.lastName = lastName;
+        this.currentUser.telNo = telNo;
         this.http.post<any>(this.serverUrl + '/update-user', this.currentUser).subscribe(user => {
             console.log('update user completed!');
         });
@@ -72,11 +69,9 @@ export class AuthService {
 
     logout() {
         this.currentUser = {
-            id: 0,
             firstName: '',
             lastName: '',
             userName: '',
-            password: '',
             telNo: ''
         };
     }
