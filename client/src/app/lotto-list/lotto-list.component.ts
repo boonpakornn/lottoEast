@@ -18,6 +18,7 @@ export class LottoListComponent implements OnInit {
     private endMinute: FormControl;
 
     lottoListData: any;
+    numberOfLotto: number;
     timer: any;
     constructor(private http: HttpClient,
                 private dialogService: DialogService,
@@ -48,6 +49,7 @@ export class LottoListComponent implements OnInit {
     loadLottoListData() {
         this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
             this.lottoListData = result.data;
+            this.numberOfLotto = this.lottoListData.length;
         });
     }
 

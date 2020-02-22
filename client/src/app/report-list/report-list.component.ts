@@ -25,6 +25,7 @@ export class ReportListComponent implements OnInit {
     public loggedinUser = this.authService.currentUser.userName;
     public lottoData: any[] = [];
     public isValid = true;
+    public numberOfLotto = 0;
     public currentUser = { currentUser: this.loggedinUser};
     public isAvailable;
 
@@ -125,6 +126,7 @@ export class ReportListComponent implements OnInit {
             console.log('result', result);
             this.lottoData  = _.orderBy(result.data, ['bookNumber', 'groupNumber'], ['asc', 'asc']);
             console.log('lottoData', this.lottoData);
+            this.numberOfLotto = this.lottoData.length;
     });
     }
 }
