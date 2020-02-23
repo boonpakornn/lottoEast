@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ProfileComponent } from '../profile/profile.component';
 import { LoginComponent } from '../login/login.component';
 import { AddUserComponent } from '../add-user/add-user.component';
+import { ChangePasswordComponent } from '../change-password/change-password.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { AddUserComponent } from '../add-user/add-user.component';
     declarations: [
         ProfileComponent,
         LoginComponent,
-        AddUserComponent
+        AddUserComponent,
+        ChangePasswordComponent
     ],
     providers: [
 

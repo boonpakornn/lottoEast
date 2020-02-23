@@ -1,5 +1,8 @@
 <div class="container profile-list">
-    <h3>แก้ไขข้อมูลส่วนตัว </h3>
+    <div class="row">
+      <div class="col-sm-6"><h3>แก้ไขข้อมูลส่วนตัว</h3></div>
+      <div class="col-sm-6"><button type="submit" class="btn btn-primary btn-cpw" (click)="changePassword()">เปลี่ยนรหัสผ่าน</button></div>
+    </div>
     <hr>
     <div class="col-md-4">
       <form [formGroup]="profileForm" (ngSubmit)="saveProfile(profileForm.value)" autocomplete="off" novalidate>
@@ -22,6 +25,7 @@
           <small *ngIf="!validateTelNo()"> กรุณาใส่เบอร์โทรศัพท์</small>
           <input formControlName="telNo" id="telNo" type="text" class="form-control" />
         </div>
+        <br>
   
         <button type="submit" class="btn btn-primary">บันทึก</button>
         <button type="button" (click)="cancel()" class="btn btn-default">ยกเลิก</button>

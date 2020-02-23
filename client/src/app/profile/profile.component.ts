@@ -53,4 +53,8 @@ export class ProfileComponent implements OnInit {
        cancel() {
          this.router.navigate(['report']);
        }
+
+       changePassword() {
+        this.router.navigate(['user/changepassword']);
+      }
 }
