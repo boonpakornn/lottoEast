@@ -14,11 +14,11 @@ require('./db');
 
 app.use(bodyParser.json());
 
-app.use(express.static('./dist/lottoEast'));
+// app.use(express.static('./dist/lottoEast'));
 
-app.get('/*', (req, res) => {  
-    res.sendFile(path.join(__dirname, './dist/lottoEast'));
-  });
+// app.get('/*', (req, res) => {  
+//     res.sendFile(path.join(__dirname, './dist/lottoEast'));
+//   });
 
 //Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
@@ -185,13 +185,36 @@ app.get('/add-admin', (req,res) => {
 app.post('/update-user', (req,res) => {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
+    var telNo = req.body.telNo;
     var userName = req.body.userName;
  
-    UserModel.updateOne({userName: userName}, {firstName: firstName, lastName: lastName},(err, doc) => {
+    UserModel.updateOne({userName: userName}, {firstName: firstName, lastName: lastName, telNo: telNo},(err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
         res.json({result: 'success', data: doc})
+    })
+});
+
+app.post('/change-password', (req,res) => {
+    var userName = req.body.userName;
+    var oldPassword = req.body.oldPassword;
+    var newPassword = req.body.newPassword;
+    UserModel.find({userName: userName},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        if (doc[0].password === oldPassword) {
+            UserModel.updateOne({userName: userName}, {password: newPassword},(err, doc) => {
+                if (err){
+                    res.json({result: 'failed'});
+                }
+                res.json({result: 'success', status: 'True'})
+            })
+        }
+        else {
+            res.json({result: 'success', status: 'False'})
+        }
     })
 });
 
@@ -233,5 +256,7 @@ app.post('/update-time', (req,res) => {
     })
 })
 
-const server = http.createServer(app);
-server.listen(port, () => console.log('app listening on port', port))
+// const server = http.createServer(app);
+// server.listen(port, () => console.log('app listening on port', port))
+ 
+app.listen(port, () => console.log('app listening on port', port))

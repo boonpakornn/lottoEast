@@ -41,6 +41,17 @@ export class ChangePasswordComponent implements OnInit {
             return this.repeatedPassword.valid || this.repeatedPassword.untouched;
         }
 
+       changePassword(value) {
+           Object.assign(value, {userName: this.authService.currentUser.userName});
+           if (value.newPassword === value.repeatedPassword) {
+                this.authService.changePassword(value.oldPassword, value.newPassword, value.userName);
+           }
+           else {
+               alert('กรุณากรอกรหัสผ่านใหม่ให้ถูกต้อง');
+           }
+           this.router.navigate(['user/profile']);
+       }
+
        cancel() {
             this.router.navigate(['user/profile']);
        }

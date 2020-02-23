@@ -47,6 +47,20 @@ export class AuthService {
         });
     }
 
+    changePassword(oldPassword: string, newPassword: string, userName: string) {
+        const passwordData = {oldPassword: '',
+                              newPassword: '',
+                              userName: ''};
+        passwordData.oldPassword = oldPassword;
+        passwordData.newPassword = newPassword;
+        passwordData.userName = userName;
+        this.http.post<any>(this.serverUrl + '/change-password', passwordData).subscribe(user => {
+            if(user.status === 'False') {
+                alert('กรุณาระบุรหัสผ่านเดิมให้ถูกต้อง');
+            }
+        });
+    }
+
     isAuthenticated() {
         return this.currentUser.userName !== '' ? true : false;
     }
