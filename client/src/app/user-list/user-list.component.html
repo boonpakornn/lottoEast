@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+      <div class="col-sm-6"><h3>บัญชีผู้ใช้ทั้งหมด</h3></div>
+    </div>
+      <br>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ชื่อผู้ใช้</th>
+              <th scope="col">ชื่อจริง</th>
+              <th scope="col">นามสกุล</th>
+              <th scope="col">เบอร์โทรศัพท์</th>
+              <th scope="col">หมายเหตุ</th>
+              <th scope="col">แก้ไข</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor= "let data of userData">
+              <td>{{data.userName}}</td>
+              <td>{{data.firstName}}</td>
+              <td>{{data.lastName}}</td>
+              <td>{{data.telNo}}</td>
+              <td>{{data.remark}}</td>
+              <td><button class="btn-primary update-btn">แก้ไข</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  <hr>

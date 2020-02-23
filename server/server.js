@@ -227,6 +227,15 @@ app.post('/get-user', (req,res) => {
     })
 });
 
+app.get('/get-all-user', (req,res) => {
+    UserModel.find({}, 'userName firstName lastName telNo remark',(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 // ==========  Time  ==========
 
 app.get('/init-time', (req,res) => {
