@@ -7,6 +7,7 @@ import { ProfileComponent } from '../profile/profile.component';
 import { LoginComponent } from '../login/login.component';
 import { AddUserComponent } from '../add-user/add-user.component';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
+import { UserListComponent } from '../user-list/user-list.component';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { ChangePasswordComponent } from '../change-password/change-password.comp
         ProfileComponent,
         LoginComponent,
         AddUserComponent,
-        ChangePasswordComponent
+        ChangePasswordComponent,
+        UserListComponent
     ],
     providers: [
 

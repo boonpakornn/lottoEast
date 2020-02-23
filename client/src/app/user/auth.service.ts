@@ -19,8 +19,8 @@ export class AuthService {
     };
     isLogin = false;
 
-    public adminList = ['admin', 'krittiya22'];
-    public superAdminList = ['krittiya22'];
+    public adminList = ['admin', 'krittiya22', 'superadmin'];
+    public superAdminList = ['krittiya22', 'superadmin'];
     loginUser(userName: string, password: string) {
         console.log('serverURL', this.serverUrl);
         this.http.post<any>(this.serverUrl + '/get-user', {userName, password}).subscribe(user => {
