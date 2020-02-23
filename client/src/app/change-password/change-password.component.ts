@@ -9,10 +9,39 @@ import { Router } from '@angular/router';
 })
 export class ChangePasswordComponent implements OnInit {
 
+  passwordForm: FormGroup;
+  private oldPassword: FormControl;
+  private newPassword: FormControl;
+  private repeatedPassword: FormControl;
+
   constructor(private authService: AuthService,
               private router: Router) {
   }
 
        ngOnInit() {
+        this.oldPassword = new FormControl('', Validators.required);
+        this.newPassword = new FormControl('', Validators.required);
+        this.repeatedPassword = new FormControl('', Validators.required);
+        this.passwordForm = new FormGroup({
+            oldPassword: this.oldPassword,
+            newPassword: this.newPassword,
+            repeatedPassword: this.repeatedPassword,
+        });
+       }
+
+       validateOldPassword() {
+        return this.oldPassword.valid || this.oldPassword.untouched;
+        }
+
+       validateNewPassword() {
+            return this.newPassword.valid || this.newPassword.untouched;
+        }
+
+       validateRepeatedPassword() {
+            return this.repeatedPassword.valid || this.repeatedPassword.untouched;
+        }
+
+       cancel() {
+            this.router.navigate(['user/profile']);
        }
 }
