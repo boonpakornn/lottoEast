@@ -43,7 +43,7 @@ export class LottoListComponent implements OnInit {
     }
 
     checkInputTime() {
-        setInterval((d) => {console.log( new Date().getHours())} , 1000);
+        setInterval((d) => {console.log( new Date().getHours())}, 60000);
     }
 
     loadLottoListData() {
