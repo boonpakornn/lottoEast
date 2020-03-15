@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserListComponent implements OnInit {
   private serverUrl = environment.serverUrl;
-  private userData = [];
+  userData = [];
   constructor(private http: HttpClient,
               private authService: AuthService,
               private router: Router) {
@@ -25,5 +25,9 @@ export class UserListComponent implements OnInit {
             console.log('user: ', result);
             this.userData = result.data;
         });
-    }
+       }
+
+       editUserData(data){
+            console.log('data', data);
+       }
 }

@@ -14,11 +14,11 @@ require('./db');
 
 app.use(bodyParser.json());
 
-// app.use(express.static('./dist/lottoEast'));
+app.use(express.static('./dist/lottoEast'));
 
-// app.get('/*', (req, res) => {  
-//     res.sendFile(path.join(__dirname, './dist/lottoEast'));
-//   });
+app.get('/*', (req, res) => {  
+    res.sendFile(path.join(__dirname, './dist/lottoEast'));
+  });
 
 //Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
@@ -265,7 +265,7 @@ app.post('/update-time', (req,res) => {
     })
 })
 
-// const server = http.createServer(app);
-// server.listen(port, () => console.log('app listening on port', port))
+const server = http.createServer(app);
+server.listen(port, () => console.log('app listening on port', port))
  
-app.listen(port, () => console.log('app listening on port', port))
+// app.listen(port, () => console.log('app listening on port', port))
