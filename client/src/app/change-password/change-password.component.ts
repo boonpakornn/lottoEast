@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../user/auth.service';
 import { Router } from '@angular/router';
+import { ProfileService } from '../profile/profile.service';
 
 @Component({
   templateUrl: './change-password.component.html',
@@ -15,7 +16,8 @@ export class ChangePasswordComponent implements OnInit {
   private repeatedPassword: FormControl;
 
   constructor(private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private profileService: ProfileService) {
   }
 
        ngOnInit() {
@@ -42,7 +44,9 @@ export class ChangePasswordComponent implements OnInit {
         }
 
        changePassword(value) {
-           Object.assign(value, {userName: this.authService.currentUser.userName});
+           const userName = this.profileService.isCurrentUser ?
+           this.authService.currentUser.userName : this.profileService.editUser.userName;
+           Object.assign(value, {userName});
            if (value.newPassword === value.repeatedPassword) {
                 this.authService.changePassword(value.oldPassword, value.newPassword, value.userName);
            }

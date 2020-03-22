@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../user/auth.service';
 import { Router } from '@angular/router';
+import { ProfileService } from './profile.service';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -13,16 +14,25 @@ export class ProfileComponent implements OnInit {
   private firstName: FormControl;
   private lastName: FormControl;
   private telNo: FormControl;
+  private isCurrentUser;
 
-  constructor(private authService: AuthService,
-              private router: Router) {
+  constructor(public authService: AuthService,
+              public router: Router,
+              public profileService: ProfileService) {
   }
 
        ngOnInit() {
-         this.userName = new FormControl({value: this.authService.currentUser.userName, disabled: true}, Validators.required);
-         this.firstName = new FormControl(this.authService.currentUser.firstName, Validators.required);
-         this.lastName = new FormControl(this.authService.currentUser.lastName, Validators.required);
-         this.telNo = new FormControl(this.authService.currentUser.telNo, Validators.required);
+         this.isCurrentUser = this.profileService.isCurrentUser;
+         console.log('flag', this.profileService.isCurrentUser);
+
+         this.userName = new FormControl({value: this.isCurrentUser ?
+           this.authService.currentUser.userName : this.profileService.editUser.userName, disabled: true}, Validators.required);
+         this.firstName = new FormControl(this.isCurrentUser ?
+          this.authService.currentUser.firstName : this.profileService.editUser.firstName, Validators.required);
+         this.lastName = new FormControl(this.isCurrentUser ?
+          this.authService.currentUser.lastName : this.profileService.editUser.lastName, Validators.required);
+         this.telNo = new FormControl(this.isCurrentUser ?
+          this.authService.currentUser.telNo : this.profileService.editUser.telNo, Validators.required);
          this.profileForm = new FormGroup({
            userName: this.userName,
            firstName: this.firstName,
@@ -32,8 +42,12 @@ export class ProfileComponent implements OnInit {
        }
 
        saveProfile(formValues) {
+         const userName = this.isCurrentUser ?
+         this.authService.currentUser.userName : this.profileService.editUser.userName;
+         console.log('username',userName);
          if (this.profileForm.valid) {
-          this.authService.updateCurrentUser(formValues.firstName, formValues.lastName, formValues.telNo);
+          this.authService.updateCurrentUser(userName, formValues.firstName, formValues.lastName, formValues.telNo);
+          alert('แก้ไขข้อมูลผู้ใช้สำเร็จ');
           this.router.navigate(['report']);
          }
        }

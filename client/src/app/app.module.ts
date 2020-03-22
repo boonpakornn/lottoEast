@@ -21,6 +21,7 @@ import { DialogService } from './dialog/dialog.service';
 import { DialogComponent } from './dialog/dialog.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeService } from './report-list/time-service';
+import { ProfileService } from './profile/profile.service';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { TimeService } from './report-list/time-service';
     AuthService,
     AuthGuardService,
     DialogService,
-    TimeService
+    TimeService,
+    ProfileService
   ],
   bootstrap: [ReportComponent]
 })

@@ -3,6 +3,7 @@ import { AuthService } from '../user/auth.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { ProfileService } from '../profile/profile.service';
 
 @Component({
   templateUrl: './user-list.component.html',
@@ -13,7 +14,8 @@ export class UserListComponent implements OnInit {
   userData = [];
   constructor(private http: HttpClient,
               private authService: AuthService,
-              private router: Router) {
+              private router: Router,
+              private profileService: ProfileService) {
   }
 
        ngOnInit() {
@@ -22,12 +24,13 @@ export class UserListComponent implements OnInit {
 
        getUserData() {
         this.http.get<any>(this.serverUrl + '/get-all-user').subscribe(result => {
-            console.log('user: ', result);
             this.userData = result.data;
         });
        }
 
-       editUserData(data){
-            console.log('data', data);
+       editUserData(editUser) {
+        this.profileService.isCurrentUser = false;
+        this.profileService.updateEditUser(editUser);
+        this.router.navigate(['user/profile']);
        }
 }

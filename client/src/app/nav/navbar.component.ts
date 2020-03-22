@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../user/auth.service';
+import { ProfileService } from '../profile/profile.service';
 
 @Component({
     selector: 'app-nav-bar',
@@ -8,7 +9,8 @@ import { AuthService } from '../user/auth.service';
 })
 export class NavBarComponent {
 
-    constructor(public auth: AuthService) {
+    constructor(public auth: AuthService,
+                public profileService: ProfileService) {
 
     }
 
@@ -16,5 +18,8 @@ export class NavBarComponent {
         this.auth.logout();
     }
 
+    validateUser() {
+        this.profileService.isCurrentUser = true;
+    }
 
 }

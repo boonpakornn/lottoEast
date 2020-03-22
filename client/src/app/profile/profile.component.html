@@ -1,7 +1,7 @@
 <div class="container profile-list">
     <div class="row">
       <div class="col-sm-6"><h3>แก้ไขข้อมูลส่วนตัว</h3></div>
-      <div class="col-sm-6"><button type="submit" class="btn btn-primary btn-cpw" (click)="changePassword()">เปลี่ยนรหัสผ่าน</button></div>
+      <div class="col-sm-6"><button type="submit" class="btn btn-primary btn-cpw" *ngIf="authService.isAdmin()" (click)="changePassword()">เปลี่ยนรหัสผ่าน</button></div>
     </div>
     <hr>
     <div class="col-md-4">
