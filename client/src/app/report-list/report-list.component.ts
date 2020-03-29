@@ -48,7 +48,7 @@ export class ReportListComponent implements OnInit {
             this.findDuplicatedLotto(data);
           }
         });
-      }
+    }
 
     checkTime() {
         setInterval((d) => {this.timeService.compareTime(); } , 60000);

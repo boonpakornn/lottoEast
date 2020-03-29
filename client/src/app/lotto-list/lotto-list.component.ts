@@ -18,8 +18,12 @@ export class LottoListComponent implements OnInit {
     private endHour: FormControl;
     private endMinute: FormControl;
 
+    countForm: FormGroup;
+    private countSpec: FormControl;
+    countNum = 1;
+
     setNumber: {};
-    numberModel = { num: 0, name: '' };
+    numberModel = { num: 0, name: '', label: ''};
 
     lottoListData: any;
     numberOfLotto: number;
@@ -48,8 +52,20 @@ export class LottoListComponent implements OnInit {
           endMinute: this.endMinute
         });
 
+        this.countSpec = new FormControl(1, Validators.required);
+        this.countForm = new FormGroup({
+            countSpec: this.countSpec
+        });
+
         this.loadLottoListData();
+        this.onValueChanges();
         // this.checkInputTime();
+    }
+
+    onValueChanges(): void {
+        this.countForm.valueChanges.subscribe(data => {
+          this.countNum = data.countSpec;
+        });
     }
 
     checkInputTime() {
@@ -65,54 +81,59 @@ export class LottoListComponent implements OnInit {
 
     autoSelection() {
         // current
-        var cNum = 0;
-        var cSet = 0;
-        var cCount = 0;
+        let cNum = 0;
+        let cSet = 0;
+        let cCount = 0;
         // next
-        var nNum = 0;
-        var nSet = 0;
-        var nCount = 0;
+        let nNum = 0;
+        let nSet = 0;
+        let nCount = 0;
 
-        var count = 0;
-        var previous = false;
-        var check = [];
-        var hit = [];
+        let count = 0;
+        let previous = false;
+        let check = [];
         if (this.numberModel.num === 0) {
             alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
         }
+        else if (this.countNum < 1 || this.countNum > 99 ) {
+            alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
+        }
         else {
-            hit = [];
             _(this.lottoListData).forEach((element, index) => {
                 if (index !== this.lottoListData.length - 1) {
-                    cNum = parseInt(element.bookNumber);
-                    cSet = Math.ceil(parseInt(element.groupNumber)/ 5);
-                    cCount = parseInt(element.countNumber);
-                    nNum = parseInt(this.lottoListData[index + 1].bookNumber);
-                    nSet = Math.ceil(parseInt(this.lottoListData[index + 1].groupNumber)/ 5);
-                    nCount = parseInt(this.lottoListData[index + 1].countNumber);
-                    console.log(cNum, cSet, nNum, nSet);
-                    if (cNum === nNum && cSet === nSet && cCount === 1 && nCount === 1) {
+                    cNum = Number(element.bookNumber);
+                    cSet = Math.ceil(Number(element.groupNumber) / 5);
+                    cCount = Number(element.countNumber);
+                    nNum = Number(this.lottoListData[index + 1].bookNumber);
+                    nSet = Math.ceil(Number(this.lottoListData[index + 1].groupNumber) / 5);
+                    nCount = Number(this.lottoListData[index + 1].countNumber);
+                    if (cNum === nNum && cSet === nSet && cCount === this.countNum && nCount === this.countNum) {
                         previous = true;
                         count++;
                         check.push(index);
                     }
                     else {
-                        if(previous === true) {
+                        if (previous === true) {
                             previous = false;
                             count++;
                             check.push(index);
                         }
                         console.log('count', count);
-                        if(count >= 3) {
-                            console.log('check', check);
-                            hit = hit.concat(check);
+                        if (count >= this.numberModel.num) {
+                            console.log('num', this.numberModel.num);
+                            _(check).forEach(item => {
+                                this.updateLottoToTrue(this.lottoListData[item]);
+                            });
                         }
                         check = [];
                         count = 0;
                     }
                 }
             });
-            console.log('hit', hit);
+            setTimeout(() => {
+                this.loadLottoListData();
+            },
+            500);
         }
     }
 
@@ -126,6 +147,29 @@ export class LottoListComponent implements OnInit {
         500);
     }
 
+    updateLottoToTrue(data) {
+        this.http.post<any>(this.serverUrl + '/update-lotto-true', data).subscribe(result => {
+        });
+        console.log('Successfully Updated');
+        setTimeout(() => {
+            this.loadLottoListData();
+        },
+        500);
+    }
+
+    updateLottoToFalse() {
+        _(this.lottoListData).forEach(element => {
+            if (element.status === 'True') {
+                this.http.post<any>(this.serverUrl + '/update-lotto-false', element).subscribe(result => {
+                });
+            }
+        })
+        console.log('Successfully Updated');
+        setTimeout(() => {
+            this.loadLottoListData();
+        },
+        500);
+    }
     openConfirmationDialog() {
         this.dialogService.confirm('ลบข้อมูลสลาก', 'ยืนยันเพื่อลบข้อมูลสลากทั้งหมด')
         .then((confirmed) => confirmed === true ? this.deleteAllLotto() : {})
@@ -158,6 +202,10 @@ export class LottoListComponent implements OnInit {
         return this.endMinute.valid || this.endMinute.untouched;
     }
 
+    validateCount() {
+        return this.countSpec.valid || this.countSpec.untouched;
+    }
+
     isNumeric(value) {
         return /^\d+$/.test(value);
     }
@@ -175,6 +223,15 @@ export class LottoListComponent implements OnInit {
         }
         else {
             alert('กรุณากรอกข้อมูลให้ครบและเป็นตัวเลขเวลาเท่านั้น');
+        }
+    }
+
+    saveCount(values) {
+        if (this.isNumeric(values.countSpec)){
+            this.countNum = values.countSpec;
+        }
+        else {
+            alert('กรุณากรอกข้อมูลและเป็นตัวเลขงวดเท่านั้น (1-99)');
         }
     }
 }
