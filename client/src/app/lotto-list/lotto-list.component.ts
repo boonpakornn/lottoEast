@@ -1,9 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ɵCodegenComponentFactoryResolver} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DialogService } from '../dialog/dialog.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TimeService } from '../report-list/time-service';
 import { environment } from '../../environments/environment';
+import _ from 'lodash';
 
 @Component({
     templateUrl: './lotto-list.component.html',
@@ -52,7 +53,7 @@ export class LottoListComponent implements OnInit {
     }
 
     checkInputTime() {
-        setInterval((d) => {console.log( new Date().getHours())}, 60000);
+        //setInterval((d) => {console.log( new Date().getHours()); }, 60000);
     }
 
     loadLottoListData() {
@@ -63,8 +64,55 @@ export class LottoListComponent implements OnInit {
     }
 
     autoSelection() {
-        if (this.numberModel.num === 0){
+        // current
+        var cNum = 0;
+        var cSet = 0;
+        var cCount = 0;
+        // next
+        var nNum = 0;
+        var nSet = 0;
+        var nCount = 0;
+
+        var count = 0;
+        var previous = false;
+        var check = [];
+        var hit = [];
+        if (this.numberModel.num === 0) {
             alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
+        }
+        else {
+            hit = [];
+            _(this.lottoListData).forEach((element, index) => {
+                if (index !== this.lottoListData.length - 1) {
+                    cNum = parseInt(element.bookNumber);
+                    cSet = Math.ceil(parseInt(element.groupNumber)/ 5);
+                    cCount = parseInt(element.countNumber);
+                    nNum = parseInt(this.lottoListData[index + 1].bookNumber);
+                    nSet = Math.ceil(parseInt(this.lottoListData[index + 1].groupNumber)/ 5);
+                    nCount = parseInt(this.lottoListData[index + 1].countNumber);
+                    console.log(cNum, cSet, nNum, nSet);
+                    if (cNum === nNum && cSet === nSet && cCount === 1 && nCount === 1) {
+                        previous = true;
+                        count++;
+                        check.push(index);
+                    }
+                    else {
+                        if(previous === true) {
+                            previous = false;
+                            count++;
+                            check.push(index);
+                        }
+                        console.log('count', count);
+                        if(count >= 3) {
+                            console.log('check', check);
+                            hit = hit.concat(check);
+                        }
+                        check = [];
+                        count = 0;
+                    }
+                }
+            });
+            console.log('hit', hit);
         }
     }
 
