@@ -26,9 +26,28 @@
         <button type="submit" class="btn btn-primary">บันทึก</button>
       </div>
     </form>
+  <hr>
+</div>
+
+<div class='container auto-selection'>
+  <div class="row">
+    <div class="col-sm-5"><h3>เลือกสลากอัตโนมัติ {{numberModel.label}} </h3></div>
+    <div class="btn col-sm-1"
+  *ngFor="let number of setNumber">
+    <input
+    type="radio"
+    [value]="number"
+    [(ngModel)]="numberModel">
+     {{number.name}}
+  </div>
+    <div class="col-sm-4"><button class="btn-primary btn-autoselect" (click)="autoSelection()"><h6>ประมวลผล</h6></button></div>
+
+  <!-- <div class="btn-group"> -->
+  
+  <!-- </div> -->
 </div>
 <hr>
-<div class="container lotto-list">
+<div class="lotto-list">
   <div class="row">
     <div class="col-sm-6"><h3>สลากทั้งหมด {{this.numberOfLotto}} เล่ม</h3></div>
     <div class="col-sm-6"><button class="btn-primary btn-deleteall" (click)="openConfirmationDialog()"><h6>ลบสลากทั้งหมด</h6></button></div>

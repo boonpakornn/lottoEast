@@ -17,15 +17,24 @@ export class LottoListComponent implements OnInit {
     private endHour: FormControl;
     private endMinute: FormControl;
 
+    setNumber: {};
+    numberModel = { num: 0, name: '' };
+
     lottoListData: any;
     numberOfLotto: number;
     timer: any;
     constructor(private http: HttpClient,
                 private dialogService: DialogService,
-                private timeService: TimeService) {
+                private timeService: TimeService,
+                ) {
     }
 
     ngOnInit() {
+        this.setNumber = [
+            { num: 2, name: '2 ชุด', label: 'ขั้นต่ำ 2 ชุด' },
+            { num: 3, name: '3 ชุด', label: 'ขั้นต่ำ 3 ชุด'},
+            { num: 4, name: '4 ชุด', label: 'ขั้นต่ำ 4 ชุด'},
+        ];
         this.timeService.getTime();
         this.startHour = new FormControl(this.timeService.startHour, Validators.required);
         this.startMinute = new FormControl(this.timeService.startMinute, Validators.required);
@@ -51,6 +60,12 @@ export class LottoListComponent implements OnInit {
             this.lottoListData = result.data;
             this.numberOfLotto = this.lottoListData.length;
         });
+    }
+
+    autoSelection() {
+        if (this.numberModel.num === 0){
+            alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
+        }
     }
 
     updateLotto(data) {
