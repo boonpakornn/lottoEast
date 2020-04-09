@@ -14,11 +14,11 @@ require('./db');
 
 app.use(bodyParser.json());
 
-app.use(express.static('./dist/lottoEast'));
+// app.use(express.static('./dist/lottoEast'));
 
-app.get('/*', (req, res) => {  
-    res.sendFile(path.join(__dirname, './dist/lottoEast'));
-  });
+// app.get('/*', (req, res) => {  
+//     res.sendFile(path.join(__dirname, './dist/lottoEast'));
+//   });
 
 //Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
@@ -59,7 +59,8 @@ app.post('/get-lotto', (req,res) => {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', data: doc})
+        console.log(doc);
+        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
 });
 
@@ -91,7 +92,7 @@ app.get('/get-all-lotto', (req,res) => {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', data: doc})
+        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
 });
 
@@ -102,7 +103,7 @@ app.post('/get-result-lotto', (req,res) => {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', data: doc})
+        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
 });
 
@@ -125,6 +126,40 @@ app.post('/update-lotto', (req,res) => {
         res.json({result: 'success', data: doc})
     })
 });
+
+// app.post('/update-lotto-true', (req,res) => {
+//     var book = req.body.bookNumber;
+//     var count = req.body.countNumber;
+//     var group = req.body.groupNumber;
+//     var sender = req.body.sender;
+//     var status = req.body.status
+//     if(status === 'False'){
+//         var truestatus = 'True'
+//         LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: status}, {status: truestatus},(err, doc) => {
+//             if (err){
+//                 res.json({result: 'failed'});
+//             }
+//             res.json({result: 'success', data: doc})
+//         })
+//     }
+// });
+
+// app.post('/update-lotto-false', (req,res) => {
+//     var book = req.body.bookNumber;
+//     var count = req.body.countNumber;
+//     var group = req.body.groupNumber;
+//     var sender = req.body.sender;
+//     var status = req.body.status
+//     if(status === 'True'){
+//         var falsestatus = 'False'
+//         LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: status}, {status: falsestatus},(err, doc) => {
+//             if (err){
+//                 res.json({result: 'failed'});
+//             }
+//             res.json({result: 'success', data: doc})
+//         })
+//     }
+// });
 
 app.post('/delete-lotto', (req,res) => {
     var book = req.body.bookNumber;
@@ -265,7 +300,10 @@ app.post('/update-time', (req,res) => {
     })
 })
 
-const server = http.createServer(app);
-server.listen(port, () => console.log('app listening on port', port))
+
+// cd lottoEast/server
+// node server.js
+// const server = http.createServer(app);
+// server.listen(port, () => console.log('server listening on port', port))
  
-// app.listen(port, () => console.log('app listening on port', port))
+app.listen(port, () => console.log('app listening on port', port))

@@ -148,9 +148,11 @@ export class LottoListComponent implements OnInit {
     }
 
     updateLottoToTrue(data) {
-        this.http.post<any>(this.serverUrl + '/update-lotto-true', data).subscribe(result => {
-        });
-        console.log('Successfully Updated');
+        if (data.status === 'False') {
+            this.http.post<any>(this.serverUrl + '/update-lotto', data).subscribe(result => {
+                console.log('updateTrue', result);
+            });
+        }
         setTimeout(() => {
             this.loadLottoListData();
         },
@@ -160,10 +162,11 @@ export class LottoListComponent implements OnInit {
     updateLottoToFalse() {
         _(this.lottoListData).forEach(element => {
             if (element.status === 'True') {
-                this.http.post<any>(this.serverUrl + '/update-lotto-false', element).subscribe(result => {
+                this.http.post<any>(this.serverUrl + '/update-lotto', element).subscribe(result => {
+                    console.log('updateFalse', result);
                 });
             }
-        })
+        });
         console.log('Successfully Updated');
         setTimeout(() => {
             this.loadLottoListData();
