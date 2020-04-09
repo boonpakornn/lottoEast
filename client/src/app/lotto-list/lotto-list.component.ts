@@ -99,18 +99,30 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         }
         else {
+            console.log('this.countNum', this.countNum);
             _(this.lottoListData).forEach((element, index) => {
                 if (index !== this.lottoListData.length - 1) {
-                    cNum = Number(element.bookNumber);
-                    cSet = Math.ceil(Number(element.groupNumber) / 5);
-                    cCount = Number(element.countNumber);
-                    nNum = Number(this.lottoListData[index + 1].bookNumber);
-                    nSet = Math.ceil(Number(this.lottoListData[index + 1].groupNumber) / 5);
-                    nCount = Number(this.lottoListData[index + 1].countNumber);
+                    cNum = element.bookNumber;
+                    cSet = Math.ceil(element.groupNumber / 5);
+                    cCount = element.countNumber;
+                    nNum = this.lottoListData[index + 1].bookNumber;
+                    nSet = Math.ceil(this.lottoListData[index + 1].groupNumber / 5);
+                    nCount = this.lottoListData[index + 1].countNumber;
                     if (cNum === nNum && cSet === nSet && cCount === this.countNum && nCount === this.countNum) {
                         previous = true;
                         count++;
                         check.push(index);
+                        console.log(index === this.lottoListData.length);
+                        if (index === this.lottoListData.length - 2) {
+                            count++;
+                            check.push(index + 1);
+                            console.log('count', count);
+                            if (count >= this.numberModel.num) {
+                                _(check).forEach(item => {
+                                    this.updateLottoToTrue(this.lottoListData[item]);
+                                });
+                            }
+                        }
                     }
                     else {
                         if (previous === true) {
@@ -120,7 +132,6 @@ export class LottoListComponent implements OnInit {
                         }
                         console.log('count', count);
                         if (count >= this.numberModel.num) {
-                            console.log('num', this.numberModel.num);
                             _(check).forEach(item => {
                                 this.updateLottoToTrue(this.lottoListData[item]);
                             });
@@ -150,7 +161,6 @@ export class LottoListComponent implements OnInit {
     updateLottoToTrue(data) {
         if (data.status === 'False') {
             this.http.post<any>(this.serverUrl + '/update-lotto', data).subscribe(result => {
-                console.log('updateTrue', result);
             });
         }
         setTimeout(() => {
@@ -163,7 +173,6 @@ export class LottoListComponent implements OnInit {
         _(this.lottoListData).forEach(element => {
             if (element.status === 'True') {
                 this.http.post<any>(this.serverUrl + '/update-lotto', element).subscribe(result => {
-                    console.log('updateFalse', result);
                 });
             }
         });

@@ -5,6 +5,7 @@ import { AuthService } from '../user/auth.service';
 import { DialogService } from '../dialog/dialog.service';
 import { TimeService } from './time-service';
 import { environment } from '../../environments/environment';
+import _ from 'lodash';
 
 @Component({
     templateUrl: './report-list.component.html',

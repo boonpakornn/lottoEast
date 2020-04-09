@@ -14,11 +14,11 @@ require('./db');
 
 app.use(bodyParser.json());
 
-// app.use(express.static('./dist/lottoEast'));
+app.use(express.static('./dist/lottoEast'));
 
-// app.get('/*', (req, res) => {  
-//     res.sendFile(path.join(__dirname, './dist/lottoEast'));
-//   });
+app.get('/*', (req, res) => {  
+    res.sendFile(path.join(__dirname, './dist/lottoEast'));
+  });
 
 //Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
@@ -33,18 +33,18 @@ app.use(function (req, res, next) {
 // ==========  Lotto  ==========
 app.post('/add-lotto', (req,res) => {
     var sender = req.body.currentUser
-    var book = ''
-    var count = ''
-    var group = ''
+    var book
+    var count
+    var group
     if(req.body.lottoNum.length === 8){
-    book = req.body.lottoNum.substring(0,4);
-    count = req.body.lottoNum.substring(4,6);
-    group = req.body.lottoNum.substring(6,8);
+        book = parseInt(req.body.lottoNum.substring(0,4));
+        count = parseInt(req.body.lottoNum.substring(4,6));
+        group = parseInt(req.body.lottoNum.substring(6,8));
     }
     else if(req.body.lottoNum.length === 16){
-    book = req.body.lottoNum.substring(6,10);
-    count = req.body.lottoNum.substring(2,4);
-    group = req.body.lottoNum.substring(4,6);
+        book = parseInt(req.body.lottoNum.substring(6,10));
+        count = parseInt(req.body.lottoNum.substring(2,4));
+        group = parseInt(req.body.lottoNum.substring(4,6));
     }
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, (err, doc) => {
         if (err){
@@ -59,24 +59,23 @@ app.post('/get-lotto', (req,res) => {
         if (err){
             res.json({result: 'failed'});
         }
-        console.log(doc);
         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
 });
 
 app.post('/find-duplicate-lotto', (req,res) => {
-    var book = ''
-    var count = ''
-    var group = ''
+    var book
+    var count
+    var group
     if(req.body.lottoNum.length === 8){
-        book = req.body.lottoNum.substring(0,4);
-        count = req.body.lottoNum.substring(4,6);
-        group = req.body.lottoNum.substring(6,8);
+        book = parseInt(req.body.lottoNum.substring(0,4));
+        count = parseInt(req.body.lottoNum.substring(4,6));
+        group = parseInt(req.body.lottoNum.substring(6,8));
     }
     else if(req.body.lottoNum.length === 16){
-        book = req.body.lottoNum.substring(6,10);
-        count = req.body.lottoNum.substring(2,4);
-        group = req.body.lottoNum.substring(4,6);
+        book = parseInt(req.body.lottoNum.substring(6,10));
+        count = parseInt(req.body.lottoNum.substring(2,4));
+        group = parseInt(req.body.lottoNum.substring(4,6));
     }
 
     LottoModel.find({bookNumber: book, countNumber: count, groupNumber: group},(err, doc) => {
@@ -127,39 +126,6 @@ app.post('/update-lotto', (req,res) => {
     })
 });
 
-// app.post('/update-lotto-true', (req,res) => {
-//     var book = req.body.bookNumber;
-//     var count = req.body.countNumber;
-//     var group = req.body.groupNumber;
-//     var sender = req.body.sender;
-//     var status = req.body.status
-//     if(status === 'False'){
-//         var truestatus = 'True'
-//         LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: status}, {status: truestatus},(err, doc) => {
-//             if (err){
-//                 res.json({result: 'failed'});
-//             }
-//             res.json({result: 'success', data: doc})
-//         })
-//     }
-// });
-
-// app.post('/update-lotto-false', (req,res) => {
-//     var book = req.body.bookNumber;
-//     var count = req.body.countNumber;
-//     var group = req.body.groupNumber;
-//     var sender = req.body.sender;
-//     var status = req.body.status
-//     if(status === 'True'){
-//         var falsestatus = 'False'
-//         LottoModel.updateOne({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: status}, {status: falsestatus},(err, doc) => {
-//             if (err){
-//                 res.json({result: 'failed'});
-//             }
-//             res.json({result: 'success', data: doc})
-//         })
-//     }
-// });
 
 app.post('/delete-lotto', (req,res) => {
     var book = req.body.bookNumber;
@@ -303,7 +269,7 @@ app.post('/update-time', (req,res) => {
 
 // cd lottoEast/server
 // node server.js
-// const server = http.createServer(app);
-// server.listen(port, () => console.log('server listening on port', port))
+const server = http.createServer(app);
+server.listen(port, () => console.log('server listening on port', port))
  
-app.listen(port, () => console.log('app listening on port', port))
+// app.listen(port, () => console.log('app listening on port', port))
