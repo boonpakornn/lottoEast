@@ -42,11 +42,23 @@ export class AddUserComponent implements OnInit {
 
        addProfile(formValues) {
          if (this.newUserForm.valid) {
-            this.http.post<any>(this.serverUrl + '/add-user', formValues).subscribe(result => {
-            console.log('result', result);
+            this.http.post<any>(this.serverUrl + '/find-duplicate-user', formValues).subscribe(result => {
+              console.log('result', result.data)
+              if (result.data.length > 0) {
+                alert('มีชื่อบัญชีผู้ใช้นี้นี้อยู่ในระบบแล้ว กรุณาเพิ่มชื่อผู้ใช้อื่น');
+            } else {
+                this.addUser(formValues);
+            }
         });
             this.router.navigate(['report']);
          }
+       }
+
+       addUser(formValues) {
+          console.log('addyser');
+          this.http.post<any>(this.serverUrl + '/add-user', formValues).subscribe(result => {
+          console.log('result', result);
+          });
        }
 
         validateUserName() {

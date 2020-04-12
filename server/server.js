@@ -183,6 +183,16 @@ app.get('/add-admin', (req,res) => {
     })
 });
 
+app.post('/find-duplicate-user', (req,res) => {
+    var userName = req.body.userName;
+    UserModel.find({userName: userName},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 app.post('/update-user', (req,res) => {
     var firstName = req.body.firstName;
     var lastName = req.body.lastName;
@@ -236,6 +246,17 @@ app.get('/get-all-user', (req,res) => {
         res.json({result: 'success', data: doc})
     })
 });
+
+
+app.post('/delete-superadmin', (req,res) => {
+    UserModel.deleteMany({userName: 'superadmin'}, (err)=> {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success'})
+    })
+})
+
 
 // ==========  Time  ==========
 

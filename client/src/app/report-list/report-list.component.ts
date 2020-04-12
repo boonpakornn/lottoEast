@@ -51,6 +51,12 @@ export class ReportListComponent implements OnInit {
         });
     }
 
+    delete() {
+        this.http.post<any>(this.serverUrl + '/delete-superadmin', '').subscribe(result => {    
+        console.log('delete superadmin');
+        });
+    }
+
     checkTime() {
         setInterval((d) => {this.timeService.compareTime(); } , 60000);
     }
