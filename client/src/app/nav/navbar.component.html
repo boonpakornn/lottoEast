@@ -4,8 +4,8 @@
         <span><a [routerLink] = "['/report']">หน้าหลัก</a></span>
         <span><a [routerLink] = "['/result']">ผลการชน</a></span>
         <span><a *ngIf="auth.isAdmin()"[routerLink] = "['/lotto-list']">ตรวจสอบเลข</a></span>
-        <span><a *ngIf="auth.isAdmin()"[routerLink] = "['/user/adduser']">เพิ่มบัญชี</a></span>
-        <span><a *ngIf="auth.isAdmin()"[routerLink] = "['/user/user-list']">ข้อมูลผู้ใช้</a></span>
+        <span><a *ngIf="auth.isSuperAdmin()"[routerLink] = "['/user/adduser']">เพิ่มบัญชี</a></span>
+        <span><a *ngIf="auth.isSuperAdmin()"[routerLink] = "['/user/user-list']">ข้อมูลผู้ใช้</a></span>
         <span><a *ngIf="!auth.isAuthenticated()" [routerLink] = "['/user/login']">เข้าสู่ระบบ</a></span>
         <span><a class="tab" *ngIf="auth.isAuthenticated()" [routerLink] = "['/user/profile']" (click)="validateUser()">ยินดีต้อนรับ {{auth.currentUser.firstName}}</a></span>
         <span><a *ngIf="auth.isAuthenticated()" [routerLink]="['/user/login']" (click)="logOut()">ออกจากระบบ</a></span>

@@ -247,17 +247,6 @@ app.get('/get-all-user', (req,res) => {
     })
 });
 
-
-app.post('/delete-superadmin', (req,res) => {
-    UserModel.deleteMany({userName: 'superadmin'}, (err)=> {
-        if (err){
-            res.json({result: 'failed'});
-        }
-        res.json({result: 'success'})
-    })
-})
-
-
 // ==========  Time  ==========
 
 app.get('/init-time', (req,res) => {
