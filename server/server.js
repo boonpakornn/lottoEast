@@ -22,9 +22,13 @@ app.get('/*', (req, res) => {
 
 //Allow client to access cross domain or ip-address
 app.use(function (req, res, next) {
+    // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Method', 'GET,POST,PUT,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'content-type, x-access-token');
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,X-Access-Token,XKey,Authorization');
+
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader("Content-Security-Policy", "script-src 'self' https://apis.google.com");
     next();
