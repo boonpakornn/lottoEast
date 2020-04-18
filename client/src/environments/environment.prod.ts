@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverUrl: 'http://wanglotto.com'
+  serverUrl: 'http://68.183.184.186'
 };
