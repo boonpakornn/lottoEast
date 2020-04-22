@@ -67,27 +67,49 @@
     <div class="col-sm-6"><button class="btn-primary btn-deleteall" (click)="openConfirmationDialog()"><h6>ลบสลากทั้งหมด</h6></button></div>
   </div>
     <br>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">เล่ม</th>
-            <th scope="col">งวด</th>
-            <th scope="col">ชุด</th>
-            <th scope="col">ผู้ส่ง</th>
-            <th scope="col">สถานะ</th>
-            <th scope="col">เลือกชน</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor= "let data of lottoListData">
-            <td>{{data.bookNumber}}</td>
-            <td>{{data.countNumber}}</td>
-            <td>{{data.groupNumber}}</td>
-            <td>{{data.sender}}</td>
-            <td>{{data.status}}</td>
-            <td><button class="btn-primary update-btn" (click)="updateLotto(data)">เลือก</button></td>
-          </tr>
-        </tbody>
-      </table>
+      <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="bookNumber">
+          <mat-header-cell *matHeaderCellDef> เล่ม </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.bookNumber}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="countNumber">
+          <mat-header-cell *matHeaderCellDef> งวด </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.countNumber}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="groupNumber">
+          <mat-header-cell *matHeaderCellDef> ชุด </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.groupNumber}} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="sender">
+          <mat-header-cell *matHeaderCellDef> ผู้ส่ง </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.sender}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> สถานะ </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="selected">
+          <mat-header-cell  *matHeaderCellDef > เลือกชน </mat-header-cell>
+          <mat-cell *matCellDef="let element" >
+            <button class="btn-primary update-btn" (click)="updateLotto(element)">เลือก</button>
+          </mat-cell>
+        </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  
+    
+      <mat-paginator #paginator
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 20]"
+                     [showFirstLastButtons]="true">
+      </mat-paginator>
     </div>
 <hr>

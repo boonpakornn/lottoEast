@@ -1,7 +1,3 @@
-table {
-    width: 100%;
-  }
-
 .lotto-list {
   padding-top: 20px;
 }
@@ -12,4 +8,10 @@ table {
 
 .number{
   float: right;
+}
+
+mat-header-cell{
+  font-size: large;
+  color: gray;
+  font-weight: bold;
 }

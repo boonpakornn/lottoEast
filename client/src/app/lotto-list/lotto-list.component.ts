@@ -1,8 +1,10 @@
-import { Component, OnInit, ɵCodegenComponentFactoryResolver} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DialogService } from '../dialog/dialog.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TimeService } from '../report-list/time-service';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
+
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
 
@@ -28,6 +30,12 @@ export class LottoListComponent implements OnInit {
     lottoListData: any;
     numberOfLotto: number;
     timer: any;
+
+    displayedColumns = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
+    dataSource;
+
+    @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+
     constructor(private http: HttpClient,
                 private dialogService: DialogService,
                 private timeService: TimeService,
@@ -76,6 +84,8 @@ export class LottoListComponent implements OnInit {
         this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
             this.lottoListData = result.data;
             this.numberOfLotto = this.lottoListData.length;
+            this.dataSource = new MatTableDataSource<any>(this.lottoListData);
+            this.dataSource.paginator = this.paginator;
         });
     }
 

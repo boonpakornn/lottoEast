@@ -1,9 +1,10 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../user/auth.service';
 import { DialogService } from '../dialog/dialog.service';
 import { TimeService } from './time-service';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
 
@@ -11,7 +12,7 @@ import _ from 'lodash';
     templateUrl: './report-list.component.html',
     styleUrls: ['./report-list.component.scss']
 })
-export class ReportListComponent implements OnInit {
+export class ReportListComponent implements OnInit{
     // lottoForm: FormGroup;
     @Input() lottoForm: FormGroup;
     private lottoNum: FormControl;
@@ -27,6 +28,11 @@ export class ReportListComponent implements OnInit {
     public numberOfLotto = 0;
     public currentUser = { currentUser: this.loggedinUser};
     public isAvailable;
+
+    displayedColumns = ['bookNumber', 'countNumber', 'groupNumber', 'delete'];
+    dataSource;
+
+    @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     ngOnInit() {
         this.timeService.getTime();
@@ -125,6 +131,8 @@ export class ReportListComponent implements OnInit {
             this.lottoData = result.data;
             console.log('lottoData', this.lottoData);
             this.numberOfLotto = this.lottoData.length;
+            this.dataSource = new MatTableDataSource<any>(this.lottoData);
+            this.dataSource.paginator = this.paginator;
     });
     }
 }

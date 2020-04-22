@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../user/auth.service';
+import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { environment } from '../../environments/environment';
-import { NumberValueAccessor } from '@angular/forms';
 
 @Component({
     templateUrl: './result.component.html',
@@ -18,6 +18,12 @@ export class ResultComponent implements OnInit {
     resultList: any;
     public loggedinUser = this.authService.currentUser.userName;
     public currentUser = { currentUser: this.loggedinUser, status: 'True'};
+
+    displayedColumns = ['bookNumber', 'countNumber', 'groupNumber'];
+    dataSource;
+
+    @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+
     ngOnInit() {
         this.loadResultList();
     }
@@ -26,6 +32,8 @@ export class ResultComponent implements OnInit {
         this.http.post<any>(this.serverUrl + '/get-result-lotto', this.currentUser).subscribe(result => {
             this.resultList = result.data;
             this.numberOfLotto = this.resultList.length;
+            this.dataSource = new MatTableDataSource<any>(this.resultList);
+            this.dataSource.paginator = this.paginator;
         });
     }
 }
