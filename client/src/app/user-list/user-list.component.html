@@ -3,27 +3,49 @@
       <div class="col-sm-6"><h3>บัญชีผู้ใช้ทั้งหมด</h3></div>
     </div>
       <br>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">ชื่อผู้ใช้</th>
-              <th scope="col">ชื่อจริง</th>
-              <th scope="col">นามสกุล</th>
-              <th scope="col">เบอร์โทรศัพท์</th>
-              <th scope="col">หมายเหตุ</th>
-              <th scope="col">แก้ไข</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor= "let data of userData">
-              <td>{{data.userName}}</td>
-              <td>{{data.firstName}}</td>
-              <td>{{data.lastName}}</td>
-              <td>{{data.telNo}}</td>
-              <td>{{data.remark}}</td>
-              <td><button class="btn-primary update-btn" (click)="editUserData(data)">แก้ไข</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <mat-table #table [dataSource]="dataSource">
+
+          <ng-container matColumnDef="userName">
+            <mat-header-cell *matHeaderCellDef> ชื่อผู้ใช้ </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.userName}} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="firstName">
+            <mat-header-cell *matHeaderCellDef> ชื่อจริง </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.firstName}} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="lastName">
+            <mat-header-cell *matHeaderCellDef> นามสกุล </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.lastName}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="telNo">
+            <mat-header-cell *matHeaderCellDef> เบอร์โทรศัพท์ </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.telNo}} </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="remark">
+            <mat-header-cell *matHeaderCellDef> หมายเหตุ </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.remark}} </mat-cell>
+          </ng-container>
+    
+          <ng-container matColumnDef="edit">
+            <mat-header-cell  *matHeaderCellDef > แก้ไข </mat-header-cell>
+            <mat-cell *matCellDef="let element" >
+              <button class="btn-primary update-btn" (click)="editUserData(element)">แก้ไข</button>
+            </mat-cell>
+          </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    
+      
+        <mat-paginator #paginator
+                       [pageSize]="10"
+                       [pageSizeOptions]="[5, 10, 20]"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </div>
   <hr>
