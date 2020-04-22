@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
-  title = 'lottoEast';
+  title = 'WangLotto';
 
   constructor(private http: HttpClient) {
 
