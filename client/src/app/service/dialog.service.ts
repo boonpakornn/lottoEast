@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { DialogComponent } from './dialog.component';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Injectable()
 export class DialogService {

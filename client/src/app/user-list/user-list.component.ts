@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../user/auth.service';
+import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { ProfileService } from '../profile/profile.service';
+import { ProfileService } from '../service/profile.service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 import { environment } from '../../environments/environment';

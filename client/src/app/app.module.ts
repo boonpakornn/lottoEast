@@ -5,21 +5,25 @@ import { ReportComponent } from './report.component';
 import { ReportListComponent } from './report-list/report-list.component';
 import { NavBarComponent } from './nav/navbar.component';
 import { ResultComponent } from './result/result.component';
+import { LottoListComponent } from './lotto-list/lotto-list.component';
+import { DialogComponent } from './dialog/dialog.component';
 
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { appRoutes } from './routes';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from './user/auth.service';
-import { AuthGuardService } from './auth/auth-guard.service';
-import { LottoListComponent } from './lotto-list/lotto-list.component';
-import { DialogService } from './dialog/dialog.service';
-import { DialogComponent } from './dialog/dialog.component';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { TimeService } from './report-list/time-service';
-import { ProfileService } from './profile/profile.service';
+
+import { AuthService } from './service/auth.service';
+import { AuthGuardService } from './service/auth-guard.service';
+import { DialogService } from './service/dialog.service';
+import { TimeService } from './service/time-service';
+import { ProfileService } from './service/profile.service';
+import { LottoService } from './service/lotto.service';
+import { UserService } from './service/user.service';
+
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -118,7 +122,9 @@ import {
     AuthGuardService,
     DialogService,
     TimeService,
-    ProfileService
+    ProfileService,
+    LottoService,
+    UserService
   ],
   bootstrap: [ReportComponent]
 })

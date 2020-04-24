@@ -1,9 +1,9 @@
 
 import { Injectable } from '@angular/core';
-import { IUser } from './user.model';
+import { IUser } from '../user/user.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { ProfileService } from '../profile/profile.service';
+import { ProfileService } from './profile.service';
 
 
 @Injectable()

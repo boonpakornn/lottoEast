@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 
 import { ResultComponent } from './result/result.component';
 import { ReportListComponent } from './report-list/report-list.component';
-import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
 import { LottoListComponent } from './lotto-list/lotto-list.component';
+
+import { AuthGuardService as AuthGuard } from './service/auth-guard.service';
 
 export const appRoutes: Routes = [
     { path: '', redirectTo: '/report', pathMatch: 'full', canActivate: [AuthGuard]},

@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../user/auth.service';
-import { DialogService } from '../dialog/dialog.service';
-import { TimeService } from './time-service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
+
+import { AuthService } from '../service/auth.service';
+import { DialogService } from '../service/dialog.service';
+import { TimeService } from '../service/time-service';
+import { LottoService } from '../service/lotto.service';
 
 @Component({
     templateUrl: './report-list.component.html',
@@ -20,7 +22,8 @@ export class ReportListComponent implements OnInit{
     constructor(private http: HttpClient,
                 private authService: AuthService,
                 private dialogService: DialogService,
-                private timeService: TimeService) {
+                private timeService: TimeService,
+                private lottoService: LottoService) {
     }
     public loggedinUser = this.authService.currentUser.userName;
     public lottoData: any[] = [];
@@ -92,20 +95,8 @@ export class ReportListComponent implements OnInit{
     }
 
     submitLottoData(data) {
-        // data.currentUser = this.loggedinUser;
-        // console.log('data',data)
-        // if(this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 16)){
-        //     this.isValid = true;
-            this.http.post<any>(this.serverUrl + '/add-lotto', data).subscribe(result => {
-                this.loadLottoData();
-            });
-        // }
-        // else {
-        //     this.isValid = false;
-        // }
-        // this.lottoForm.reset({
-        //     lottoNum: ''
-        //   });
+            this.lottoService.addLotto(data);
+            this.loadLottoData();
     }
 
     openConfirmationDialog(data) {

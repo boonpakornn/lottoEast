@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DialogService } from '../dialog/dialog.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TimeService } from '../report-list/time-service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+
+import { DialogService } from '../service/dialog.service';
+import { TimeService } from '../service/time-service';
+import { LottoService } from '../service/lotto.service';
 
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
@@ -39,6 +41,7 @@ export class LottoListComponent implements OnInit {
     constructor(private http: HttpClient,
                 private dialogService: DialogService,
                 private timeService: TimeService,
+                private lottoService: LottoService
                 ) {
     }
 
@@ -67,17 +70,12 @@ export class LottoListComponent implements OnInit {
 
         this.loadLottoListData();
         this.onValueChanges();
-        // this.checkInputTime();
     }
 
     onValueChanges(): void {
         this.countForm.valueChanges.subscribe(data => {
           this.countNum = data.countSpec;
         });
-    }
-
-    checkInputTime() {
-        //setInterval((d) => {console.log( new Date().getHours()); }, 60000);
     }
 
     loadLottoListData() {
@@ -159,9 +157,7 @@ export class LottoListComponent implements OnInit {
     }
 
     updateLotto(data) {
-        this.http.post<any>(this.serverUrl + '/update-lotto', data).subscribe(result => {
-            console.log('update', result);
-        });
+        this.lottoService.updateLotto(data);
         setTimeout(() => {
             this.loadLottoListData();
         },
@@ -170,8 +166,7 @@ export class LottoListComponent implements OnInit {
 
     updateLottoToTrue(data) {
         if (data.status === 'False') {
-            this.http.post<any>(this.serverUrl + '/update-lotto', data).subscribe(result => {
-            });
+            this.lottoService.updateLotto(data);
         }
         setTimeout(() => {
             this.loadLottoListData();
@@ -180,10 +175,9 @@ export class LottoListComponent implements OnInit {
     }
 
     updateLottoToFalse() {
-        _(this.lottoListData).forEach(element => {
-            if (element.status === 'True') {
-                this.http.post<any>(this.serverUrl + '/update-lotto', element).subscribe(result => {
-                });
+        _(this.lottoListData).forEach(lotto => {
+            if (lotto.status === 'True') {
+                this.lottoService.updateLotto(lotto);
             }
         });
         console.log('Successfully Updated');
@@ -199,9 +193,7 @@ export class LottoListComponent implements OnInit {
     }
 
     deleteAllLotto() {
-        this.http.post<any>(this.serverUrl + '/deleteall-lotto', {}).subscribe(result => {
-            console.log('deleteall', result);
-        });
+        this.lottoService.deleteAllLotto();
         setTimeout(() => {
             this.loadLottoListData();
         },

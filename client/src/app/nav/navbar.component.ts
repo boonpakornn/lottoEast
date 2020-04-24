@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../user/auth.service';
-import { ProfileService } from '../profile/profile.service';
+import { AuthService } from '../service/auth.service';
+import { ProfileService } from '../service/profile.service';
 
 @Component({
     selector: 'app-nav-bar',

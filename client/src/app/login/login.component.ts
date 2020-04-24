@@ -1,7 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../user/auth.service';
-import { TestBed } from '@angular/core/testing';
+import { AuthService } from '../service/auth.service';
 
 @Component({
     templateUrl: './login.component.html',
