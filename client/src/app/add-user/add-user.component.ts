@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
+import { UserService } from '../service/user.service';
+
 @Component({
   templateUrl: './add-user.component.html',
     styleUrls: ['./add-user.component.scss']
@@ -19,7 +21,8 @@ export class AddUserComponent implements OnInit {
   private remark: FormControl;
 
   constructor(private http: HttpClient,
-              private router: Router) {
+              private router: Router,
+              private userService: UserService) {
   }
 
        ngOnInit() {
@@ -42,7 +45,7 @@ export class AddUserComponent implements OnInit {
        addProfile(formValues) {
          if (this.newUserForm.valid) {
             this.http.post<any>(this.serverUrl + '/find-duplicate-user', formValues).subscribe(result => {
-              console.log('result', result.data)
+              console.log('result', result.data);
               if (result.data.length > 0) {
                 alert('มีชื่อบัญชีผู้ใช้นี้นี้อยู่ในระบบแล้ว กรุณาเพิ่มชื่อผู้ใช้อื่น');
             } else {
@@ -54,10 +57,7 @@ export class AddUserComponent implements OnInit {
        }
 
        addUser(formValues) {
-          console.log('addyser');
-          this.http.post<any>(this.serverUrl + '/add-user', formValues).subscribe(result => {
-          console.log('result', result);
-          });
+          this.userService.addUser(formValues);
        }
 
         validateUserName() {

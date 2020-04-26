@@ -21,6 +21,7 @@ export class LottoService {
       console.log('update', result);
   });
   }
+
   public deleteAllLotto(): any {
     this.http.post<any>(this.serverUrl + '/deleteall-lotto', {}).subscribe(result => {
       console.log('deleteall', result);
@@ -29,6 +30,13 @@ export class LottoService {
 
   public addLotto(data): any {
     this.http.post<any>(this.serverUrl + '/add-lotto', data).subscribe(result => {
+      console.log('add', result);
     });
+  }
+
+  public deleteLotto(data): any {
+    this.http.post<any>(this.serverUrl + '/delete-lotto', data).subscribe(result => {
+      console.log('delete', result);
+  });
   }
 }

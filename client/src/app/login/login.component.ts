@@ -28,13 +28,13 @@ export class LoginComponent {
 
     showPassword() {
         const passwordField = document.getElementById('password');
-        if (passwordField[0].tagName === "password") {
-            passwordField[0].tagName = "text";
+        if (passwordField[0].tagName === 'password') {
+            passwordField[0].tagName = 'text';
         } else {
-            passwordField[0].tagName = "password";
+            passwordField[0].tagName = 'password';
         }
       }
-    
+
     cancel() {
         this.router.navigate(['report']);
     }

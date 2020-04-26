@@ -10,5 +10,9 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-
+  public addUser(data): any {
+  this.http.post<any>(this.serverUrl + '/add-user', data).subscribe(result => {
+    console.log('result', result);
+    });
+    }
 }
