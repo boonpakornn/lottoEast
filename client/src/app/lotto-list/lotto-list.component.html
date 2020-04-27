@@ -67,7 +67,7 @@
     <div class="col-sm-6"><button class="btn-primary btn-deleteall" (click)="openConfirmationDialog()"><h6>ลบสลากทั้งหมด</h6></button></div>
   </div>
     <br>
-      <mat-table #table [dataSource]="dataSource">
+      <mat-table #table [dataSource]="dataSourceAll">
 
         <ng-container matColumnDef="bookNumber">
           <mat-header-cell *matHeaderCellDef> เล่ม </mat-header-cell>
@@ -101,26 +101,53 @@
           </mat-cell>
         </ng-container>
   
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumnsAll"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnsAll;"></mat-row>
     </mat-table>
   
     
-      <mat-paginator #paginator
+      <mat-paginator #paginatorAll
                      [pageSize]="10"
                      [pageSizeOptions]="[5, 10, 20]"
                      [showFirstLastButtons]="true">
       </mat-paginator>
       <hr>
       <div>
-        <h4> Export Data</h4>
+        <h3> Export Data</h3>
         <mat-form-field>
           <mat-label>ชื่อผู้ใช้</mat-label>
-          <mat-select>
+          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="updateUserLotto()">
             <mat-option *ngFor="let user of userList" [value]="user.userName">
               {{user.userName}}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
+
+      <mat-table #table [dataSource]="dataSourceUser">
+
+        <ng-container matColumnDef="bookNumber">
+          <mat-header-cell *matHeaderCellDef> เล่ม </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.bookNumber}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="countNumber">
+          <mat-header-cell *matHeaderCellDef> งวด </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.countNumber}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="groupNumber">
+          <mat-header-cell *matHeaderCellDef> ชุด </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.groupNumber}} </mat-cell>
+        </ng-container>
+        
+      <mat-header-row *matHeaderRowDef="displayedColumnsUser"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnsUser;"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginatorUser
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 20]"
+                     [showFirstLastButtons]="true">
+    </mat-paginator>
 </div>

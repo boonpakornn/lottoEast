@@ -99,6 +99,18 @@ app.get('/get-all-lotto', (req,res) => {
     })
 });
 
+app.post('/get-user-lotto', (req,res) => {
+    var userName = req.body.userName;
+    var status = req.body.status;
+    LottoModel.find({sender: userName, status: status} ,(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+    })
+});
+
+
 app.post('/get-result-lotto', (req,res) => {
     var currentUser = req.body.currentUser;
     var status = req.body.status;
@@ -286,6 +298,6 @@ app.post('/update-time', (req,res) => {
 
 const server = http.createServer(app);
 
-server.listen(port, () => console.log('server listening on port', port))
+// server.listen(port, () => console.log('server listening on port', port))
  
-// app.listen(port, () => console.log('app listening on port', port))
+app.listen(port, () => console.log('app listening on port', port))

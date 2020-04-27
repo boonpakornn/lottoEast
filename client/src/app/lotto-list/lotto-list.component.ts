@@ -33,11 +33,17 @@ export class LottoListComponent implements OnInit {
     numberOfLotto: number;
     timer: any;
     userList: any = [];
+    selectedUser: string;
+    lottoUserData: any;
 
-    displayedColumns = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
-    dataSource;
+    displayedColumnsAll = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
+    dataSourceAll;
 
-    @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+    displayedColumnsUser = ['bookNumber', 'countNumber', 'groupNumber'];
+    dataSourceUser;
+
+    @ViewChild('paginatorAll', { read: MatPaginator, static: false}) paginatorAll: MatPaginator;
+    @ViewChild('paginatorUser', { read: MatPaginator, static: false}) paginatorUser: MatPaginator;
 
     constructor(private http: HttpClient,
                 private dialogService: DialogService,
@@ -84,8 +90,8 @@ export class LottoListComponent implements OnInit {
         this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
             this.lottoListData = result.data;
             this.numberOfLotto = this.lottoListData.length;
-            this.dataSource = new MatTableDataSource<any>(this.lottoListData);
-            this.dataSource.paginator = this.paginator;
+            this.dataSourceAll = new MatTableDataSource<any>(this.lottoListData);
+            this.dataSourceAll.paginator = this.paginatorAll;
         });
     }
 
@@ -207,6 +213,15 @@ export class LottoListComponent implements OnInit {
             this.loadLottoListData();
         },
         500);
+    }
+
+    updateUserLotto() {
+        console.log('selectedUser', this.selectedUser);
+        this.http.post<any>(this.serverUrl + '/get-user-lotto', {userName: this.selectedUser, status: 'True'}).subscribe(result => {
+            this.lottoUserData = result.data;
+            this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
+            this.dataSourceUser.paginator = this.paginatorUser;
+        });
     }
 
     validateStartHour() {
