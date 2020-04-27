@@ -1,4 +1,4 @@
-<div class="container timer">
+﻿<div class="container timer">
   <h3>ตั้งเวลาเปิดรับสลาก</h3>
     
     <form class="form-inline form-time" [formGroup]="timeForm" (ngSubmit)="saveTime(timeForm.value)" autocomplete="off" novalidate>
@@ -112,8 +112,14 @@
                      [showFirstLastButtons]="true">
       </mat-paginator>
       <hr>
-      <div>
-        <h3> Export Data</h3>
+      <div class='export'>
+        <div class="row">
+          <div class="col-sm-6"><h3>Export Lotto Data</h3></div>
+          <div class="col-sm-6">
+            <button class="btn-primary btn-export" (click)="exporter.exportTable('xlsx', {fileName: this.selectedUser})" [disabled]= "isDisable">EXCEL</button>
+            <button class="btn-primary btn-export" (click)="exporter.exportTable('csv', {fileName: this.selectedUser})" [disabled]= "isDisable">CSV</button>
+          </div>
+        </div>
         <mat-form-field>
           <mat-label>ชื่อผู้ใช้</mat-label>
           <mat-select [(ngModel)]="selectedUser" (ngModelChange)="updateUserLotto()">
@@ -123,8 +129,8 @@
           </mat-select>
         </mat-form-field>
       </div>
-
-      <mat-table #table [dataSource]="dataSourceUser">
+      <div>
+      <mat-table matTableExporter [dataSource]="dataSourceUser" #exporter="matTableExporter">
 
         <ng-container matColumnDef="bookNumber">
           <mat-header-cell *matHeaderCellDef> เล่ม </mat-header-cell>
@@ -144,10 +150,10 @@
       <mat-header-row *matHeaderRowDef="displayedColumnsUser"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumnsUser;"></mat-row>
     </mat-table>
-
     <mat-paginator #paginatorUser
                      [pageSize]="10"
                      [pageSizeOptions]="[5, 10, 20]"
                      [showFirstLastButtons]="true">
     </mat-paginator>
+    </div>
 </div>

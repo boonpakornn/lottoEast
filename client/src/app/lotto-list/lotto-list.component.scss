@@ -21,6 +21,13 @@
   padding-top: 10px;
 }
 
+.btn-export {
+  float: right;
+  border-radius: .25rem;
+  padding: 5px;
+  margin-right: 10px;
+  width: 15%;
+}
 .btn-autoselect {
   float: right;
   border-radius: .25rem;
@@ -75,4 +82,8 @@ mat-header-cell{
   font-size: large;
   color: gray;
   font-weight: bold;
+}
+
+.export{
+  padding-top: 20px;
 }

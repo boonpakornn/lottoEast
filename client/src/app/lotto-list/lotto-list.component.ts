@@ -8,6 +8,7 @@ import { TimeService } from '../service/time-service';
 import { LottoService } from '../service/lotto.service';
 
 import { environment } from '../../environments/environment';
+import * as XLSX from 'xlsx';
 import _ from 'lodash';
 
 @Component({
@@ -35,6 +36,7 @@ export class LottoListComponent implements OnInit {
     userList: any = [];
     selectedUser: string;
     lottoUserData: any;
+    isDisable = true;
 
     displayedColumnsAll = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
     dataSourceAll;
@@ -221,6 +223,7 @@ export class LottoListComponent implements OnInit {
             this.lottoUserData = result.data;
             this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
             this.dataSourceUser.paginator = this.paginatorUser;
+            this.isDisable = this.lottoUserData.length > 0 ? false : true;
         });
     }
 
