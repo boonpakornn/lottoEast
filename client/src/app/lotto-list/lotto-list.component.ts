@@ -32,6 +32,7 @@ export class LottoListComponent implements OnInit {
     lottoListData: any;
     numberOfLotto: number;
     timer: any;
+    userList: any = [];
 
     displayedColumns = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
     dataSource;
@@ -69,6 +70,7 @@ export class LottoListComponent implements OnInit {
         });
 
         this.loadLottoListData();
+        this.loadAllUser();
         this.onValueChanges();
     }
 
@@ -84,6 +86,13 @@ export class LottoListComponent implements OnInit {
             this.numberOfLotto = this.lottoListData.length;
             this.dataSource = new MatTableDataSource<any>(this.lottoListData);
             this.dataSource.paginator = this.paginator;
+        });
+    }
+
+    loadAllUser() {
+        this.http.get<any>(this.serverUrl + '/get-all-user').subscribe(result => {
+            this.userList = result.data;
+            console.log('userList', this.userList);
         });
     }
 

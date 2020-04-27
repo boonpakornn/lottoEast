@@ -111,5 +111,16 @@
                      [pageSizeOptions]="[5, 10, 20]"
                      [showFirstLastButtons]="true">
       </mat-paginator>
-    </div>
-<hr>
+      <hr>
+      <div>
+        <h4> Export Data</h4>
+        <mat-form-field>
+          <mat-label>ชื่อผู้ใช้</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let user of userList" [value]="user.userName">
+              {{user.userName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+</div>
