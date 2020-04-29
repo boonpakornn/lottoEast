@@ -142,6 +142,15 @@ app.post('/update-lotto', (req,res) => {
     })
 });
 
+app.post('/update-lotto-all-false', (req,res) => {
+    LottoModel.updateMany({ status: 'True'}, {status: 'False'},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 
 app.post('/delete-lotto', (req,res) => {
     var book = req.body.bookNumber;
@@ -299,4 +308,4 @@ app.post('/update-time', (req,res) => {
 const server = http.createServer(app);
 server.listen(port, () => console.log('server listening on port', port))
  
-// app.listen(port, () => console.log('app listening on port', port))
+//app.listen(port, () => console.log('app listening on port', port))
