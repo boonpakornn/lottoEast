@@ -22,6 +22,12 @@ export class LottoService {
   });
   }
 
+  public updateAllLottoToFalse(): any {
+    this.http.post<any>(this.serverUrl + '/update-lotto-all-false', {}).subscribe(result => {
+      console.log('allfalse', result);
+  });
+  }
+
   public deleteAllLotto(): any {
     this.http.post<any>(this.serverUrl + '/deleteall-lotto', {}).subscribe(result => {
       console.log('deleteall', result);

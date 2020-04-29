@@ -179,12 +179,12 @@ export class LottoListComponent implements OnInit {
         await this.lottoService.updateLotto(lotto);
     }
 
+    async updateAllLottoToFalse() {
+        await this.lottoService.updateAllLottoToFalse();
+    }
+
     async updateLottoToFalse() {
-        await _(this.lottoListData).forEach(lotto => {
-            if (lotto.status === 'True') {
-                this.updateLotto(lotto);
-            }
-        });
+        await this.updateAllLottoToFalse();
         this.loadLottoListData();
     }
     openConfirmationDialog() {
