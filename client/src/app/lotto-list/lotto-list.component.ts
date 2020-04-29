@@ -3,12 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 
-import { DialogService } from '../service/dialog.service';
 import { TimeService } from '../service/time-service';
 import { LottoService } from '../service/lotto.service';
 
 import { environment } from '../../environments/environment';
-import * as XLSX from 'xlsx';
 import _ from 'lodash';
 
 @Component({
@@ -48,7 +46,6 @@ export class LottoListComponent implements OnInit {
     @ViewChild('paginatorUser', { read: MatPaginator, static: false}) paginatorUser: MatPaginator;
 
     constructor(private http: HttpClient,
-                private dialogService: DialogService,
                 private timeService: TimeService,
                 private lottoService: LottoService
                 ) {
@@ -88,13 +85,14 @@ export class LottoListComponent implements OnInit {
         });
     }
 
-    loadLottoListData() {
-        this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
+    async loadLottoListData() {
+        await this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
             this.lottoListData = result.data;
             this.numberOfLotto = this.lottoListData.length;
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoListData);
             this.dataSourceAll.paginator = this.paginatorAll;
         });
+        this.updateUserLotto();
     }
 
     loadAllUser() {
@@ -104,7 +102,7 @@ export class LottoListComponent implements OnInit {
         });
     }
 
-    autoSelection() {
+    async autoSelection() {
         // current
         let cNum = 0;
         let cSet = 0;
@@ -124,8 +122,7 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         }
         else {
-            console.log('this.countNum', this.countNum);
-            _(this.lottoListData).forEach((element, index) => {
+            await _(this.lottoListData).forEach((element, index) => {
                 if (index !== this.lottoListData.length - 1) {
                     cNum = element.bookNumber;
                     cSet = Math.ceil(element.groupNumber / 5);
@@ -137,11 +134,9 @@ export class LottoListComponent implements OnInit {
                         previous = true;
                         count++;
                         check.push(index);
-                        console.log(index === this.lottoListData.length);
                         if (index === this.lottoListData.length - 2) {
                             count++;
                             check.push(index + 1);
-                            console.log('count', count);
                             if (count >= this.numberModel.num) {
                                 _(check).forEach(item => {
                                     this.updateLottoToTrue(this.lottoListData[item]);
@@ -155,7 +150,6 @@ export class LottoListComponent implements OnInit {
                             count++;
                             check.push(index);
                         }
-                        console.log('count', count);
                         if (count >= this.numberModel.num) {
                             _(check).forEach(item => {
                                 this.updateLottoToTrue(this.lottoListData[item]);
@@ -166,65 +160,59 @@ export class LottoListComponent implements OnInit {
                     }
                 }
             });
-            setTimeout(() => {
-                this.loadLottoListData();
-            },
-            500);
+            this.loadLottoListData();
         }
     }
 
-    updateLotto(data) {
-        this.lottoService.updateLotto(data);
-        setTimeout(() => {
-            this.loadLottoListData();
-        },
-        500);
+    async updateClickedLotto(data) {
+        await this.updateLotto(data);
+        this.loadLottoListData();
     }
 
     updateLottoToTrue(data) {
         if (data.status === 'False') {
             this.lottoService.updateLotto(data);
         }
-        setTimeout(() => {
-            this.loadLottoListData();
-        },
-        500);
     }
 
-    updateLottoToFalse() {
-        _(this.lottoListData).forEach(lotto => {
+    async updateLotto(lotto) {
+        await this.lottoService.updateLotto(lotto);
+    }
+
+    async updateLottoToFalse() {
+        await _(this.lottoListData).forEach(lotto => {
             if (lotto.status === 'True') {
-                this.lottoService.updateLotto(lotto);
+                this.updateLotto(lotto);
             }
         });
-        console.log('Successfully Updated');
-        setTimeout(() => {
-            this.loadLottoListData();
-        },
-        500);
+        this.loadLottoListData();
     }
     openConfirmationDialog() {
-        this.dialogService.confirm('ลบข้อมูลสลาก', 'ยืนยันเพื่อลบข้อมูลสลากทั้งหมด')
-        .then((confirmed) => confirmed === true ? this.deleteAllLotto() : {})
-        .catch(() => console.log('User dismissed the dialog'));
+        const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากทั้งหมด');
+        if (dialog === true) {
+            this.deleteAllLotto();
+        }
     }
 
-    deleteAllLotto() {
-        this.lottoService.deleteAllLotto();
-        setTimeout(() => {
-            this.loadLottoListData();
-        },
-        500);
+    async deleteAll() {
+        await this.lottoService.deleteAllLotto();
     }
 
-    updateUserLotto() {
-        console.log('selectedUser', this.selectedUser);
-        this.http.post<any>(this.serverUrl + '/get-user-lotto', {userName: this.selectedUser, status: 'True'}).subscribe(result => {
-            this.lottoUserData = result.data;
-            this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
-            this.dataSourceUser.paginator = this.paginatorUser;
-            this.isDisable = this.lottoUserData.length > 0 ? false : true;
-        });
+    async deleteAllLotto() {
+        await this.deleteAll();
+        this.loadLottoListData();
+    }
+
+    async updateUserLotto() {
+        if (this.selectedUser !== undefined) {
+            await this.http.post<any>(this.serverUrl + '/get-user-lotto',
+            {userName: this.selectedUser, status: 'True'}).subscribe(result => {
+                this.lottoUserData = result.data;
+                this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
+                this.dataSourceUser.paginator = this.paginatorUser;
+                this.isDisable = this.lottoUserData.length > 0 ? false : true;
+            });
+        }
     }
 
     validateStartHour() {

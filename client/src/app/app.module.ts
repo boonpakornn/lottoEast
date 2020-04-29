@@ -6,7 +6,6 @@ import { ReportListComponent } from './report-list/report-list.component';
 import { NavBarComponent } from './nav/navbar.component';
 import { ResultComponent } from './result/result.component';
 import { LottoListComponent } from './lotto-list/lotto-list.component';
-import { DialogComponent } from './dialog/dialog.component';
 
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +18,6 @@ import { appRoutes } from './routes';
 
 import { AuthService } from './service/auth.service';
 import { AuthGuardService } from './service/auth-guard.service';
-import { DialogService } from './service/dialog.service';
 import { TimeService } from './service/time-service';
 import { ProfileService } from './service/profile.service';
 import { LottoService } from './service/lotto.service';
@@ -68,11 +66,9 @@ import {
     ReportListComponent,
     NavBarComponent,
     ResultComponent,
-    LottoListComponent,
-    DialogComponent
+    LottoListComponent
   ],
   entryComponents: [
-    DialogComponent,
     ReportListComponent
   ],
   imports: [
@@ -122,7 +118,6 @@ import {
   providers: [
     AuthService,
     AuthGuardService,
-    DialogService,
     TimeService,
     ProfileService,
     LottoService,

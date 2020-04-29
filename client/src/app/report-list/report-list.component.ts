@@ -6,7 +6,6 @@ import { environment } from '../../environments/environment';
 import _ from 'lodash';
 
 import { AuthService } from '../service/auth.service';
-import { DialogService } from '../service/dialog.service';
 import { TimeService } from '../service/time-service';
 import { LottoService } from '../service/lotto.service';
 
@@ -21,7 +20,6 @@ export class ReportListComponent implements OnInit{
     private serverUrl = environment.serverUrl;
     constructor(private http: HttpClient,
                 private authService: AuthService,
-                private dialogService: DialogService,
                 private timeService: TimeService,
                 private lottoService: LottoService) {
     }
@@ -100,9 +98,10 @@ export class ReportListComponent implements OnInit{
     }
 
     openConfirmationDialog(data) {
-        this.dialogService.confirm('ลบข้อมูลสลาก', 'ยืนยันเพื่อลบข้อมูลสลากชุดนี้จากระบบ')
-        .then((confirmed) => confirmed === true ? this.deleteLotto(data) : {})
-        .catch(() => console.log('User dismissed the dialog'));
+        const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากชุดนี้จากระบบ');
+        if (dialog === true) {
+            this.deleteLotto(data);
+        }
     }
 
     deleteLotto(data) {
