@@ -101,8 +101,7 @@ app.get('/get-all-lotto', (req,res) => {
 
 app.post('/get-user-lotto', (req,res) => {
     var userName = req.body.userName;
-    var status = req.body.status;
-    LottoModel.find({sender: userName, status: status} ,(err, doc) => {
+    LottoModel.find({sender: userName, status: 'True'} ,(err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }

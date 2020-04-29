@@ -206,7 +206,7 @@ export class LottoListComponent implements OnInit {
     async updateUserLotto() {
         if (this.selectedUser !== undefined) {
             await this.http.post<any>(this.serverUrl + '/get-user-lotto',
-            {userName: this.selectedUser, status: 'True'}).subscribe(result => {
+            {userName: this.selectedUser}).subscribe(result => {
                 this.lottoUserData = result.data;
                 this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
                 this.dataSourceUser.paginator = this.paginatorUser;
