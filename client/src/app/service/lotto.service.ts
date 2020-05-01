@@ -22,15 +22,21 @@ export class LottoService {
   });
   }
 
+  public updateSetLotto(bookNumber, countNumber, group): any {
+    this.http.post<any>(this.serverUrl + '/update-set-lotto', {bookNumber, countNumber, group}).subscribe(result => {
+      console.log('update-set', result);
+  });
+  }
+
   public updateAllLottoToFalse(): any {
     this.http.post<any>(this.serverUrl + '/update-lotto-all-false', {}).subscribe(result => {
-      console.log('allfalse', result);
+      console.log('all-false', result);
   });
   }
 
   public deleteAllLotto(): any {
     this.http.post<any>(this.serverUrl + '/deleteall-lotto', {}).subscribe(result => {
-      console.log('deleteall', result);
+      console.log('delete-all', result);
   });
   }
 

@@ -28,7 +28,7 @@ export class ReportListComponent implements OnInit{
     public isValid = true;
     public numberOfLotto = 0;
     public currentUser = { currentUser: this.loggedinUser};
-    public isAvailable;
+    public isAvailable = true;
 
     displayedColumns = ['bookNumber', 'countNumber', 'groupNumber', 'delete'];
     dataSource;
@@ -44,10 +44,9 @@ export class ReportListComponent implements OnInit{
         this.loadLottoData();
         this.onValueChanges();
         setTimeout(() => {
-            this.isAvailable = this.timeService.isAvailable;
+            this.isAvailable = this.timeService.compareTime();
         },
         300);
-        this.checkTime();
     }
 
     onValueChanges(): void {
@@ -58,10 +57,6 @@ export class ReportListComponent implements OnInit{
         });
     }
 
-    checkTime() {
-        setInterval((d) => {this.timeService.compareTime(); } , 60000);
-    }
-
     isNumeric(value) {
         return /^\d+$/.test(value);
     }
@@ -70,7 +65,7 @@ export class ReportListComponent implements OnInit{
         data.currentUser = this.loggedinUser;
         console.log('data', data);
         if (this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 16)) {
-            if (this.timeService.isAvailable) {
+            if (this.timeService.compareTime()) {
             this.isValid = true;
             this.http.post<any>(this.serverUrl + '/find-duplicate-lotto', data).subscribe(result => {
                 if (result.data.length > 0) {
@@ -92,9 +87,9 @@ export class ReportListComponent implements OnInit{
 
     }
 
-    submitLottoData(data) {
-            this.lottoService.addLotto(data);
-            this.loadLottoData();
+    async submitLottoData(data) {
+            await this.lottoService.addLotto(data);
+            await this.loadLottoData();
     }
 
     openConfirmationDialog(data) {
@@ -106,11 +101,11 @@ export class ReportListComponent implements OnInit{
 
     async deleteLotto(data) {
         await this.lottoService.deleteLotto(data);
-        this.loadLottoData();
+        await this.loadLottoData();
     }
 
-    async loadLottoData() {
-        await this.http.post<any>(this.serverUrl + '/get-lotto', this.currentUser).subscribe(result => {
+    loadLottoData() {
+        this.http.post<any>(this.serverUrl + '/get-lotto', this.currentUser).subscribe(result => {
             this.lottoData = result.data;
             console.log('lottoData', this.lottoData);
             this.numberOfLotto = this.lottoData.length;

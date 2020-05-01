@@ -138,9 +138,10 @@ export class LottoListComponent implements OnInit {
                             count++;
                             check.push(index + 1);
                             if (count >= this.numberModel.num) {
-                                _(check).forEach(item => {
-                                    this.updateLottoToTrue(this.lottoListData[item]);
-                                });
+                                const bookNumber = this.lottoListData[check[0]].bookNumber;
+                                const countNumber = this.countNum;
+                                const groupNumber = this.lottoListData[check[0]].group;
+                                this.updateSetLotto(bookNumber, countNumber, groupNumber);
                             }
                         }
                     }
@@ -151,9 +152,10 @@ export class LottoListComponent implements OnInit {
                             check.push(index);
                         }
                         if (count >= this.numberModel.num) {
-                            _(check).forEach(item => {
-                                this.updateLottoToTrue(this.lottoListData[item]);
-                            });
+                            const bookNumber = this.lottoListData[check[0]].bookNumber;
+                            const countNumber = this.countNum;
+                            const groupNumber = this.lottoListData[check[0]].group;
+                            this.updateSetLotto(bookNumber, countNumber, groupNumber);
                         }
                         check = [];
                         count = 0;
@@ -169,10 +171,8 @@ export class LottoListComponent implements OnInit {
         await this.loadLottoListData();
     }
 
-    updateLottoToTrue(data) {
-        if (data.status === 'False') {
-            this.lottoService.updateLotto(data);
-        }
+    updateSetLotto(bookNumber, countNumber, groupNumber) {
+        this.lottoService.updateSetLotto(bookNumber, countNumber, groupNumber);
     }
 
     updateLotto(lotto) {

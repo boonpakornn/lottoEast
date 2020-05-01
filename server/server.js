@@ -144,6 +144,18 @@ app.post('/update-lotto', (req,res) => {
     })
 });
 
+app.post('/update-set-lotto', (req,res) => {
+    var book = req.body.bookNumber;
+    var count = req.body.countNumber;
+    var group = req.body.group;
+    LottoModel.updateMany({bookNumber: book, countNumber: count, group: group}, {status: 'True'},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 app.post('/update-lotto-all-false', (req,res) => {
     LottoModel.updateMany({ status: 'True'}, {status: 'False'},(err, doc) => {
         if (err){

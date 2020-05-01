@@ -35,8 +35,6 @@ export class TimeService {
             else {
                 this.initTime();
             }
-
-            this.compareTime();
         });
     }
 
@@ -51,10 +49,10 @@ export class TimeService {
         currentTime.setHours(currentHour, currentMinute, 0);
 
         if (startTime < currentTime && currentTime < endTime) {
-        this.isAvailable = true;
+        return true;
         }
         else {
-        this.isAvailable = false;
+        return false;
         }
     }
 
