@@ -86,13 +86,13 @@ export class LottoListComponent implements OnInit {
     }
 
     async loadLottoListData() {
-        await this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
+        await this.http.post<any>(this.serverUrl + '/get-all-lotto', {}).subscribe(result => {
             this.lottoListData = result.data;
             this.numberOfLotto = this.lottoListData.length;
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoListData);
             this.dataSourceAll.paginator = this.paginatorAll;
         });
-        this.updateUserLotto();
+        await this.updateUserLotto();
     }
 
     loadAllUser() {
@@ -166,7 +166,7 @@ export class LottoListComponent implements OnInit {
 
     async updateClickedLotto(data) {
         await this.updateLotto(data);
-        this.loadLottoListData();
+        await this.loadLottoListData();
     }
 
     updateLottoToTrue(data) {
@@ -175,17 +175,17 @@ export class LottoListComponent implements OnInit {
         }
     }
 
-    async updateLotto(lotto) {
-        await this.lottoService.updateLotto(lotto);
+    updateLotto(lotto) {
+        this.lottoService.updateLotto(lotto);
     }
 
-    async updateAllLottoToFalse() {
-        await this.lottoService.updateAllLottoToFalse();
+    updateAllLottoToFalse() {
+        this.lottoService.updateAllLottoToFalse();
     }
 
     async updateLottoToFalse() {
         await this.updateAllLottoToFalse();
-        this.loadLottoListData();
+        await this.loadLottoListData();
     }
     openConfirmationDialog() {
         const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากทั้งหมด');
@@ -200,7 +200,7 @@ export class LottoListComponent implements OnInit {
 
     async deleteAllLotto() {
         await this.deleteAll();
-        this.loadLottoListData();
+        await this.loadLottoListData();
     }
 
     async updateUserLotto() {

@@ -40,17 +40,20 @@ app.post('/add-lotto', (req,res) => {
     var book
     var count
     var group
+    var set
     if(req.body.lottoNum.length === 8){
         book = parseInt(req.body.lottoNum.substring(0,4));
         count = parseInt(req.body.lottoNum.substring(4,6));
         group = parseInt(req.body.lottoNum.substring(6,8));
+        set = Math.ceil(group / 5);
     }
     else if(req.body.lottoNum.length === 16){
         book = parseInt(req.body.lottoNum.substring(6,10));
         count = parseInt(req.body.lottoNum.substring(2,4));
         group = parseInt(req.body.lottoNum.substring(4,6));
+        set = Math.ceil(group / 5);
     }
-    LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, sender: sender, status: 'False'}, (err, doc) => {
+    LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, group: set, sender: sender, status: 'False'}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
@@ -90,8 +93,8 @@ app.post('/find-duplicate-lotto', (req,res) => {
     })
 });
 
-app.get('/get-all-lotto', (req,res) => {
-    LottoModel.find((err, doc) => {
+app.post('/get-all-lotto', (req,res) => {
+    LottoModel.find({}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
@@ -305,6 +308,6 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-server.listen(port, () => console.log('server listening on port', port))
+// server.listen(port, () => console.log('server listening on port', port))
  
-//app.listen(port, () => console.log('app listening on port', port))
+app.listen(port, () => console.log('app listening on port', port))

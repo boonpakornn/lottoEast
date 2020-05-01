@@ -5,6 +5,7 @@ var LottoSchema = mongoose.Schema({
     bookNumber: {type: Number, require: true},
     countNumber:{type: Number, require: true},
     groupNumber: {type: Number, require: true},
+    group: {type: Number, require: true},
     sender:{type: String, require: true},
     status:{type: String}
 })
