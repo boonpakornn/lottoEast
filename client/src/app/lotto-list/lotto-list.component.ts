@@ -167,8 +167,9 @@ export class LottoListComponent implements OnInit {
                     }
                 }
             });
-            await setTimeout(d => {}, 2000);
-            await this.loadLottoListData();
+            await setTimeout(() => {
+                this.loadLottoListData();
+            }, 2000);
         }
     }
 
@@ -188,8 +189,9 @@ export class LottoListComponent implements OnInit {
     async updateLottoToFalse() {
         await this.spinner.show();
         await this.lottoService.updateAllLottoToFalse();
-        await setTimeout(d => {}, 2000);
-        await this.loadLottoListData();
+        await setTimeout(() => {
+            this.loadLottoListData();
+        }, 2000);
     }
     openConfirmationDialog() {
         const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากทั้งหมด');
@@ -220,30 +222,6 @@ export class LottoListComponent implements OnInit {
         await this.spinner.hide();
     }
 
-    validateStartHour() {
-        return this.startHour.valid || this.startHour.untouched;
-    }
-
-    validateStartMinute() {
-        return this.startMinute.valid || this.startMinute.untouched;
-    }
-
-    validateEndHour() {
-        return this.endHour.valid || this.endHour.untouched;
-    }
-
-    validateEndMinute() {
-        return this.endMinute.valid || this.endMinute.untouched;
-    }
-
-    validateCount() {
-        return this.countSpec.valid || this.countSpec.untouched;
-    }
-
-    isNumeric(value) {
-        return /^\d+$/.test(value);
-    }
-
     saveTime(values) {
         if (this.isNumeric(values.startHour) &&
             this.isNumeric(values.startMinute) &&
@@ -268,4 +246,29 @@ export class LottoListComponent implements OnInit {
             alert('กรุณากรอกข้อมูลและเป็นตัวเลขงวดเท่านั้น (1-99)');
         }
     }
+
+    validateStartHour() {
+        return this.startHour.valid || this.startHour.untouched;
+    }
+
+    validateStartMinute() {
+        return this.startMinute.valid || this.startMinute.untouched;
+    }
+
+    validateEndHour() {
+        return this.endHour.valid || this.endHour.untouched;
+    }
+
+    validateEndMinute() {
+        return this.endMinute.valid || this.endMinute.untouched;
+    }
+
+    validateCount() {
+        return this.countSpec.valid || this.countSpec.untouched;
+    }
+
+    isNumeric(value) {
+        return /^\d+$/.test(value);
+    }
+
 }
