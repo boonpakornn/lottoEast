@@ -55,6 +55,7 @@ export class LottoListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.spinner.show();
         this.setNumber = [
             { num: 2, name: '2 ชุด', label: 'ขั้นต่ำ 2 ชุด' },
             { num: 3, name: '3 ชุด', label: 'ขั้นต่ำ 3 ชุด'},
@@ -166,7 +167,8 @@ export class LottoListComponent implements OnInit {
                     }
                 }
             });
-            this.loadLottoListData();
+            await setTimeout(d => {}, 2000);
+            await this.loadLottoListData();
         }
     }
 
@@ -186,7 +188,7 @@ export class LottoListComponent implements OnInit {
     async updateLottoToFalse() {
         await this.spinner.show();
         await this.lottoService.updateAllLottoToFalse();
-        setTimeout(d => {}, 500);
+        await setTimeout(d => {}, 2000);
         await this.loadLottoListData();
     }
     openConfirmationDialog() {
