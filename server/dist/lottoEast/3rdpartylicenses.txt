@@ -261,6 +261,9 @@ Apache-2.0
 
 ngx-bootstrap/datepicker
 
+ngx-spinner
+MIT
+
 regenerator-runtime
 MIT
 MIT License

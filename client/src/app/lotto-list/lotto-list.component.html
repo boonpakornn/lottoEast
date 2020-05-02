@@ -1,4 +1,6 @@
 ﻿<div class="container timer">
+  <ngx-spinner
+  type="ball-spin-fade-rotating"></ngx-spinner>
   <h3>ตั้งเวลาเปิดรับสลาก</h3>
     
     <form class="form-inline form-time" [formGroup]="timeForm" (ngSubmit)="saveTime(timeForm.value)" autocomplete="off" novalidate>

@@ -13,6 +13,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableExporterModule } from 'mat-table-exporter';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { appRoutes } from './routes';
 
@@ -113,7 +114,8 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTableExporterModule
+    MatTableExporterModule,
+    NgxSpinnerModule
   ],
   providers: [
     AuthService,

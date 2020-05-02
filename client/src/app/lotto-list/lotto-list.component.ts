@@ -5,9 +5,11 @@ import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 import { TimeService } from '../service/time-service';
 import { LottoService } from '../service/lotto.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
+
 
 @Component({
     templateUrl: './lotto-list.component.html',
@@ -47,7 +49,8 @@ export class LottoListComponent implements OnInit {
 
     constructor(private http: HttpClient,
                 private timeService: TimeService,
-                private lottoService: LottoService
+                private lottoService: LottoService,
+                private spinner: NgxSpinnerService
                 ) {
     }
 
@@ -103,6 +106,7 @@ export class LottoListComponent implements OnInit {
     }
 
     async autoSelection() {
+        await this.spinner.show();
         // current
         let cNum = 0;
         let cSet = 0;
@@ -180,7 +184,9 @@ export class LottoListComponent implements OnInit {
     }
 
     async updateLottoToFalse() {
+        await this.spinner.show();
         await this.lottoService.updateAllLottoToFalse();
+        setTimeout(d => {}, 500);
         await this.loadLottoListData();
     }
     openConfirmationDialog() {
@@ -209,6 +215,7 @@ export class LottoListComponent implements OnInit {
                 this.isDisable = this.lottoUserData.length > 0 ? false : true;
             });
         }
+        await this.spinner.hide();
     }
 
     validateStartHour() {
