@@ -37,6 +37,9 @@ export class LottoListComponent implements OnInit {
     selectedUser: string;
     lottoUserData: any;
     isDisable = true;
+    bookData: any;
+    loadingTime: number;
+    timeFactor = 500;
 
     displayedColumnsAll = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
     dataSourceAll;
@@ -89,6 +92,13 @@ export class LottoListComponent implements OnInit {
         });
     }
 
+    async loadBookNumber() {
+        await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
+            this.bookData = result.data;
+            console.log('bookData', this.bookData);
+            this.loadingTime = this.bookData * this.timeFactor;
+        });
+    }
     async loadLottoListData() {
         await this.http.post<any>(this.serverUrl + '/get-all-lotto', {}).subscribe(result => {
             this.lottoListData = result.data;
@@ -97,6 +107,7 @@ export class LottoListComponent implements OnInit {
             this.dataSourceAll.paginator = this.paginatorAll;
         });
         await this.updateUserLotto();
+        await this.loadBookNumber();
     }
 
     loadAllUser() {

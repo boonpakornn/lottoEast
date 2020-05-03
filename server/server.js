@@ -187,6 +187,15 @@ app.post('/deleteall-lotto', (req,res) => {
     })
 })
 
+app.get('/get-all-book-number', (req,res) => {
+    LottoModel.find({}, 'bookNumber',(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 
 // ==========  User  ==========
 
