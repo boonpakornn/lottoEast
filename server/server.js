@@ -188,7 +188,7 @@ app.post('/deleteall-lotto', (req,res) => {
 })
 
 app.get('/get-all-book-number', (req,res) => {
-    LottoModel.find({}, 'bookNumber',(err, doc) => {
+    LottoModel.find({}, 'bookNumber').distinct('bookNumber',(err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
@@ -329,6 +329,6 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-server.listen(port, () => console.log('server listening on port', port))
+// server.listen(port, () => console.log('server listening on port', port))
  
-// app.listen(port, () => console.log('app listening on port', port))
+app.listen(port, () => console.log('app listening on port', port))
