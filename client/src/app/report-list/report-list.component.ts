@@ -98,7 +98,7 @@ export class ReportListComponent implements OnInit{
 
     async submitLottoData(data) {
             await this.lottoService.addLotto(data);
-            await this.countUserLotto(this.loggedinUser);
+            await setTimeout(() => { this.countUserLotto(this.loggedinUser); }, 200);
             await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
     }
 
@@ -117,7 +117,7 @@ export class ReportListComponent implements OnInit{
 
     async deleteLotto(data) {
         await this.lottoService.deleteLotto(data);
-        await this.countUserLotto(this.loggedinUser);
+        await setTimeout(() => { this.countUserLotto(this.loggedinUser); }, 200);
         await await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
     }
 
