@@ -106,15 +106,6 @@ app.post('/find-duplicate-lotto', (req,res) => {
     })
 });
 
-// app.post('/get-all-lotto', (req,res) => {
-//     LottoModel.find({}, (err, doc) => {
-//         if (err){
-//             res.json({result: 'failed'});
-//         }
-//         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
-//     })
-// });
-
 app.post('/get-all-lotto-paginate', (req,res) => {
     var offset = req.body.offset;
     var pageSize = req.body.pageSize;
@@ -167,16 +158,16 @@ app.post('/get-user-selected-count', (req,res) => {
     })
 });
 
-app.post('/get-result-lotto', (req,res) => {
-    var currentUser = req.body.currentUser;
-    var status = req.body.status;
-    LottoModel.find({sender: currentUser, status: status} ,(err, doc) => {
-        if (err){
-            res.json({result: 'failed'});
-        }
-        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
-    })
-});
+// app.post('/get-result-lotto', (req,res) => {
+//     var currentUser = req.body.currentUser;
+//     var status = req.body.status;
+//     LottoModel.find({sender: currentUser, status: status} ,(err, doc) => {
+//         if (err){
+//             res.json({result: 'failed'});
+//         }
+//         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+//     })
+// });
 
 app.post('/update-lotto', (req,res) => {
     var book = req.body.bookNumber;

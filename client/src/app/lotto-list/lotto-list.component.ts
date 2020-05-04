@@ -10,7 +10,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
 
-
 @Component({
     templateUrl: './lotto-list.component.html',
     styleUrls: ['./lotto-list.component.scss']

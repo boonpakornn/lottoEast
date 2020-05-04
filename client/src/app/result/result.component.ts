@@ -20,6 +20,8 @@ export class ResultComponent implements OnInit {
     resultList: any;
     public loggedinUser = this.authService.currentUser.userName;
     public currentUser = { currentUser: this.loggedinUser, status: 'True'};
+    offset = 0;
+    pageSize = 10;
 
     displayedColumns = ['bookNumber', 'countNumber', 'groupNumber'];
     dataSource;
@@ -27,15 +29,28 @@ export class ResultComponent implements OnInit {
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     ngOnInit() {
-        this.loadResultList();
+        this.countSelectedLottoUser(this.loggedinUser);
     }
 
-    loadResultList() {
-        this.http.post<any>(this.serverUrl + '/get-result-lotto', this.currentUser).subscribe(result => {
+    pageChanged(event) {
+        this.offset = event.pageSize * event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.loadUserLotto(this.offset, this.pageSize);
+    }
+
+    async countSelectedLottoUser(loggedinUser) {
+        await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {loggedinUser}).subscribe(result => {
+            this.numberOfLotto = result.data;
+        });
+        await this.loadUserLotto(this.offset, this.pageSize);
+    }
+
+    loadUserLotto(offsetUser, pageSizeUser) {
+        const selectedUser = this.loggedinUser;
+        this.http.post<any>(this.serverUrl + '/get-user-selected-lotto-paginate',
+        {offsetUser, pageSizeUser, selectedUser}).subscribe(result => {
             this.resultList = result.data;
-            this.numberOfLotto = this.resultList.length;
             this.dataSource = new MatTableDataSource<any>(this.resultList);
-            this.dataSource.paginator = this.paginator;
         });
     }
 }
