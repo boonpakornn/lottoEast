@@ -278,7 +278,7 @@ app.post('/change-password', (req,res) => {
 });
 
 app.post('/get-user', (req,res) => {
-    UserModel.find({userName: req.body.userName, password: req.body.password},(err, doc) => {
+    UserModel.find({userName: req.body.userName, password: req.body.password}, 'userName',(err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }

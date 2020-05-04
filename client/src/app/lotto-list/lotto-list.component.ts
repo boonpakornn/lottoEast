@@ -130,11 +130,18 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         }
         else {
-        await _(this.bookData).forEach((bookNum) => {
+        await _(this.bookData).forEach((bookNum, index) => {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
-            this.processBookArray(bookArray, bookNum);
+            if(index % 50 === 0) {
+                setTimeout(() => {
+                    this.processBookArray(bookArray, bookNum);
+                }, 300);
+            }
+            else{
+                this.processBookArray(bookArray, bookNum);
+            }
         });
         }
         await setTimeout(() => {
