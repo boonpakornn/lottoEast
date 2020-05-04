@@ -329,6 +329,6 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-// server.listen(port, () => console.log('server listening on port', port))
+server.listen(port, () => console.log('server listening on port', port))
  
-app.listen(port, () => console.log('app listening on port', port))
+// app.listen(port, () => console.log('app listening on port', port))

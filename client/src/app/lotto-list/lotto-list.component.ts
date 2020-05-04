@@ -83,6 +83,7 @@ export class LottoListComponent implements OnInit {
 
         this.loadLottoListData();
         this.loadAllUser();
+        this.loadBookNumber();
         this.onValueChanges();
     }
 
@@ -107,7 +108,6 @@ export class LottoListComponent implements OnInit {
             this.dataSourceAll.paginator = this.paginatorAll;
         });
         await this.updateUserLotto();
-        await this.loadBookNumber();
     }
 
     loadAllUser() {
@@ -117,20 +117,12 @@ export class LottoListComponent implements OnInit {
         });
     }
 
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     async autoSelection() {
         await this.spinner.show();
-        // current
-        let cNum = 0;
-        let cSet = 0;
-        let cCount = 0;
-        // next
-        let nNum = 0;
-        let nSet = 0;
-        let nCount = 0;
-
-        let count = 0;
-        let previous = false;
-        let check = [];
         if (this.numberModel.num === 0) {
             alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
         }
@@ -138,50 +130,63 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         }
         else {
-            await _(this.lottoListData).forEach((element, index) => {
-                if (index !== this.lottoListData.length - 1) {
-                    cNum = element.bookNumber;
-                    cSet = Math.ceil(element.groupNumber / 5);
-                    cCount = element.countNumber;
-                    nNum = this.lottoListData[index + 1].bookNumber;
-                    nSet = Math.ceil(this.lottoListData[index + 1].groupNumber / 5);
-                    nCount = this.lottoListData[index + 1].countNumber;
-                    if (cNum === nNum && cSet === nSet && cCount === this.countNum && nCount === this.countNum) {
-                        previous = true;
+        await _(this.bookData).forEach((bookNum) => {
+            const bookArray = this.lottoListData.filter((el) => {
+                return el.bookNumber === bookNum;
+              });
+            this.processBookArray(bookArray, bookNum);
+        });
+        }
+        await setTimeout(() => {
+            this.loadLottoListData();
+        }, 2000);
+    }
+
+    async processBookArray(bookArray, bookNum) {
+        const bookNumber = bookNum;
+        const countNumber = this.countNum;
+        // current
+        let cSet = 0;
+        let cCount = 0;
+        // next
+        let nSet = 0;
+        let nCount = 0;
+
+        let count = 0;
+        let previous = false;
+        const selectedSet = [];
+
+        await _(bookArray).forEach((element, index) => {
+            if (index !== bookArray.length - 1) {
+                cSet = element.group;
+                cCount = element.countNumber;
+                nSet = bookArray[index + 1].group;
+                nCount = bookArray[index + 1].countNumber;
+                if (cSet === nSet && cCount === countNumber && nCount === countNumber) {
+                    previous = true;
+                    count++;
+                    console.log(index, bookArray.length - 2);
+                    if (index === bookArray.length - 2) {
                         count++;
-                        check.push(index);
-                        if (index === this.lottoListData.length - 2) {
-                            count++;
-                            check.push(index + 1);
-                            if (count >= this.numberModel.num) {
-                                const bookNumber = this.lottoListData[check[0]].bookNumber;
-                                const countNumber = this.countNum;
-                                const groupNumber = this.lottoListData[check[0]].group;
-                                this.updateSetLotto(bookNumber, countNumber, groupNumber);
-                            }
-                        }
-                    }
-                    else {
-                        if (previous === true) {
-                            previous = false;
-                            count++;
-                            check.push(index);
-                        }
                         if (count >= this.numberModel.num) {
-                            const bookNumber = this.lottoListData[check[0]].bookNumber;
-                            const countNumber = this.countNum;
-                            const groupNumber = this.lottoListData[check[0]].group;
-                            this.updateSetLotto(bookNumber, countNumber, groupNumber);
+                            selectedSet.push(cSet);
+                            count = 0;
                         }
-                        check = [];
-                        count = 0;
                     }
                 }
-            });
-            await setTimeout(() => {
-                this.loadLottoListData();
-            }, 2000);
-        }
+                else {
+                    if (previous === true) {
+                        previous = false;
+                        count++;
+                    }
+                    if (count >= this.numberModel.num) {
+                        selectedSet.push(cSet);
+                        count = 0;
+                        }
+                    }
+            }
+        });
+        this.updateSetLotto(bookNumber, countNumber, selectedSet);
     }
 
     async updateClickedLotto(data) {
@@ -213,6 +218,7 @@ export class LottoListComponent implements OnInit {
 
     async deleteAll() {
         await this.lottoService.deleteAllLotto();
+        await this.loadBookNumber();
     }
 
     async deleteAllLotto() {
