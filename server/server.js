@@ -60,12 +60,26 @@ app.post('/add-lotto', (req,res) => {
     })
 });
 
-app.post('/get-lotto', (req,res) => {
-    LottoModel.find({sender: req.body.currentUser},(err, doc) => {
+app.post('/get-user-lotto-paginate', (req,res) => {
+    var offset = req.body.offset;
+    var pageSize = req.body.pageSize;
+    var sender = req.body.loggedinUser;
+    
+    LottoModel.paginate({sender: sender}, {offset: offset, limit: pageSize, sort: {bookNumber: 1, countNumber: 1, groupNumber: 1}}, function(err, doc) {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+        res.json({result: 'success', data: doc.docs})
+    })
+});
+
+app.post('/get-user-count', (req,res) => {
+    var sender = req.body.loggedinUser;
+    LottoModel.countDocuments({sender: sender}, (err, count) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: count})
     })
 });
 
@@ -101,6 +115,17 @@ app.post('/get-all-lotto', (req,res) => {
     })
 });
 
+app.post('/get-all-lotto-paginate', (req,res) => {
+    var offset = req.body.offset;
+    var pageSize = req.body.pageSize;
+    LottoModel.paginate({}, { offset: offset, limit: pageSize,sort: {bookNumber: 1, countNumber: 1, groupNumber: 1}}, function(err, doc) {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc.docs})
+    })
+});
+
 app.get('/get-count', (req,res) => {
     LottoModel.countDocuments({}, (err, count) => {
         if (err){
@@ -119,18 +144,6 @@ app.post('/get-user-lotto', (req,res) => {
         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
 });
-
-app.post('/get-lotto-paginate', (req,res) => {
-    var offset = req.body.offset;
-    var pageSize = req.body.pageSize;
-    LottoModel.paginate({}, { offset: offset, limit: pageSize}, function(err, doc) {
-        if (err){
-            res.json({result: 'failed'});
-        }
-        res.json({result: 'success', data: _.orderBy(doc.docs, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
-    })
-});
-
 
 app.post('/get-result-lotto', (req,res) => {
     var currentUser = req.body.currentUser;

@@ -90,7 +90,7 @@ export class LottoListComponent implements OnInit {
             countSpec: this.countSpec
         });
 
-        this.loadLottoPaginateData(0, 10);
+        this.loadLottoPaginateData(this.offset, this.pageSize);
         this.loadAllUser();
         this.loadBookNumber();
         this.onValueChanges();
@@ -108,6 +108,7 @@ export class LottoListComponent implements OnInit {
         this.pageSize = event.pageSize;
         this.loadLottoPaginateData(this.offset, this.pageSize);
     }
+
     async loadBookNumber() {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
@@ -123,7 +124,7 @@ export class LottoListComponent implements OnInit {
     }
 
     async loadLottoPaginateData(offset, pageSize) {
-        await this.http.post<any>(this.serverUrl + '/get-lotto-paginate', {offset, pageSize}).subscribe(result => {
+        await this.http.post<any>(this.serverUrl + '/get-all-lotto-paginate', {offset, pageSize}).subscribe(result => {
             this.lottoPaginateData = result.data;
             console.log('paginateData', this.lottoPaginateData);
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoPaginateData);

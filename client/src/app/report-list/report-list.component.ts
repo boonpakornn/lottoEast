@@ -29,6 +29,8 @@ export class ReportListComponent implements OnInit{
     public numberOfLotto = 0;
     public currentUser = { currentUser: this.loggedinUser};
     public isAvailable = true;
+    offset = 0;
+    pageSize = 10;
 
     displayedColumns = ['bookNumber', 'countNumber', 'groupNumber', 'delete'];
     dataSource;
@@ -36,12 +38,13 @@ export class ReportListComponent implements OnInit{
     @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
     ngOnInit() {
+        this.countUserLotto(this.loggedinUser);
         this.timeService.getTime();
         this.lottoNum = new FormControl('', Validators.required);
         this.lottoForm = new FormGroup({
             lottoNum: this.lottoNum
           });
-        this.loadLottoData();
+        this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
         this.onValueChanges();
         setTimeout(() => {
             this.isAvailable = this.timeService.compareTime();
@@ -84,12 +87,25 @@ export class ReportListComponent implements OnInit{
         this.lottoForm.reset({
             lottoNum: ''
           });
+    }
 
+    pageChanged(event) {
+        console.log('pageChanged', event);
+        this.offset = event.pageSize * event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
     }
 
     async submitLottoData(data) {
             await this.lottoService.addLotto(data);
-            await this.loadLottoData();
+            await this.countUserLotto(this.loggedinUser);
+            await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
+    }
+
+    countUserLotto(loggedinUser) {
+        this.http.post<any>(this.serverUrl + '/get-user-count', {loggedinUser}).subscribe(result => {
+            this.numberOfLotto = result.data;
+        });
     }
 
     openConfirmationDialog(data) {
@@ -101,16 +117,15 @@ export class ReportListComponent implements OnInit{
 
     async deleteLotto(data) {
         await this.lottoService.deleteLotto(data);
-        await this.loadLottoData();
+        await this.countUserLotto(this.loggedinUser);
+        await await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
     }
 
-    loadLottoData() {
-        this.http.post<any>(this.serverUrl + '/get-lotto', this.currentUser).subscribe(result => {
+    loadLottoPaginateData(offset, pageSize, loggedinUser) {
+        this.http.post<any>(this.serverUrl + '/get-user-lotto-paginate', {offset, pageSize, loggedinUser}).subscribe(result => {
             this.lottoData = result.data;
-            console.log('lottoData', this.lottoData);
-            this.numberOfLotto = this.lottoData.length;
+            console.log('paginateData', this.lottoData);
             this.dataSource = new MatTableDataSource<any>(this.lottoData);
-            this.dataSource.paginator = this.paginator;
-    });
+        });
     }
 }
