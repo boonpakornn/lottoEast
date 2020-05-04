@@ -106,19 +106,19 @@ app.post('/find-duplicate-lotto', (req,res) => {
     })
 });
 
-app.post('/get-all-lotto', (req,res) => {
-    LottoModel.find({}, (err, doc) => {
-        if (err){
-            res.json({result: 'failed'});
-        }
-        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
-    })
-});
+// app.post('/get-all-lotto', (req,res) => {
+//     LottoModel.find({}, (err, doc) => {
+//         if (err){
+//             res.json({result: 'failed'});
+//         }
+//         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+//     })
+// });
 
 app.post('/get-all-lotto-paginate', (req,res) => {
     var offset = req.body.offset;
     var pageSize = req.body.pageSize;
-    LottoModel.paginate({}, { offset: offset, limit: pageSize,sort: {bookNumber: 1, countNumber: 1, groupNumber: 1}}, function(err, doc) {
+    LottoModel.paginate({}, { offset: offset, limit: pageSize, sort: {bookNumber: 1, countNumber: 1, groupNumber: 1}}, function(err, doc) {
         if (err){
             res.json({result: 'failed'});
         }
@@ -142,6 +142,28 @@ app.post('/get-user-lotto', (req,res) => {
             res.json({result: 'failed'});
         }
         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+    })
+});
+
+app.post('/get-user-selected-lotto-paginate', (req,res) => {
+    var offset = req.body.offsetUser;
+    var pageSize = req.body.pageSizeUser;
+    var selectedUser = req.body.selectedUser;
+    LottoModel.paginate({sender: selectedUser, status: 'True'}, {offset: offset, limit: pageSize, sort: {bookNumber: 1, countNumber: 1, groupNumber: 1}}, function(err, doc) {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc.docs})
+    })
+});
+
+app.post('/get-user-selected-count', (req,res) => {
+    var sender = req.body.loggedinUser;
+    LottoModel.countDocuments({sender: sender, status: 'True'}, (err, count) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: count})
     })
 });
 
@@ -361,6 +383,6 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-server.listen(port, () => console.log('server listening on port', port))
+// server.listen(port, () => console.log('server listening on port', port))
  
-// app.listen(port, () => console.log('app listening on port', port))
+app.listen(port, () => console.log('app listening on port', port))

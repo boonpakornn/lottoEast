@@ -77,8 +77,7 @@ export class ReportListComponent implements OnInit{
                     this.submitLottoData(data);
                 }
             });
-            }
-            else {
+            } else {
                 alert('ขออภัย ขณะนี้อยู่นอกเวลาเปิดรับสลาก กรุณาติดต่อผู้ดูแลระบบ');
             }
         } else {
@@ -90,7 +89,6 @@ export class ReportListComponent implements OnInit{
     }
 
     pageChanged(event) {
-        console.log('pageChanged', event);
         this.offset = event.pageSize * event.pageIndex;
         this.pageSize = event.pageSize;
         this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);

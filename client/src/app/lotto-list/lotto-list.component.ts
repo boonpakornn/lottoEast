@@ -36,6 +36,7 @@ export class LottoListComponent implements OnInit {
 
     bookData: any;
     numberOfLotto: number;
+    numberOfSelectedLottoUser: number;
 
     userList: any = [];
     selectedUser: string;
@@ -48,6 +49,9 @@ export class LottoListComponent implements OnInit {
 
     pageSize = 10;
     offset = 0;
+
+    pageSizeUser = 10;
+    offsetUser = 0;
 
     displayedColumnsAll = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
     dataSourceAll;
@@ -90,7 +94,7 @@ export class LottoListComponent implements OnInit {
             countSpec: this.countSpec
         });
 
-        this.loadLottoPaginateData(this.offset, this.pageSize);
+        this.loadLottoData(this.offset, this.pageSize);
         this.loadAllUser();
         this.loadBookNumber();
         this.onValueChanges();
@@ -102,17 +106,21 @@ export class LottoListComponent implements OnInit {
         });
     }
 
-    pageChanged(event){
-        console.log('pageChanged', event);
+    pageChanged(event) {
         this.offset = event.pageSize * event.pageIndex;
         this.pageSize = event.pageSize;
-        this.loadLottoPaginateData(this.offset, this.pageSize);
+        this.loadLottoData(this.offset, this.pageSize);
+    }
+
+    userPageChanged(event) {
+        this.offsetUser = event.pageSize * event.pageIndex;
+        this.pageSizeUser = event.pageSize;
+        this.loadUserLotto(this.offsetUser, this.pageSizeUser);
     }
 
     async loadBookNumber() {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
-            console.log('bookData', this.bookData);
             this.loadingTime = this.bookData * this.timeFactor;
         });
     }
@@ -123,35 +131,27 @@ export class LottoListComponent implements OnInit {
         });
     }
 
-    async loadLottoPaginateData(offset, pageSize) {
+    async loadLottoData(offset, pageSize) {
         await this.http.post<any>(this.serverUrl + '/get-all-lotto-paginate', {offset, pageSize}).subscribe(result => {
             this.lottoPaginateData = result.data;
-            console.log('paginateData', this.lottoPaginateData);
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoPaginateData);
         });
-        await this.updateUserLotto();
+        await this.loadUserLotto(this.offsetUser, this.pageSizeUser);
     }
 
     loadAllUser() {
         this.http.get<any>(this.serverUrl + '/get-all-user').subscribe(result => {
             this.userList = result.data;
-            console.log('userList', this.userList);
         });
-    }
-
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     async autoSelection() {
         await this.spinner.show();
         if (this.numberModel.num === 0) {
             alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
-        }
-        else if (this.countNum < 1 || this.countNum > 99 ) {
+        } else if (this.countNum < 1 || this.countNum > 99 ) {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
-        }
-        else {
+        } else {
         await _(this.bookData).forEach((bookNum, index) => {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
@@ -160,7 +160,7 @@ export class LottoListComponent implements OnInit {
         });
         }
         await setTimeout(() => {
-            this.loadLottoPaginateData(this.offset, this.pageSize);
+            this.loadLottoData(this.offset, this.pageSize);
         }, 2000);
     }
 
@@ -187,7 +187,6 @@ export class LottoListComponent implements OnInit {
                 if (cSet === nSet && cCount === countNumber && nCount === countNumber) {
                     previous = true;
                     count++;
-                    console.log(index, bookArray.length - 2);
                     if (index === bookArray.length - 2) {
                         count++;
                         if (count >= this.numberModel.num) {
@@ -195,8 +194,7 @@ export class LottoListComponent implements OnInit {
                             count = 0;
                         }
                     }
-                }
-                else {
+                } else {
                     if (previous === true) {
                         previous = false;
                         count++;
@@ -214,7 +212,7 @@ export class LottoListComponent implements OnInit {
     async updateClickedLotto(data) {
         await this.updateLotto(data);
         await setTimeout(() => {
-            this.loadLottoPaginateData(this.offset, this.pageSize);
+            this.loadLottoData(this.offset, this.pageSize);
         }, 100);
     }
 
@@ -230,7 +228,7 @@ export class LottoListComponent implements OnInit {
         await this.spinner.show();
         await this.lottoService.updateAllLottoToFalse();
         await setTimeout(() => {
-            this.loadLottoPaginateData(this.offset, this.pageSize);
+            this.loadLottoData(this.offset, this.pageSize);
         }, 2000);
     }
     openConfirmationDialog() {
@@ -247,20 +245,25 @@ export class LottoListComponent implements OnInit {
 
     async deleteAllLotto() {
         await this.deleteAll();
-        await this.loadLottoPaginateData(this.offset, this.pageSize);
+        await this.loadLottoData(this.offset, this.pageSize);
     }
 
-    async updateUserLotto() {
+    async loadUserLotto(offsetUser, pageSizeUser) {
         if (this.selectedUser !== undefined) {
-            await this.http.post<any>(this.serverUrl + '/get-user-lotto',
-            {userName: this.selectedUser}).subscribe(result => {
+            const selectedUser = this.selectedUser;
+            await this.http.post<any>(this.serverUrl + '/get-user-selected-lotto-paginate',
+            {offsetUser, pageSizeUser, selectedUser}).subscribe(result => {
                 this.lottoUserData = result.data;
                 this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
-                this.dataSourceUser.paginator = this.paginatorUser;
-                this.isDisable = this.lottoUserData.length > 0 ? false : true;
             });
         }
         await this.spinner.hide();
+    }
+
+    countSelectedLottoUser(selectedUser) {
+        this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
+            this.numberOfSelectedLottoUser = result.data;
+        });
     }
 
     saveTime(values) {
@@ -269,21 +272,18 @@ export class LottoListComponent implements OnInit {
             this.isNumeric(values.endHour) &&
             this.isNumeric(values.endMinute)) {
             this.http.post<any>(this.serverUrl + '/update-time', values).subscribe(result => {
-                console.log('result', result);
                 this.timeService.getTime();
             });
 
-        }
-        else {
+        } else {
             alert('กรุณากรอกข้อมูลให้ครบและเป็นตัวเลขเวลาเท่านั้น');
         }
     }
 
     saveCount(values) {
-        if (this.isNumeric(values.countSpec)){
+        if (this.isNumeric(values.countSpec)) {
             this.countNum = values.countSpec;
-        }
-        else {
+        } else {
             alert('กรุณากรอกข้อมูลและเป็นตัวเลขงวดเท่านั้น (1-99)');
         }
     }

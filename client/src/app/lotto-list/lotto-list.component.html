@@ -124,7 +124,7 @@
         </div>
         <mat-form-field>
           <mat-label>ชื่อผู้ใช้</mat-label>
-          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="updateUserLotto()">
+          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="loadUserLotto(offsetUser, pageSizeUser)">
             <mat-option *ngFor="let user of userList" [value]="user.userName">
               {{user.userName}}
             </mat-option>
@@ -153,9 +153,11 @@
       <mat-row *matRowDef="let row; columns: displayedColumnsUser;"></mat-row>
     </mat-table>
     <mat-paginator #paginatorUser
+                     [length]="numberOfSelectedLottoUser"
                      [pageSize]="10"
                      [pageSizeOptions]="[5, 10, 20]"
-                     [showFirstLastButtons]="true">
-    </mat-paginator>
+                     [showFirstLastButtons]="true"
+                     (page)="userPageChanged($event)">
+      </mat-paginator>
     </div>
 </div>
