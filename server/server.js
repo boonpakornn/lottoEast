@@ -9,7 +9,6 @@ const LottoModel = require('./lotto_schema');
 const TimeModel = require('./time_schema');
 const _ = require('lodash');
 
-
 require('./db');
 
 app.use(bodyParser.json());
@@ -102,6 +101,15 @@ app.post('/get-all-lotto', (req,res) => {
     })
 });
 
+app.get('/get-count', (req,res) => {
+    LottoModel.countDocuments({}, (err, count) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: count})
+    })
+});
+
 app.post('/get-user-lotto', (req,res) => {
     var userName = req.body.userName;
     LottoModel.find({sender: userName, status: 'True'} ,(err, doc) => {
@@ -109,6 +117,17 @@ app.post('/get-user-lotto', (req,res) => {
             res.json({result: 'failed'});
         }
         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+    })
+});
+
+app.post('/get-lotto-paginate', (req,res) => {
+    var offset = req.body.offset;
+    var pageSize = req.body.pageSize;
+    LottoModel.paginate({}, { offset: offset, limit: pageSize}, function(err, doc) {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: _.orderBy(doc.docs, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
 });
 

@@ -106,12 +106,12 @@
       <mat-header-row *matHeaderRowDef="displayedColumnsAll"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumnsAll;"></mat-row>
     </mat-table>
-  
-    
       <mat-paginator #paginatorAll
+                     [length]="numberOfLotto"
                      [pageSize]="10"
                      [pageSizeOptions]="[5, 10, 20]"
-                     [showFirstLastButtons]="true">
+                     [showFirstLastButtons]="true"
+                     (page)="pageChanged($event)">
       </mat-paginator>
       <hr>
       <div class='export'>

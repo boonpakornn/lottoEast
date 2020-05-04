@@ -31,15 +31,23 @@ export class LottoListComponent implements OnInit {
     numberModel = { num: 0, name: '', label: ''};
 
     lottoListData: any;
+    lottoPaginateData: any;
+    lottoUserData: any;
+
+    bookData: any;
     numberOfLotto: number;
-    timer: any;
+
     userList: any = [];
     selectedUser: string;
-    lottoUserData: any;
+
     isDisable = true;
-    bookData: any;
+
+    timer: any;
     loadingTime: number;
     timeFactor = 500;
+
+    pageSize = 10;
+    offset = 0;
 
     displayedColumnsAll = ['bookNumber', 'countNumber', 'groupNumber', 'sender', 'status', 'selected'];
     dataSourceAll;
@@ -59,6 +67,7 @@ export class LottoListComponent implements OnInit {
 
     ngOnInit() {
         this.spinner.show();
+        this.countLotto();
         this.setNumber = [
             { num: 2, name: '2 ชุด', label: 'ขั้นต่ำ 2 ชุด' },
             { num: 3, name: '3 ชุด', label: 'ขั้นต่ำ 3 ชุด'},
@@ -81,7 +90,7 @@ export class LottoListComponent implements OnInit {
             countSpec: this.countSpec
         });
 
-        this.loadLottoListData();
+        this.loadLottoPaginateData(0, 10);
         this.loadAllUser();
         this.loadBookNumber();
         this.onValueChanges();
@@ -93,6 +102,12 @@ export class LottoListComponent implements OnInit {
         });
     }
 
+    pageChanged(event){
+        console.log('pageChanged', event);
+        this.offset = event.pageSize * event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.loadLottoPaginateData(this.offset, this.pageSize);
+    }
     async loadBookNumber() {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
@@ -100,12 +115,18 @@ export class LottoListComponent implements OnInit {
             this.loadingTime = this.bookData * this.timeFactor;
         });
     }
-    async loadLottoListData() {
-        await this.http.post<any>(this.serverUrl + '/get-all-lotto', {}).subscribe(result => {
-            this.lottoListData = result.data;
-            this.numberOfLotto = this.lottoListData.length;
-            this.dataSourceAll = new MatTableDataSource<any>(this.lottoListData);
-            this.dataSourceAll.paginator = this.paginatorAll;
+
+    countLotto() {
+        this.http.get<any>(this.serverUrl + '/get-count').subscribe(result => {
+            this.numberOfLotto = result.data;
+        });
+    }
+
+    async loadLottoPaginateData(offset, pageSize) {
+        await this.http.post<any>(this.serverUrl + '/get-lotto-paginate', {offset, pageSize}).subscribe(result => {
+            this.lottoPaginateData = result.data;
+            console.log('paginateData', this.lottoPaginateData);
+            this.dataSourceAll = new MatTableDataSource<any>(this.lottoPaginateData);
         });
         await this.updateUserLotto();
     }
@@ -134,18 +155,11 @@ export class LottoListComponent implements OnInit {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
-            if(index % 50 === 0) {
-                setTimeout(() => {
-                    this.processBookArray(bookArray, bookNum);
-                }, 300);
-            }
-            else{
-                this.processBookArray(bookArray, bookNum);
-            }
+            this.processBookArray(bookArray, bookNum);
         });
         }
         await setTimeout(() => {
-            this.loadLottoListData();
+            this.loadLottoPaginateData(this.offset, this.pageSize);
         }, 2000);
     }
 
@@ -198,7 +212,9 @@ export class LottoListComponent implements OnInit {
 
     async updateClickedLotto(data) {
         await this.updateLotto(data);
-        await this.loadLottoListData();
+        await setTimeout(() => {
+            this.loadLottoPaginateData(this.offset, this.pageSize);
+        }, 100);
     }
 
     updateSetLotto(bookNumber, countNumber, groupNumber) {
@@ -213,7 +229,7 @@ export class LottoListComponent implements OnInit {
         await this.spinner.show();
         await this.lottoService.updateAllLottoToFalse();
         await setTimeout(() => {
-            this.loadLottoListData();
+            this.loadLottoPaginateData(this.offset, this.pageSize);
         }, 2000);
     }
     openConfirmationDialog() {
@@ -230,7 +246,7 @@ export class LottoListComponent implements OnInit {
 
     async deleteAllLotto() {
         await this.deleteAll();
-        await this.loadLottoListData();
+        await this.loadLottoPaginateData(this.offset, this.pageSize);
     }
 
     async updateUserLotto() {
