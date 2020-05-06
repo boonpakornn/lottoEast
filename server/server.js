@@ -60,6 +60,15 @@ app.post('/add-lotto', (req,res) => {
     })
 });
 
+app.get('/get-all-lotto', (req,res) => {
+    LottoModel.find({},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc})
+    })
+});
+
 app.post('/get-user-lotto-paginate', (req,res) => {
     var offset = req.body.offset;
     var pageSize = req.body.pageSize;
@@ -384,6 +393,6 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-server.listen(port, () => console.log('server listening on port', port))
+// server.listen(port, () => console.log('server listening on port', port))
  
-// app.listen(port, () => console.log('app listening on port', port))
+app.listen(port, () => console.log('app listening on port', port))

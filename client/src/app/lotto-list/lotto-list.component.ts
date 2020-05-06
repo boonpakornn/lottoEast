@@ -71,6 +71,7 @@ export class LottoListComponent implements OnInit {
     ngOnInit() {
         this.spinner.show();
         this.countLotto();
+        this.loadAllLotto();
         this.setNumber = [
             { num: 2, name: '2 ชุด', label: 'ขั้นต่ำ 2 ชุด' },
             { num: 3, name: '3 ชุด', label: 'ขั้นต่ำ 3 ชุด'},
@@ -117,6 +118,12 @@ export class LottoListComponent implements OnInit {
         this.loadUserLotto(this.offsetUser, this.pageSizeUser);
     }
 
+    loadAllLotto() {
+        this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
+            this.lottoListData = result.data;
+        });
+    }
+
     async loadBookNumber() {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
@@ -152,7 +159,7 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         } else {
         await _(this.bookData).forEach((bookNum, index) => {
-            const bookArray = this.lottoPaginateData.filter((el) => {
+            const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
             this.processBookArray(bookArray, bookNum);
