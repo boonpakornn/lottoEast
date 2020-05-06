@@ -269,6 +269,7 @@ export class LottoListComponent implements OnInit {
     async countSelectedLottoUser(selectedUser) {
         await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
             this.numberOfSelectedLottoUser = result.data;
+            this.isDisable = this.numberOfSelectedLottoUser > 0 ? false : true;
         });
         await this.loadUserLotto(this.offsetUser, this.pageSizeUser);
     }

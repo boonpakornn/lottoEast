@@ -16,7 +16,7 @@ export class ResultComponent implements OnInit {
     constructor(private http: HttpClient,
                 private authService: AuthService) {
     }
-    numberOfLotto = 0;
+    numberOfLotto;
     resultList: any;
     public loggedinUser = this.authService.currentUser.userName;
     public currentUser = { currentUser: this.loggedinUser, status: 'True'};
@@ -38,8 +38,8 @@ export class ResultComponent implements OnInit {
         this.loadUserLotto(this.offset, this.pageSize);
     }
 
-    async countSelectedLottoUser(loggedinUser) {
-        await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {loggedinUser}).subscribe(result => {
+    async countSelectedLottoUser(selectedUser) {
+        await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
             this.numberOfLotto = result.data;
         });
         await this.loadUserLotto(this.offset, this.pageSize);
