@@ -119,7 +119,6 @@
           <div class="col-sm-6"><h3>Export Lotto Data</h3></div>
           <div class="col-sm-6">
             <button class="btn-primary btn-export" (click)="exporter.exportTable('xlsx', {fileName: this.selectedUser})" [disabled]= "isDisable">EXPORT AS EXCEL</button>
-            <!-- <button class="btn-primary btn-export" (click)="exporter.exportTable('csv', {fileName: this.selectedUser})" [disabled]= "isDisable">CSV</button> -->
           </div>
         </div>
         <mat-form-field>
@@ -153,11 +152,9 @@
       <mat-row *matRowDef="let row; columns: displayedColumnsUser;"></mat-row>
     </mat-table>
     <mat-paginator #paginatorUser
-                     [length]="numberOfSelectedLottoUser"
                      [pageSize]="10"
                      [pageSizeOptions]="[5, 10, 20]"
-                     [showFirstLastButtons]="true"
-                     (page)="userPageChanged($event)">
+                     [showFirstLastButtons]="true">
       </mat-paginator>
     </div>
 </div>

@@ -115,7 +115,7 @@ export class LottoListComponent implements OnInit {
     userPageChanged(event) {
         this.offsetUser = event.pageSize * event.pageIndex;
         this.pageSizeUser = event.pageSize;
-        this.loadUserLotto(this.offsetUser, this.pageSizeUser);
+        this.loadUserLotto();
     }
 
     loadAllLotto() {
@@ -254,13 +254,13 @@ export class LottoListComponent implements OnInit {
         await this.loadLottoData(this.offset, this.pageSize);
     }
 
-    async loadUserLotto(offsetUser, pageSizeUser) {
+    async loadUserLotto() {
         if (this.selectedUser !== undefined) {
             const selectedUser = this.selectedUser;
-            await this.http.post<any>(this.serverUrl + '/get-user-selected-lotto-paginate',
-            {offsetUser, pageSizeUser, selectedUser}).subscribe(result => {
+            await this.http.post<any>(this.serverUrl + '/get-user-selected-lotto', {selectedUser}).subscribe(result => {
                 this.lottoUserData = result.data;
                 this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
+                this.dataSourceUser.paginator = this.paginatorUser;
             });
         }
         await this.spinner.hide();
@@ -271,7 +271,7 @@ export class LottoListComponent implements OnInit {
             this.numberOfSelectedLottoUser = result.data;
             this.isDisable = this.numberOfSelectedLottoUser > 0 ? false : true;
         });
-        await this.loadUserLotto(this.offsetUser, this.pageSizeUser);
+        await this.loadUserLotto();
     }
 
     saveTime(values) {
