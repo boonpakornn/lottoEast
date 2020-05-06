@@ -16,7 +16,7 @@ export class ResultComponent implements OnInit {
     constructor(private http: HttpClient,
                 private authService: AuthService) {
     }
-    numberOfLotto: number;
+    numberOfLotto = 0;
     resultList: any;
     public loggedinUser = this.authService.currentUser.userName;
     public currentUser = { currentUser: this.loggedinUser, status: 'True'};

@@ -34,7 +34,7 @@ export class LottoListComponent implements OnInit {
     lottoUserData: any;
 
     bookData: any;
-    numberOfLotto: number;
+    numberOfLotto = 0;
     numberOfSelectedLottoUser: number;
 
     userList: any = [];
@@ -135,7 +135,7 @@ export class LottoListComponent implements OnInit {
             this.lottoPaginateData = result.data;
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoPaginateData);
         });
-        await this.loadUserLotto(this.offsetUser, this.pageSizeUser);
+        await this.countSelectedLottoUser(this.selectedUser);
     }
 
     loadAllUser() {
@@ -259,10 +259,12 @@ export class LottoListComponent implements OnInit {
         await this.spinner.hide();
     }
 
-    countSelectedLottoUser(selectedUser) {
-        this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
+    async countSelectedLottoUser(selectedUser) {
+        await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
             this.numberOfSelectedLottoUser = result.data;
         });
+        console.log('countselected', this.numberOfSelectedLottoUser);
+        await this.loadUserLotto(this.offsetUser, this.pageSizeUser);
     }
 
     saveTime(values) {

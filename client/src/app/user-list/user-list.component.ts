@@ -17,6 +17,9 @@ export class UserListComponent implements OnInit {
 
   displayedColumns = ['userName', 'firstName', 'lastName', 'telNo', 'remark', 'edit'];
   dataSource;
+  offset = 0;
+  pageSize = 10;
+  numberOfUser = 0;
 
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   constructor(private http: HttpClient,
@@ -26,14 +29,26 @@ export class UserListComponent implements OnInit {
   }
 
        ngOnInit() {
-        this.getUserData();
+        this.countUser();
        }
 
-       getUserData() {
-        this.http.get<any>(this.serverUrl + '/get-all-user').subscribe(result => {
+       async countUser() {
+        await this.http.get<any>(this.serverUrl + '/get-user-count').subscribe(result => {
+            this.numberOfUser = result.data;
+        });
+        await this.getUserData(this.offset, this.pageSize);
+    }
+
+       pageChanged(event) {
+        this.offset = event.pageSize * event.pageIndex;
+        this.pageSize = event.pageSize;
+        this.getUserData(this.offset, this.pageSize);
+    }
+
+       getUserData(offset, pageSize) {
+        this.http.post<any>(this.serverUrl + '/get-all-user-paginate', {offset, pageSize}).subscribe(result => {
             this.userData = result.data;
             this.dataSource = new MatTableDataSource<any>(this.userData);
-            this.dataSource.paginator = this.paginator;
         });
        }
 

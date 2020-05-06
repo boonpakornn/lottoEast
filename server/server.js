@@ -149,7 +149,7 @@ app.post('/get-user-selected-lotto-paginate', (req,res) => {
 });
 
 app.post('/get-user-selected-count', (req,res) => {
-    var sender = req.body.loggedinUser;
+    var sender = req.body.selectedUser;
     LottoModel.countDocuments({sender: sender, status: 'True'}, (err, count) => {
         if (err){
             res.json({result: 'failed'});
@@ -157,17 +157,6 @@ app.post('/get-user-selected-count', (req,res) => {
         res.json({result: 'success', data: count})
     })
 });
-
-// app.post('/get-result-lotto', (req,res) => {
-//     var currentUser = req.body.currentUser;
-//     var status = req.body.status;
-//     LottoModel.find({sender: currentUser, status: status} ,(err, doc) => {
-//         if (err){
-//             res.json({result: 'failed'});
-//         }
-//         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
-//     })
-// });
 
 app.post('/update-lotto', (req,res) => {
     var book = req.body.bookNumber;
@@ -340,6 +329,27 @@ app.get('/get-all-user', (req,res) => {
     })
 });
 
+app.get('/get-user-count', (req,res) => {
+    UserModel.countDocuments({}, (err, count) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: count})
+    })
+});
+
+
+app.post('/get-all-user-paginate', (req,res) => {
+    var offset = req.body.offset;
+    var pageSize = req.body.pageSize;
+    UserModel.paginate({},{ offset: offset, limit: pageSize, select: {userName: 1,firstName: 1,lastName: 1,telNo: 1,remark: 1}},(err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc.docs})
+    })
+});
+
 // ==========  Time  ==========
 
 app.get('/init-time', (req,res) => {
@@ -374,6 +384,6 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-// server.listen(port, () => console.log('server listening on port', port))
+server.listen(port, () => console.log('server listening on port', port))
  
-app.listen(port, () => console.log('app listening on port', port))
+// app.listen(port, () => console.log('app listening on port', port))

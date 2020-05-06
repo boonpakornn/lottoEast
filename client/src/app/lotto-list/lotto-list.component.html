@@ -124,7 +124,7 @@
         </div>
         <mat-form-field>
           <mat-label>ชื่อผู้ใช้</mat-label>
-          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="loadUserLotto(offsetUser, pageSizeUser)">
+          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="countSelectedLottoUser(selectedUser)">
             <mat-option *ngFor="let user of userList" [value]="user.userName">
               {{user.userName}}
             </mat-option>
