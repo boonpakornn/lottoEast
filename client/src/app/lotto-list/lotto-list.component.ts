@@ -152,7 +152,7 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         } else {
         await _(this.bookData).forEach((bookNum, index) => {
-            const bookArray = this.lottoListData.filter((el) => {
+            const bookArray = this.lottoPaginateData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
             this.processBookArray(bookArray, bookNum);
@@ -263,7 +263,6 @@ export class LottoListComponent implements OnInit {
         await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
             this.numberOfSelectedLottoUser = result.data;
         });
-        console.log('countselected', this.numberOfSelectedLottoUser);
         await this.loadUserLotto(this.offsetUser, this.pageSizeUser);
     }
 
