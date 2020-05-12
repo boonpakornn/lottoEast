@@ -31,8 +31,7 @@ export class TimeService {
                 this.startMinute = result.data[0].startMinute;
                 this.endHour = result.data[0].endHour;
                 this.endMinute = result.data[0].endMinute;
-            }
-            else {
+            } else {
                 this.initTime();
             }
         });
@@ -48,10 +47,9 @@ export class TimeService {
         const currentTime = new Date();
         currentTime.setHours(currentHour, currentMinute, 0);
 
-        if (startTime < currentTime && currentTime < endTime) {
+        if (startTime <= currentTime && currentTime <= endTime) {
         return true;
-        }
-        else {
+        } else {
         return false;
         }
     }

@@ -127,6 +127,7 @@ export class LottoListComponent implements OnInit {
     async loadBookNumber() {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
+            console.log('bookData :', this.bookData);
             this.loadingTime = this.bookData * this.timeFactor;
         });
     }
@@ -162,7 +163,14 @@ export class LottoListComponent implements OnInit {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
-            this.processBookArray(bookArray, bookNum);
+            if (index % 50 === 0) {
+                setTimeout(() => {
+                    this.processBookArray(bookArray, bookNum);
+                    console.log('2sec');
+                }, 2000);
+            } else {
+                this.processBookArray(bookArray, bookNum);
+            }
         });
         }
         await setTimeout(() => {
