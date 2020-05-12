@@ -128,7 +128,8 @@ export class LottoListComponent implements OnInit {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
             console.log('bookData :', this.bookData);
-            this.loadingTime = this.bookData * this.timeFactor < 2000 ? 2000 : this.bookData * this.timeFactor;
+            this.loadingTime = this.bookData.length * this.timeFactor < 2000 ? 2000 : this.bookData.length * this.timeFactor;
+            console.log('loadingTime :', this.loadingTime);
         });
     }
 
