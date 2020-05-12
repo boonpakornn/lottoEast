@@ -44,7 +44,7 @@ export class LottoListComponent implements OnInit {
 
     timer: any;
     loadingTime: number;
-    timeFactor = 500;
+    timeFactor = 20;
 
     pageSize = 10;
     offset = 0;
@@ -128,7 +128,7 @@ export class LottoListComponent implements OnInit {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
             console.log('bookData :', this.bookData);
-            this.loadingTime = this.bookData * this.timeFactor;
+            this.loadingTime = this.bookData * this.timeFactor < 2000 ? 2000 : this.bookData * this.timeFactor;
         });
     }
 
@@ -163,19 +163,12 @@ export class LottoListComponent implements OnInit {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
-            if (index % 50 === 0) {
-                setTimeout(() => {
-                    this.processBookArray(bookArray, bookNum);
-                    console.log('2sec');
-                }, 2000);
-            } else {
-                this.processBookArray(bookArray, bookNum);
-            }
+            this.processBookArray(bookArray, bookNum);
         });
         }
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
-        }, 2000);
+        }, this.loadingTime);
     }
 
     async processBookArray(bookArray, bookNum) {
@@ -243,7 +236,7 @@ export class LottoListComponent implements OnInit {
         await this.lottoService.updateAllLottoToFalse();
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
-        }, 2000);
+        }, 5000);
     }
     openConfirmationDialog() {
         const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากทั้งหมด');
