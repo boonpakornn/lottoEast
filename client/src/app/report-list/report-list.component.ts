@@ -119,10 +119,24 @@ export class ReportListComponent implements OnInit{
         await await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
     }
 
+    zeroPad(num, length) {
+        return num.toString().padStart(length, '0');
+    }
+
     loadLottoPaginateData(offset, pageSize, loggedinUser) {
         this.http.post<any>(this.serverUrl + '/get-user-lotto-paginate', {offset, pageSize, loggedinUser}).subscribe(result => {
             this.lottoData = result.data;
-            console.log('paginateData', this.lottoData);
+            for (const lotto of this.lottoData) {
+                if (lotto.bookNumber.length !== 4) {
+                    lotto.bookNumber = this.zeroPad(lotto.bookNumber, 4);
+                }
+                if (lotto.countNumber.length !== 2) {
+                    lotto.countNumber = this.zeroPad(lotto.countNumber, 2);
+                }
+                if (lotto.groupNumber.length !== 2) {
+                    lotto.groupNumber = this.zeroPad(lotto.groupNumber, 2);
+                }
+            }
             this.dataSource = new MatTableDataSource<any>(this.lottoData);
         });
     }

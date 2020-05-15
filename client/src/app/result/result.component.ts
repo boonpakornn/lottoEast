@@ -45,11 +45,26 @@ export class ResultComponent implements OnInit {
         await this.loadUserLotto(this.offset, this.pageSize);
     }
 
+    zeroPad(num, length) {
+        return num.toString().padStart(length, '0');
+    }
+
     loadUserLotto(offsetUser, pageSizeUser) {
         const selectedUser = this.loggedinUser;
         this.http.post<any>(this.serverUrl + '/get-user-selected-lotto-paginate',
         {offsetUser, pageSizeUser, selectedUser}).subscribe(result => {
             this.resultList = result.data;
+            for (const lotto of this.resultList) {
+                if (lotto.bookNumber.length !== 4) {
+                    lotto.bookNumber = this.zeroPad(lotto.bookNumber, 4);
+                }
+                if (lotto.countNumber.length !== 2) {
+                    lotto.countNumber = this.zeroPad(lotto.countNumber, 2);
+                }
+                if (lotto.groupNumber.length !== 2) {
+                    lotto.groupNumber = this.zeroPad(lotto.groupNumber, 2);
+                }
+            }
             this.dataSource = new MatTableDataSource<any>(this.resultList);
         });
     }

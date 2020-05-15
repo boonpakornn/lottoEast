@@ -141,9 +141,24 @@ export class LottoListComponent implements OnInit {
         });
     }
 
+    zeroPad(num, length) {
+        return num.toString().padStart(length, '0');
+      }
+
     async loadLottoData(offset, pageSize) {
         await this.http.post<any>(this.serverUrl + '/get-all-lotto-paginate', {offset, pageSize}).subscribe(result => {
             this.lottoPaginateData = result.data;
+            for (const lotto of this.lottoPaginateData) {
+                if (lotto.bookNumber.length !== 4) {
+                    lotto.bookNumber = this.zeroPad(lotto.bookNumber, 4);
+                }
+                if (lotto.countNumber.length !== 2) {
+                    lotto.countNumber = this.zeroPad(lotto.countNumber, 2);
+                }
+                if (lotto.groupNumber.length !== 2) {
+                    lotto.groupNumber = this.zeroPad(lotto.groupNumber, 2);
+                }
+            }
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoPaginateData);
         });
         await this.countSelectedLottoUser(this.selectedUser);
