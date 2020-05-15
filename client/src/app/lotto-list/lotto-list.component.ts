@@ -143,7 +143,7 @@ export class LottoListComponent implements OnInit {
 
     zeroPad(num, length) {
         return num.toString().padStart(length, '0');
-      }
+    }
 
     async loadLottoData(offset, pageSize) {
         await this.http.post<any>(this.serverUrl + '/get-all-lotto-paginate', {offset, pageSize}).subscribe(result => {
@@ -174,8 +174,10 @@ export class LottoListComponent implements OnInit {
         await this.spinner.show();
         if (this.numberModel.num === 0) {
             alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
+            this.spinner.hide();
         } else if (this.countNum < 1 || this.countNum > 99 ) {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
+            this.spinner.hide();
         } else {
         // await _(this.bookData).forEach((bookNum, index) => {
         for (const [index, bookNum] of this.bookData.entries()) {
@@ -191,10 +193,10 @@ export class LottoListComponent implements OnInit {
                 await this.processBookArray(bookArray, bookNum);
             }
         }
-        }
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
         }, this.loadingTime);
+        }
     }
 
     async processBookArray(bookArray, bookNum) {
@@ -239,7 +241,9 @@ export class LottoListComponent implements OnInit {
                     }
             }
         });
-        this.updateSetLotto(bookNumber, countNumber, selectedSet);
+        if (selectedSet.length !== 0) {
+            this.updateSetLotto(bookNumber, countNumber, selectedSet);
+        }
     }
 
     async updateClickedLotto(data) {

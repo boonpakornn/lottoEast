@@ -44,19 +44,19 @@ app.post('/add-lotto', (req,res) => {
         book = parseInt(req.body.lottoNum.substring(0,4));
         count = parseInt(req.body.lottoNum.substring(4,6));
         group = parseInt(req.body.lottoNum.substring(6,8));
-        set = Math.ceil(group / 5);
+        set = group === 0 ? 20 : Math.ceil(group / 5);
     }
     else if(req.body.lottoNum.length === 16){
         book = parseInt(req.body.lottoNum.substring(6,10));
         count = parseInt(req.body.lottoNum.substring(2,4));
         group = parseInt(req.body.lottoNum.substring(4,6));
-        set = Math.ceil(group / 5);
+        set = group === 0 ? 20 : Math.ceil(group / 5);
     }
     LottoModel.create({bookNumber: book, countNumber: count, groupNumber: group, group: set, sender: sender, status: 'False'}, (err, doc) => {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', bookNumber : book, countNumber: count, groupNumber: group, sender: sender})
+        res.json({result: 'success', bookNumber : book, countNumber: count, groupNumber: group, group: set, sender: sender})
     })
 });
 
