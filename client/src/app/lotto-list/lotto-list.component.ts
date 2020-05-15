@@ -44,7 +44,7 @@ export class LottoListComponent implements OnInit {
 
     timer: any;
     loadingTime: number;
-    timeFactor = 1200;
+    timeFactor = 1500;
     partition = 50;
     delayTime = 0;
 
