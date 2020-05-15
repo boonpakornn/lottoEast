@@ -24,7 +24,6 @@ export class LottoService {
 
   public updateSetLotto(bookNumber, countNumber, group): any {
     this.http.post<any>(this.serverUrl + '/update-set-lotto', {bookNumber, countNumber, group}).subscribe(result => {
-      console.log('update-set', result);
   });
   }
 

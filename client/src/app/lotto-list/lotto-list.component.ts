@@ -45,6 +45,8 @@ export class LottoListComponent implements OnInit {
     timer: any;
     loadingTime: number;
     timeFactor = 5000;
+    partition = 500;
+    delayTime = 0;
 
     pageSize = 10;
     offset = 0;
@@ -128,8 +130,8 @@ export class LottoListComponent implements OnInit {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
             console.log('bookData :', this.bookData);
-            this.loadingTime = this.bookData.length < 500 ?
-             this.timeFactor : ((Math.floor(this.bookData.length / 500) + 1) * this.timeFactor);
+            this.loadingTime = this.bookData.length < this.partition ?
+             this.timeFactor : ((Math.floor(this.bookData.length / this.partition) + 1) * this.timeFactor);
         });
     }
 
@@ -161,18 +163,19 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         } else {
         // await _(this.bookData).forEach((bookNum, index) => {
-        for(const [index, bookNum] of this.bookData.entries()) {
+        for (const [index, bookNum] of this.bookData.entries()) {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
-            if (index % 500 === 0) {
+            if (Math.floor(index / this.partition) >= 1) {
+                this.delayTime = (this.timeFactor) * Math.floor(index / this.partition);
                 await setTimeout(() => {
                     this.processBookArray(bookArray, bookNum);
-                }, this.timeFactor);
+                }, this.delayTime);
             } else {
                 await this.processBookArray(bookArray, bookNum);
             }
-        };
+        }
         }
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
