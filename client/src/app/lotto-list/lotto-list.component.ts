@@ -44,8 +44,8 @@ export class LottoListComponent implements OnInit {
 
     timer: any;
     loadingTime: number;
-    timeFactor = 3000;
-    partition = 100;
+    timeFactor = 1200;
+    partition = 50;
     delayTime = 0;
 
     pageSize = 10;
@@ -131,7 +131,7 @@ export class LottoListComponent implements OnInit {
             this.bookData = result.data;
             console.log('bookData :', this.bookData);
             this.loadingTime = this.bookData.length < this.partition ?
-             this.timeFactor : ((Math.floor(this.bookData.length / this.partition) + 1) * this.timeFactor);
+             this.timeFactor * 2 : ((Math.floor(this.bookData.length / this.partition) + 2) * this.timeFactor);
         });
     }
 
