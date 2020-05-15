@@ -44,7 +44,7 @@ export class LottoListComponent implements OnInit {
 
     timer: any;
     loadingTime: number;
-    timeFactor = 10000;
+    timeFactor = 5000;
 
     pageSize = 10;
     offset = 0;
@@ -160,18 +160,19 @@ export class LottoListComponent implements OnInit {
         } else if (this.countNum < 1 || this.countNum > 99 ) {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
         } else {
-        await _(this.bookData).forEach((bookNum, index) => {
+        // await _(this.bookData).forEach((bookNum, index) => {
+        for(const [index, bookNum] of this.bookData.entries()) {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
               });
             if (index % 500 === 0) {
-                setTimeout(() => {
+                await setTimeout(() => {
                     this.processBookArray(bookArray, bookNum);
                 }, this.timeFactor);
             } else {
-                this.processBookArray(bookArray, bookNum);
+                await this.processBookArray(bookArray, bookNum);
             }
-        });
+        };
         }
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
