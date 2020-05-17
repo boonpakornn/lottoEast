@@ -44,8 +44,8 @@ export class LottoListComponent implements OnInit {
 
     timer: any;
     loadingTime: number;
-    timeFactor = 400;
-    partition = 10;
+    timeFactor = 1000;
+    partition = 50;
     delayTime = 0;
 
     pageSize = 10;
@@ -132,7 +132,7 @@ export class LottoListComponent implements OnInit {
             this.bookData = result.data;
             console.log('bookData :', this.bookData);
             this.loadingTime = this.bookData.length < this.partition ?
-             this.timeFactor * 2 : ((Math.floor(this.bookData.length / this.partition) + 2) * this.timeFactor);
+             this.timeFactor * 2 : ((Math.floor(this.bookData.length / this.partition) + 1) * this.timeFactor);
         });
     }
 
@@ -187,23 +187,14 @@ export class LottoListComponent implements OnInit {
                 return el.bookNumber === bookNum;
             });
             let flag = false;
-            console.log('index', index);
-            if (index === this.bookData.length - 1) {
+            if (index === this.bookData.length - 1 || (index % 50 === 0 && index !== 0)) {
                 flag = true;
             }
             this.processBookArray(bookArray, bookNum, flag);
-            // if (Math.floor(index / this.partition) >= 1) {
-            //     this.delayTime = (this.timeFactor) * Math.floor(index / this.partition);
-            //     await setTimeout(() => {
-            //         this.processBookArray(bookArray, bookNum);
-            //     }, this.delayTime);
-            // } else {
-            //     await this.processBookArray(bookArray, bookNum);
-            // }
         }
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
-        }, 2000);
+        }, this.loadingTime);
         }
     }
 
@@ -250,12 +241,11 @@ export class LottoListComponent implements OnInit {
             }
         });
         if (selectedSet.length !== 0) {
-            // this.updateSetLotto(bookNumber, countNumber, selectedSet);
             this.queuedArray.push({bookNumber, selectedSet});
         }
-        if (flag === true){
-            console.log('queue', this.queuedArray);
+        if (flag === true) {
             this.updateSetLotto(this.queuedArray, this.countNum);
+            this.queuedArray = [];
         }
     }
 
@@ -266,9 +256,6 @@ export class LottoListComponent implements OnInit {
         }, 100);
     }
 
-    // async updateSetLotto(bookNumber, countNumber, groupNumber) {
-    //     await this.lottoService.updateSetLotto(bookNumber, countNumber, groupNumber);
-    // }
     async updateSetLotto(queuedArray, countNumber) {
         await this.lottoService.updateSetLotto(queuedArray, countNumber);
     }
@@ -282,7 +269,7 @@ export class LottoListComponent implements OnInit {
         await this.lottoService.updateAllLottoToFalse();
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
-        }, 5000);
+        }, 2000);
     }
     openConfirmationDialog() {
         const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากทั้งหมด');
