@@ -96,14 +96,14 @@ export class ReportListComponent implements OnInit{
 
     async submitLottoData(data) {
             await this.lottoService.addLotto(data);
-            await setTimeout(() => { this.countUserLotto(this.loggedinUser); }, 200);
-            await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
+            await setTimeout(() => {this.countUserLotto(this.loggedinUser); }, 200);
     }
 
-    countUserLotto(loggedinUser) {
-        this.http.post<any>(this.serverUrl + '/get-user-count', {loggedinUser}).subscribe(result => {
+    async countUserLotto(loggedinUser) {
+        await this.http.post<any>(this.serverUrl + '/get-user-count', {loggedinUser}).subscribe(result => {
             this.numberOfLotto = result.data;
         });
+        await this.loadLottoPaginateData(this.offset, this.pageSize, this.loggedinUser);
     }
 
     openConfirmationDialog(data) {

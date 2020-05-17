@@ -44,12 +44,13 @@ export class LottoListComponent implements OnInit {
 
     timer: any;
     loadingTime: number;
-    timeFactor = 500;
-    partition = 20;
+    timeFactor = 400;
+    partition = 10;
     delayTime = 0;
 
     pageSize = 10;
     offset = 0;
+    queuedArray = [];
 
     pageSizeUser = 10;
     offsetUser = 0;
@@ -171,6 +172,7 @@ export class LottoListComponent implements OnInit {
     }
 
     async autoSelection() {
+        this.queuedArray = [];
         await this.spinner.show();
         if (this.numberModel.num === 0) {
             alert('กรุณาเลือกจำนวนสลากขั้นต่ำ');
@@ -183,23 +185,29 @@ export class LottoListComponent implements OnInit {
         for (const [index, bookNum] of this.bookData.entries()) {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
-              });
-            if (Math.floor(index / this.partition) >= 1) {
-                this.delayTime = (this.timeFactor) * Math.floor(index / this.partition);
-                await setTimeout(() => {
-                    this.processBookArray(bookArray, bookNum);
-                }, this.delayTime);
-            } else {
-                await this.processBookArray(bookArray, bookNum);
+            });
+            let flag = false;
+            console.log('index', index);
+            if (index === this.bookData.length - 1) {
+                flag = true;
             }
+            this.processBookArray(bookArray, bookNum, flag);
+            // if (Math.floor(index / this.partition) >= 1) {
+            //     this.delayTime = (this.timeFactor) * Math.floor(index / this.partition);
+            //     await setTimeout(() => {
+            //         this.processBookArray(bookArray, bookNum);
+            //     }, this.delayTime);
+            // } else {
+            //     await this.processBookArray(bookArray, bookNum);
+            // }
         }
         await setTimeout(() => {
             this.loadLottoData(this.offset, this.pageSize);
-        }, this.loadingTime);
+        }, 2000);
         }
     }
 
-    async processBookArray(bookArray, bookNum) {
+    async processBookArray(bookArray, bookNum, flag) {
         const bookNumber = bookNum;
         const countNumber = this.countNum;
         // current
@@ -242,7 +250,12 @@ export class LottoListComponent implements OnInit {
             }
         });
         if (selectedSet.length !== 0) {
-            this.updateSetLotto(bookNumber, countNumber, selectedSet);
+            // this.updateSetLotto(bookNumber, countNumber, selectedSet);
+            this.queuedArray.push({bookNumber, selectedSet});
+        }
+        if (flag === true){
+            console.log('queue', this.queuedArray);
+            this.updateSetLotto(this.queuedArray, this.countNum);
         }
     }
 
@@ -253,8 +266,11 @@ export class LottoListComponent implements OnInit {
         }, 100);
     }
 
-    updateSetLotto(bookNumber, countNumber, groupNumber) {
-        this.lottoService.updateSetLotto(bookNumber, countNumber, groupNumber);
+    // async updateSetLotto(bookNumber, countNumber, groupNumber) {
+    //     await this.lottoService.updateSetLotto(bookNumber, countNumber, groupNumber);
+    // }
+    async updateSetLotto(queuedArray, countNumber) {
+        await this.lottoService.updateSetLotto(queuedArray, countNumber);
     }
 
     updateLotto(lotto) {

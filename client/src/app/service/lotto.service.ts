@@ -22,8 +22,13 @@ export class LottoService {
   });
   }
 
-  public updateSetLotto(bookNumber, countNumber, group): any {
-    this.http.post<any>(this.serverUrl + '/update-set-lotto', {bookNumber, countNumber, group}).subscribe(result => {
+  // public updateSetLotto(bookNumber, countNumber, group): any {
+  //   this.http.post<any>(this.serverUrl + '/update-set-lotto', {bookNumber, countNumber, group}).subscribe(result => {
+  // });
+  // }
+
+  public updateSetLotto(queuedArray, countNumber): any {
+    this.http.post<any>(this.serverUrl + '/update-set-lotto', {queuedArray, countNumber}).subscribe(result => {
   });
   }
 

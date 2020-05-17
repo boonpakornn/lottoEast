@@ -197,16 +197,32 @@ app.post('/update-lotto', (req,res) => {
     })
 });
 
+// app.post('/update-set-lotto', (req,res) => {
+//     var book = req.body.bookNumber;
+//     var count = req.body.countNumber;
+//     var group = req.body.group;
+//     LottoModel.updateMany({bookNumber: book, countNumber: count, group: group}, {status: 'True'},(err, doc) => {
+//         if (err){
+//             res.json({result: 'failed'});
+//         }
+//         res.json({result: 'success', data: doc})
+//     })
+// });
+
+
 app.post('/update-set-lotto', (req,res) => {
-    var book = req.body.bookNumber;
+    var queuedArray = req.body.queuedArray;
     var count = req.body.countNumber;
-    var group = req.body.group;
-    LottoModel.updateMany({bookNumber: book, countNumber: count, group: group}, {status: 'True'},(err, doc) => {
+    var async = require('async')
+    async.forEach( queuedArray, ( item, done ) => {
+        LottoModel.updateMany({bookNumber: item.bookNumber, countNumber: count, group: item.selectedSet}, {status: 'True'}, done);
+
+    }, function alldone (err) {
         if (err){
             res.json({result: 'failed'});
         }
-        res.json({result: 'success', data: doc})
-    })
+        res.json({result: 'success'})
+    });
 });
 
 app.post('/update-lotto-all-false', (req,res) => {
@@ -403,5 +419,4 @@ app.post('/update-time', (req,res) => {
 // node server.js
 
 const server = http.createServer(app);
-server.listen(port, () => console.log('server listening on port', port))
- 
+server.listen(port, () => console.log('server listening on port', port));
