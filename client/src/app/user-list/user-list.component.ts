@@ -3,9 +3,11 @@ import { AuthService } from '../service/auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ProfileService } from '../service/profile.service';
+import { UserService } from '../service/user.service';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 
 import { environment } from '../../environments/environment';
+
 
 @Component({
   templateUrl: './user-list.component.html',
@@ -15,7 +17,7 @@ export class UserListComponent implements OnInit {
   private serverUrl = environment.serverUrl;
   userData = [];
 
-  displayedColumns = ['userName', 'firstName', 'lastName', 'telNo', 'remark', 'edit'];
+  displayedColumns = ['userName', 'firstName', 'lastName', 'telNo', 'remark', 'edit', 'delete'];
   dataSource;
   offset = 0;
   pageSize = 10;
@@ -25,7 +27,8 @@ export class UserListComponent implements OnInit {
   constructor(private http: HttpClient,
               private authService: AuthService,
               private router: Router,
-              private profileService: ProfileService) {
+              private profileService: ProfileService,
+              private userService: UserService) {
   }
 
        ngOnInit() {
@@ -57,4 +60,13 @@ export class UserListComponent implements OnInit {
         this.profileService.updateEditUser(editUser);
         this.router.navigate(['user/profile']);
        }
+
+        async deleteUserData(deleteUser) {
+        const dialog = confirm('ยืนยันเพื่อลบข้อมูลผู้ใช้ที่เลือก');
+        if (dialog === true) {
+            await this.userService.deleteUser(deleteUser);
+        }
+        await this.countUser();
+        await this.getUserData(this.offset, this.pageSize);
+        }
 }

@@ -274,18 +274,18 @@ export class LottoListComponent implements OnInit {
     openConfirmationDialog() {
         const dialog = confirm('ยืนยันเพื่อลบข้อมูลสลากทั้งหมด');
         if (dialog === true) {
+            this.spinner.show();
             this.deleteAllLotto();
         }
     }
 
-    async deleteAll() {
+    async deleteAllLotto() {
         await this.lottoService.deleteAllLotto();
         await this.loadBookNumber();
-    }
-
-    async deleteAllLotto() {
-        await this.deleteAll();
-        await this.loadLottoData(this.offset, this.pageSize);
+        await setTimeout(() => {
+            this.loadLottoData(this.offset, this.pageSize);
+            this.countLotto();
+        }, 2000);
     }
 
     async loadUserLotto() {

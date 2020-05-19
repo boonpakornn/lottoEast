@@ -385,6 +385,18 @@ app.post('/get-all-user-paginate', (req,res) => {
     })
 });
 
+app.post('/delete-user', (req,res) => {
+    var userName = req.body.userName;
+    var firstName = req.body.firstName;
+    
+    UserModel.deleteOne({userName: userName, firstName: firstName}, (err, doc) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', doc: doc})
+    })
+});
+
 // ==========  Time  ==========
 
 app.get('/init-time', (req,res) => {
