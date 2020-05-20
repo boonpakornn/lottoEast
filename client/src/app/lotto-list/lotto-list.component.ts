@@ -181,7 +181,6 @@ export class LottoListComponent implements OnInit {
             alert('กรุณาใส่หมายเลขงวดให้ถูกต้อง (1-99)');
             this.spinner.hide();
         } else {
-        // await _(this.bookData).forEach((bookNum, index) => {
         for (const [index, bookNum] of this.bookData.entries()) {
             const bookArray = this.lottoListData.filter((el) => {
                 return el.bookNumber === bookNum;
@@ -211,7 +210,6 @@ export class LottoListComponent implements OnInit {
         let count = 0;
         let previous = false;
         const selectedSet = [];
-
         await _(bookArray).forEach((element, index) => {
             if (index !== bookArray.length - 1) {
                 cSet = element.group;
@@ -236,6 +234,8 @@ export class LottoListComponent implements OnInit {
                     if (count >= this.numberModel.num) {
                         selectedSet.push(cSet);
                         count = 0;
+                        } else {
+                            count = 0;
                         }
                     }
             }
@@ -293,6 +293,17 @@ export class LottoListComponent implements OnInit {
             const selectedUser = this.selectedUser;
             await this.http.post<any>(this.serverUrl + '/get-user-selected-lotto', {selectedUser}).subscribe(result => {
                 this.lottoUserData = result.data;
+                for (const lotto of this.lottoUserData) {
+                    if (lotto.bookNumber.length !== 4) {
+                        lotto.bookNumber = this.zeroPad(lotto.bookNumber, 4);
+                    }
+                    if (lotto.countNumber.length !== 2) {
+                        lotto.countNumber = this.zeroPad(lotto.countNumber, 2);
+                    }
+                    if (lotto.groupNumber.length !== 2) {
+                        lotto.groupNumber = this.zeroPad(lotto.groupNumber, 2);
+                    }
+                }
                 this.dataSourceUser = new MatTableDataSource<any>(this.lottoUserData);
                 this.dataSourceUser.paginator = this.paginatorUser;
             });
