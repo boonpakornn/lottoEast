@@ -147,12 +147,21 @@ app.post('/get-user-lotto', (req,res) => {
 
 app.post('/get-user-selected-lotto', (req,res) => {
     var selectedUser = req.body.selectedUser;
+    if(selectedUser === undefined) {
+        LottoModel.find({status: 'True'}, function(err, doc) {
+            if (err){
+                res.json({result: 'failed'});
+            }
+            res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+        })
+    } else {
     LottoModel.find({sender: selectedUser, status: 'True'}, function(err, doc) {
         if (err){
             res.json({result: 'failed'});
         }
         res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
     })
+    }
 });
 
 app.post('/get-user-selected-lotto-paginate', (req,res) => {

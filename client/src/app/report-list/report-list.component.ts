@@ -66,7 +66,6 @@ export class ReportListComponent implements OnInit{
 
     findDuplicatedLotto(data) {
         data.currentUser = this.loggedinUser;
-        console.log('data', data);
         if (this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 16)) {
             if (this.timeService.compareTime()) {
             this.isValid = true;

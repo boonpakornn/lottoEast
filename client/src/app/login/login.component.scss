@@ -1,7 +1,3 @@
-h1 {
-    padding-top: 30px;
-}
-
 .btn-default {
   color: white;
   background-color: gray;
@@ -15,4 +11,10 @@ small{
   float: right;
   color: #E05C65;
   padding-left: 10px;
+}
+
+.border {
+  border:3px solid black;
+  border-radius: 25px;
+  padding: 30px;
 }

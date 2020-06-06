@@ -13,8 +13,7 @@ export class ProfileService {
     };
     isCurrentUser = false;
 
-    updateEditUser(editUser){
-        console.log('service edituser', editUser);
+    updateEditUser(editUser) {
         this.editUser = {
             firstName: editUser.firstName,
             lastName: editUser.lastName,

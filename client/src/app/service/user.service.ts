@@ -12,13 +12,11 @@ export class UserService {
 
   public addUser(data): any {
   this.http.post<any>(this.serverUrl + '/add-user', data).subscribe(result => {
-    console.log('result', result);
     });
   }
 
   public deleteUser(data): any {
     this.http.post<any>(this.serverUrl + '/delete-user', data).subscribe(result => {
-      console.log('result', result);
       });
   }
 }

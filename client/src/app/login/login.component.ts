@@ -18,7 +18,6 @@ export class LoginComponent {
     login(formValues) {
         this.authService.loginUser(formValues.userName, formValues.password);
         setTimeout(() => {
-            console.log('status', this.authService.isLogin);
             if (this.authService.isLogin === true) {
                 this.router.navigate(['report']);
             }

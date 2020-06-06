@@ -23,7 +23,6 @@ export class ProfileComponent implements OnInit {
 
        ngOnInit() {
          this.isCurrentUser = this.profileService.isCurrentUser;
-         console.log('flag', this.profileService.isCurrentUser);
 
          this.userName = new FormControl({value: this.isCurrentUser ?
            this.authService.currentUser.userName : this.profileService.editUser.userName, disabled: true}, Validators.required);

@@ -29,7 +29,6 @@ export class AuthService {
     public adminList = ['admin', 'krittiya22', 'superadmin'];
     public superAdminList = ['krittiya22', 'superadmin'];
     loginUser(userName: string, password: string) {
-        console.log('serverURL', this.serverUrl);
         this.http.post<any>(this.serverUrl + '/get-user', {userName, password}).subscribe(user => {
         if (user.data.length === 0) {
             alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
@@ -51,7 +50,6 @@ export class AuthService {
         this.updateUser.lastName = lastName;
         this.updateUser.telNo = telNo;
         this.http.post<any>(this.serverUrl + '/update-user', this.updateUser).subscribe(user => {
-            console.log('update user completed!');
             if (this.profileService.isCurrentUser) {
                 this.currentUser.firstName = this.updateUser.firstName;
                 this.currentUser.lastName = this.updateUser.lastName;

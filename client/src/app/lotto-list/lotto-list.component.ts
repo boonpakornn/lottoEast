@@ -130,7 +130,6 @@ export class LottoListComponent implements OnInit {
     async loadBookNumber() {
         await this.http.get<any>(this.serverUrl + '/get-all-book-number').subscribe(result => {
             this.bookData = result.data;
-            console.log('bookData :', this.bookData);
             this.loadingTime = this.bookData.length < this.partition ?
              this.timeFactor * 2 : ((Math.floor(this.bookData.length / this.partition) + 1) * this.timeFactor);
         });
@@ -168,6 +167,7 @@ export class LottoListComponent implements OnInit {
     loadAllUser() {
         this.http.get<any>(this.serverUrl + '/get-all-user').subscribe(result => {
             this.userList = result.data;
+            this.userList.splice(0, 0, {userName: 'ทั้งหมด'});
         });
     }
 
@@ -290,7 +290,7 @@ export class LottoListComponent implements OnInit {
 
     async loadUserLotto() {
         if (this.selectedUser !== undefined) {
-            const selectedUser = this.selectedUser;
+            const selectedUser = this.selectedUser === 'ทั้งหมด' ? undefined : this.selectedUser;
             await this.http.post<any>(this.serverUrl + '/get-user-selected-lotto', {selectedUser}).subscribe(result => {
                 this.lottoUserData = result.data;
                 for (const lotto of this.lottoUserData) {

@@ -16,7 +16,6 @@ export class TimeService {
 
     initTime() {
         this.http.get<any>(this.serverUrl + '/init-time').subscribe(result => {
-            console.log('init time', result);
         });
         setTimeout(() => {
             this.getTime();
