@@ -26,6 +26,8 @@ export class LottoListComponent implements OnInit {
     private countSpec: FormControl;
     countNum = 1;
 
+    isDisable = true;
+
     setNumber: {};
     numberModel = { num: 0, name: '', label: ''};
 
@@ -311,6 +313,9 @@ export class LottoListComponent implements OnInit {
 
     async selectedLottoUser(selectedUser) {
         this.selectedUser = selectedUser;
+        if (this.selectedUser !== undefined) {
+            this.isDisable = false;
+        }
         await this.loadUserLotto();
     }
 
