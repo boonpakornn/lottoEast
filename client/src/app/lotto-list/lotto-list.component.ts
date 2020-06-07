@@ -40,8 +40,6 @@ export class LottoListComponent implements OnInit {
     userList: any = [];
     selectedUser: string;
 
-    isDisable = true;
-
     timer: any;
     loadingTime: number;
     timeFactor = 1000;
@@ -161,7 +159,7 @@ export class LottoListComponent implements OnInit {
             }
             this.dataSourceAll = new MatTableDataSource<any>(this.lottoPaginateData);
         });
-        await this.countSelectedLottoUser(this.selectedUser);
+        await this.selectedLottoUser(this.selectedUser);
     }
 
     loadAllUser() {
@@ -311,11 +309,8 @@ export class LottoListComponent implements OnInit {
         await this.spinner.hide();
     }
 
-    async countSelectedLottoUser(selectedUser) {
-        await this.http.post<any>(this.serverUrl + '/get-user-selected-count', {selectedUser}).subscribe(result => {
-            this.numberOfSelectedLottoUser = result.data;
-            this.isDisable = this.numberOfSelectedLottoUser > 0 ? false : true;
-        });
+    async selectedLottoUser(selectedUser) {
+        this.selectedUser = selectedUser;
         await this.loadUserLotto();
     }
 

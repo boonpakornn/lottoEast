@@ -176,15 +176,6 @@ app.post('/get-user-selected-lotto-paginate', (req,res) => {
     })
 });
 
-app.post('/get-user-selected-count', (req,res) => {
-    var sender = req.body.selectedUser;
-    LottoModel.countDocuments({sender: sender, status: 'True'}, (err, count) => {
-        if (err){
-            res.json({result: 'failed'});
-        }
-        res.json({result: 'success', data: count})
-    })
-});
 
 app.post('/update-lotto', (req,res) => {
     var book = req.body.bookNumber;

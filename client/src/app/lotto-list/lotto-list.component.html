@@ -118,12 +118,12 @@
         <div class="row">
           <div class="col-sm-6"><h3>Export Lotto Data</h3></div>
           <div class="col-sm-6">
-            <button class="btn-primary btn-export" (click)="exporter.exportTable('xlsx', {fileName: this.selectedUser})" [disabled]= "isDisable">EXPORT AS EXCEL</button>
+            <button class="btn-primary btn-export" (click)="exporter.exportTable('xlsx', {fileName: this.selectedUser})">EXPORT AS EXCEL</button>
           </div>
         </div>
         <mat-form-field>
           <mat-label>ชื่อผู้ใช้</mat-label>
-          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="countSelectedLottoUser(selectedUser)">
+          <mat-select [(ngModel)]="selectedUser" (ngModelChange)="selectedLottoUser(selectedUser)">
             <mat-option *ngFor="let user of userList" [value]="user.userName">
               {{user.userName}}
             </mat-option>
