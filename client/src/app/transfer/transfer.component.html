@@ -1,0 +1,34 @@
+<div class="container lotto-list">
+    <div class="row">
+      <div class="col-sm-6"><h3>เลขที่ไม่ชน</h3></div>
+      <div class="col-sm-6"><h3 class="number">จำนวนทั้งหมด {{this.numberOfLotto}} เล่ม</h3></div>
+    </div>
+
+      <mat-table #table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="bookNumber">
+          <mat-header-cell *matHeaderCellDef> เล่ม </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.bookNumber}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="countNumber">
+          <mat-header-cell *matHeaderCellDef> งวด </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.countNumber}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="groupNumber">
+          <mat-header-cell *matHeaderCellDef> ชุด </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.groupNumber}} </mat-cell>
+        </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+      <mat-paginator #paginator
+                     [length]="numberOfLotto"
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 20]"
+                     [showFirstLastButtons]="true"
+                     (page)="pageChanged($event)">
+      </mat-paginator>
+</div>

@@ -164,6 +164,25 @@ app.post('/get-user-selected-lotto', (req,res) => {
     }
 });
 
+app.post('/get-user-unselected-lotto', (req,res) => {
+    var selectedUser = req.body.selectedUser;
+    if(selectedUser === undefined) {
+        LottoModel.find({status: 'False'}, function(err, doc) {
+            if (err){
+                res.json({result: 'failed'});
+            }
+            res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+        })
+    } else {
+    LottoModel.find({sender: selectedUser, status: 'False'}, function(err, doc) {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: _.orderBy(doc, ['bookNumber', 'countNumber', 'groupNumber'], ['asc', 'asc', 'asc'])})
+    })
+    }
+});
+
 app.post('/get-user-selected-lotto-paginate', (req,res) => {
     var offset = req.body.offsetUser;
     var pageSize = req.body.pageSizeUser;
@@ -179,6 +198,28 @@ app.post('/get-user-selected-lotto-paginate', (req,res) => {
 app.post('/get-user-selected-count', (req,res) => {
     var sender = req.body.selectedUser;
     LottoModel.countDocuments({sender: sender, status: 'True'}, (err, count) => {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: count})
+    })
+});
+
+app.post('/get-user-unselected-lotto-paginate', (req,res) => {
+    var offset = req.body.offsetUser;
+    var pageSize = req.body.pageSizeUser;
+    var selectedUser = req.body.selectedUser;
+    LottoModel.paginate({sender: selectedUser, status: 'False'}, {offset: offset, limit: pageSize, sort: {bookNumber: 1, countNumber: 1, groupNumber: 1}}, function(err, doc) {
+        if (err){
+            res.json({result: 'failed'});
+        }
+        res.json({result: 'success', data: doc.docs})
+    })
+});
+
+app.post('/get-user-unselected-count', (req,res) => {
+    var sender = req.body.selectedUser;
+    LottoModel.countDocuments({sender: sender, status: 'False'}, (err, count) => {
         if (err){
             res.json({result: 'failed'});
         }

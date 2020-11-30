@@ -5,6 +5,7 @@ import { ReportComponent } from './report.component';
 import { ReportListComponent } from './report-list/report-list.component';
 import { NavBarComponent } from './nav/navbar.component';
 import { ResultComponent } from './result/result.component';
+import { TransferComponent } from './transfer/transfer.component';
 import { LottoListComponent } from './lotto-list/lotto-list.component';
 
 import { RouterModule } from '@angular/router';
@@ -67,6 +68,7 @@ import {
     ReportListComponent,
     NavBarComponent,
     ResultComponent,
+    TransferComponent,
     LottoListComponent
   ],
   entryComponents: [
