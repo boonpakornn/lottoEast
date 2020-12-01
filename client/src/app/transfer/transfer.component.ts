@@ -5,6 +5,8 @@ import { AuthService } from '../service/auth.service';
 
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import { environment } from '../../environments/environment';
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
 
 @Component({
     templateUrl: './transfer.component.html',
@@ -22,6 +24,7 @@ export class TransferComponent implements OnInit {
     public currentUser = { currentUser: this.loggedinUser, status: 'True'};
     offset = 0;
     pageSize = 10;
+    exist = true;
 
     displayedColumns = ['bookNumber', 'countNumber', 'groupNumber'];
     dataSource;
@@ -41,6 +44,7 @@ export class TransferComponent implements OnInit {
     async countUnSelectedLottoUser(selectedUser) {
         await this.http.post<any>(this.serverUrl + '/get-user-unselected-count', {selectedUser}).subscribe(result => {
             this.numberOfLotto = result.data;
+            this.exist = this.numberOfLotto ? false : true;
         });
         await this.loadUserLotto(this.offset, this.pageSize);
     }
@@ -58,6 +62,36 @@ export class TransferComponent implements OnInit {
                 lotto.bookNumber = this.zeroPad(lotto.bookNumber, 4);
             }
             this.dataSource = new MatTableDataSource<any>(this.transferList);
+        });
+    }
+
+    export() {
+        let exportData;
+        const selectedUser = this.loggedinUser;
+        this.http.post<any>(this.serverUrl + '/get-user-unselected-lotto',
+        {selectedUser}).subscribe(result => {
+            exportData = result.data;
+
+            if (exportData.length) {
+                const workbook = new Workbook();
+                const worksheet = workbook.addWorksheet('เลขไม่ชน');
+                const header = ['barcode'];
+                const headerRow = worksheet.addRow(header);
+
+                const record = [];
+                for (const item of exportData) {
+                    record.push(item.bookNumber.toString() + item.countNumber.toString() + item.groupNumber.toString());
+                }
+
+                worksheet.addRow(record);
+
+                const fname = 'เลขไม่ชน';
+
+                workbook.xlsx.writeBuffer().then((data) => {
+                const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                fs.saveAs(blob, fname + '-' + new Date().toISOString() + '.xlsx');
+                });
+            }
         });
     }
 }

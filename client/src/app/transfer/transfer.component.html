@@ -1,7 +1,8 @@
 <div class="container lotto-list">
     <div class="row">
       <div class="col-sm-6"><h3>เลขที่ไม่ชน</h3></div>
-      <div class="col-sm-6"><h3 class="number">จำนวนทั้งหมด {{this.numberOfLotto}} เล่ม</h3></div>
+      <div class="col-sm-5"><h3 class="number">จำนวนทั้งหมด {{this.numberOfLotto}} เล่ม</h3></div>
+      <div class="col-sm-1"><button class="btn-primary btn-default" [disabled]="exist" (click)="export()"> Export</button></div>
     </div>
 
       <mat-table #table [dataSource]="dataSource">
