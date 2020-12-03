@@ -187,10 +187,10 @@ export class LottoListComponent implements OnInit {
 
                 for (const item of exportData) {
                     worksheet.addRow([
-                        item.bookNumber.toString().padStart(4, '0'),
-                        item.sender,
                         item.countNumber.toString().padStart(2, '0'),
-                        item.groupNumber.toString().padStart(2, '0')
+                        item.sender,
+                        item.groupNumber.toString().padStart(2, '0'),
+                        item.bookNumber.toString().padStart(4, '0')
                     ]);
                 }
 
