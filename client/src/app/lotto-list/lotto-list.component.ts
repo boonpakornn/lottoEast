@@ -10,6 +10,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../environments/environment';
 import _ from 'lodash';
 
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
+
 @Component({
     templateUrl: './lotto-list.component.html',
     styleUrls: ['./lotto-list.component.scss']
@@ -168,6 +171,36 @@ export class LottoListComponent implements OnInit {
         this.http.get<any>(this.serverUrl + '/get-all-user').subscribe(result => {
             this.userList = result.data;
             this.userList.splice(0, 0, {userName: 'ทั้งหมด'});
+        });
+    }
+
+    async export() {
+        let exportData;
+        await this.http.get<any>(this.serverUrl + '/get-all-lotto').subscribe(result => {
+            exportData = result.data;
+
+            if (exportData.length) {
+                const workbook = new Workbook();
+                const worksheet = workbook.addWorksheet('เลขทั้งหมด');
+                const header = ['งวดที่', 'ชื่อคนส่ง', 'ชุดที่', 'เลขที่'];
+                worksheet.addRow(header);
+
+                for (const item of exportData) {
+                    worksheet.addRow([
+                        item.bookNumber.toString().padStart(4, '0'),
+                        item.sender,
+                        item.countNumber.toString().padStart(2, '0'),
+                        item.groupNumber.toString().padStart(2, '0')
+                    ]);
+                }
+
+                const fname = 'เลขทั้งหมด';
+
+                workbook.xlsx.writeBuffer().then((data) => {
+                const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                fs.saveAs(blob, fname + '-' + new Date().toISOString() + '.xlsx');
+                });
+            }
         });
     }
 

@@ -76,14 +76,14 @@ export class TransferComponent implements OnInit {
                 const workbook = new Workbook();
                 const worksheet = workbook.addWorksheet('เลขไม่ชน');
                 const header = ['barcode'];
-                const headerRow = worksheet.addRow(header);
 
-                const record = [];
                 for (const item of exportData) {
-                    record.push(item.bookNumber.toString() + item.countNumber.toString() + item.groupNumber.toString());
+                    worksheet.addRow([
+                        item.bookNumber.toString().padStart(4, '0') +
+                        item.countNumber.toString().padStart(2, '0') +
+                        item.groupNumber.toString().padStart(2, '0')
+                    ]);
                 }
-
-                worksheet.addRow(record);
 
                 const fname = 'เลขไม่ชน';
 
