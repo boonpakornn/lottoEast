@@ -69,14 +69,14 @@ export class ReportListComponent implements OnInit{
         if (this.isNumeric(data.lottoNum) && (data.lottoNum.length === 8 || data.lottoNum.length === 16)) {
             if (this.timeService.compareTime()) {
             this.isValid = true;
-            // this.http.post<any>(this.serverUrl + '/find-duplicate-lotto', data).subscribe(result => {
-            //     // if (result.data.length > 0) {
-            //     //     alert('มีข้อมูลสลากหมายเลขนี้อยู่ในระบบแล้ว กรุณาเพิ่มสลากหมายเลขอื่น');
-            //     // } else {
-            //     //     this.submitLottoData(data);
-            //     // }
-            // });
-            this.submitLottoData(data);
+            this.http.post<any>(this.serverUrl + '/find-duplicate-lotto', data).subscribe(result => {
+                if (result.data.length > 0) {
+                    alert('มีข้อมูลสลากหมายเลขนี้อยู่ในระบบแล้ว กรุณาเพิ่มสลากหมายเลขอื่น');
+                } else {
+                    this.submitLottoData(data);
+                }
+            });
+            // this.submitLottoData(data);
             } else {
                 alert('ขออภัย ขณะนี้อยู่นอกเวลาเปิดรับสลาก กรุณาติดต่อผู้ดูแลระบบ');
             }
